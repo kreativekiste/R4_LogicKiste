@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Ardublock Modular - R4 Pro Edition</title>
+    
+    <!-- Externe Libraries -->
+    <script src="https://unpkg.com/blockly@10.4.3/blockly.min.js"></script>
+    
+    <!-- CSS einbinden -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="title">Mein eigenes Ardublock (UNO R4 Edition)</div>
+    
+    <!-- UI Controls -->
+    <div class="header-controls">
+        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
+        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
+        <div style="width: 10px;"></div> 
+
+        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
+        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
+        <div style="width: 20px;"></div> 
+        
+        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
+        <label class="btn btn-load" for="fileInput">📂 Laden</label>
+        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
+    </div>
+
+    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">C++ Export</div>
+</header>
+
+<div id="main">
+    <div id="blocklyDiv"></div>
+    <div id="codeExport">// Lade Blöcke...</div>
+</div>
+
+<!-- ========================================== -->
+<!-- DEINE MODULE LADEN                         -->
+<!-- ========================================== -->
+
+<!-- Generator Kern (Gehirn) -->
+<script src="js/generator_core.js"></script>
+
+<!-- Board / Hardware -->
+<script src="blocks/board/interrupts.js"></script>
+
+<!-- Eingänge -->
+<script src="blocks/eingaenge/setup_pullup.js"></script>
+<script src="blocks/eingaenge/read_digital.js"></script>
+<script src="blocks/eingaenge/read_analog.js"></script>
+<script src="blocks/eingaenge/input_counter.js"></script>
+<script src="blocks/eingaenge/input_encoder.js"></script>
+<script src="blocks/eingaenge/dht_sensor.js"></script>
+<script src="blocks/eingaenge/serial_read.js"></script>
+<script src="blocks/eingaenge/ultrasonic_hc_sr04.js"></script>
+
+<!-- Ausgänge -->
+<script src="blocks/ausgaenge/write_digital.js"></script>
+<script src="blocks/ausgaenge/write_analog.js"></script>
+<script src="blocks/ausgaenge/motors.js"></script>
+<script src="blocks/ausgaenge/stepper_advanced.js"></script>
+<script src="blocks/ausgaenge/max7219_matrix.js"></script>
+<script src="blocks/ausgaenge/lcd_i2c.js"></script>
+<script src="blocks/ausgaenge/serial_monitor.js"></script>
+<script src="blocks/ausgaenge/tft_displays.js"></script>
+<script src="blocks/ausgaenge/neopixel_basic.js"></script>
+
+<!-- Funktionen & Logik -->
+<script src="blocks/funktionen/delay.js"></script>
+<script src="blocks/funktionen/logic_if.js"></script>
+<script src="blocks/funktionen/logic_compare.js"></script>
+<script src="blocks/funktionen/loop_repeat.js"></script>
+<script src="blocks/funktionen/loop_while.js"></script>
+<script src="blocks/funktionen/timer_interval.js"></script>
+<script src="blocks/funktionen/time_system.js"></script>
+<script src="blocks/funktionen/state_machine.js"></script>
+<script src="blocks/funktionen/logic_basic.js"></script>
+<script src="blocks/funktionen/math_basic.js"></script>
+<script src="blocks/funktionen/math_advanced.js"></script>
+<script src="blocks/funktionen/variables_basic.js"></script>
+<script src="blocks/funktionen/math_random.js"></script>
+<script src="blocks/funktionen/stopwatch.js"></script>
+<script src="blocks/funktionen/functions_custom.js"></script>
+
+<!-- App Logik (Start) -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
