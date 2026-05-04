@@ -49,6 +49,7 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
     let includes = "";
     let globals = "";
     let autoSetup = "";
+    let autoSetupInterrupts = ""; // Interrupts immer NACH pinMode einhängen
     let isrFunctions = "";
     
     // --- TFT ST7735 SCANNER ---
@@ -96,7 +97,7 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
         ArduinoGenerator.customVariables.set(varName, "volatile int"); 
         
         const isrName = `isr_encoder_${pinClk}_${pinDt}`;
-        autoSetup += `  attachInterrupt(digitalPinToInterrupt(pin${pinClk}), ${isrName}, CHANGE);\n`;
+        autoSetupInterrupts += `  attachInterrupt(digitalPinToInterrupt(pin${pinClk}), ${isrName}, CHANGE);\n`;
         isrFunctions += `void ${isrName}() {\n  if (digitalRead(pin${pinClk}) == digitalRead(pin${pinDt})) {\n    ${varName}++;\n  } else {\n    ${varName}--;\n  }\n}\n`;
     });
 
@@ -107,7 +108,7 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
         const mode = isrBlock.getFieldValue('MODE');
         const funcName = `isr_hw_pin${pin}`;
         ArduinoGenerator.usedPinsInput.add(pin);
-        autoSetup += `  attachInterrupt(digitalPinToInterrupt(pin${pin}), ${funcName}, ${mode});\n`;
+        autoSetupInterrupts += `  attachInterrupt(digitalPinToInterrupt(pin${pin}), ${funcName}, ${mode});\n`;
         isrFunctions += `void ${funcName}() {\n${ArduinoGenerator.statementToCode(isrBlock, 'DO')}}\n`;
     });
 
@@ -120,7 +121,7 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
             const mode = isrBlock.getFieldValue('MODE');
             const funcName = `isr_pc_pin${pin}`;
             ArduinoGenerator.usedPinsInput.add(pin);
-            autoSetup += `  attachPCINT(digitalPinToPCINT(pin${pin}), ${funcName}, ${mode});\n`;
+            autoSetupInterrupts += `  attachPCINT(digitalPinToPCINT(pin${pin}), ${funcName}, ${mode});\n`;
             isrFunctions += `void ${funcName}() {\n${ArduinoGenerator.statementToCode(isrBlock, 'DO')}}\n`;
         });
     }
@@ -189,6 +190,8 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
         const mode = ArduinoGenerator.pinModes.has(pin) ? ArduinoGenerator.pinModes.get(pin) : 'INPUT';
         autoSetup += `  pinMode(pin${pin}, ${mode});\n`;
     });
+    // Interrupts NACH allen pinMode-Aufrufen einhängen
+    autoSetup += autoSetupInterrupts;
 
     if (ArduinoGenerator.usedTimers && ArduinoGenerator.usedTimers.size > 0) {
         globals += "\n// --- TIMER ---\n";
