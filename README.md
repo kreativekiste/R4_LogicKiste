@@ -14,6 +14,9 @@ Das Ziel ist es, professionelle Hardware-Projekte von Makern realisieren, ohne b
 ## 🏗️ Die Technische Architektur
 Das Programm basiert auf einer modularen, dezentralen Struktur, die maximale Stabilität und Übersichtlichkeit garantiert.
 
+### 📁 Autonome Block-Struktur
+Um bei neuen Blöcken oder Änderungen nicht an die Kern-Funktionen des Systems ran zu müssen, ist jeder Block als eigene, vollständige `.js`-Datei aufgebaut. Diese Dateien agieren autonom und "melden" sich lediglich beim System an, was eine extrem hohe Wartbarkeit und einfache Erweiterbarkeit ermöglicht. Ausnahme der Variablen Block. 
+
 ### 📁 Modulare Ordnerstruktur
 Die Logik der Blöcke ist strikt in thematische Module unterteilt, was eine schnelle Erweiterung und Wartung ermöglicht:
 * `blocks/board/`: Kernkomponenten wie Interrupts und Systemvariablen.
