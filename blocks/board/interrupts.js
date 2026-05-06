@@ -5,23 +5,41 @@
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "board_pc_interrupt",
-        "message0": "Interrupt bei Ereignis %1 PIN: %2 %3 Auslöser: %4 %5 MACHE %6",
+        "message0": "PC INTERRUPT an Pin %1 %2 Modus: %3 %4 Auslösen bei: %5 %6 Mache: %7",
         "args0": [
+            {
+                "type": "field_number", 
+                "name": "PIN", 
+                "value": 2, 
+                "min": 0, 
+                "max": 13
+            },
             {"type": "input_dummy"},
-            {"type": "field_number", "name": "PIN", "value": 2, "min": 0, "max": 13},
+            {
+                "type": "field_dropdown", 
+                "name": "RESISTOR", 
+                "options": [
+                    ["Taster (Interner PULL-UP)", "INPUT_PULLUP"],
+                    ["Sensor (Normaler INPUT)", "INPUT"]
+                ]
+            },
             {"type": "input_dummy"},
-            {"type": "field_dropdown", "name": "MODE", "options": [
-                ["Steigend (RISING)", "RISING"], 
-                ["Fallend (FALLING)", "FALLING"], 
-                ["Wechsel (CHANGE)", "CHANGE"], 
-                ["Tief (LOW)", "LOW"],
-                ["Hoch (HIGH)", "HIGH"]
-            ]},
+            {
+                "type": "field_dropdown", 
+                "name": "MODE", 
+                "options": [
+                    ["Steigend (RISING)", "RISING"], 
+                    ["Fallend (FALLING)", "FALLING"], 
+                    ["Wechsel (CHANGE)", "CHANGE"], 
+                    ["Tief (LOW)", "LOW"],
+                    ["Hoch (HIGH)", "HIGH"]
+                ]
+            },
             {"type": "input_dummy"},
             {"type": "input_statement", "name": "DO"}
         ],
-        "colour": 210,
-        "tooltip": "Führt den Code sofort aus, wenn das Ereignis eintritt. Unterbricht das Hauptprogramm."
+        "colour": 230,
+        "tooltip": "Führt Code sofort aus. Wähle PULL-UP für Taster gegen GND, sonst normalen INPUT."
     }
 ]);
 
@@ -29,27 +47,27 @@ Blockly.defineBlocksWithJsonArray([
 ArduinoGenerator.hardwareScanners['board_pc_interrupt'] = function(block) {
     const pin = block.getFieldValue('PIN');
     const mode = block.getFieldValue('MODE');
+    const resistor = block.getFieldValue('RESISTOR'); // Holt "INPUT" oder "INPUT_PULLUP"
     const branch = ArduinoGenerator.statementToCode(block, 'DO');
-    const safeId = block.id.replace(/[^a-zA-Z0-9]/g, '');
-    const funcName = `isr_pin_${pin}_${safeId}`;
+    const funcName = `isr_pin_${pin}_LogicKiste`;
 
-    // 1. Zentrale Pin-Registrierung nutzen, um "const int pinX" zu generieren
+    // 1. Lass deinen Kern die Pin-Definition (const int) übernehmen:
     ArduinoGenerator.usedPinsInput.add(pin);
     
-    // 2. Erzwungener PULLUP für diesen Block über das Kern-System
-    ArduinoGenerator.pinModes.set(pin, 'INPUT_PULLUP');
+    // 2. Dem Kern die Entscheidung über den Widerstand übergeben
+    // Der Kern schreibt jetzt zuverlässig 1x den pinMode (egal ob INPUT oder INPUT_PULLUP)
+    ArduinoGenerator.pinModes.set(pin, resistor);
+    ArduinoGenerator.pinModes.set(Number(pin), resistor);
 
-    // 3. Die ISR-Funktion nach loop() schreiben (nicht in globals_!)
-    ArduinoGenerator.isrFunctions_.push(`void ${funcName}() {\n${branch}}\n`);
-
-    // 4. attachInterrupt NACH allen anderen pinMode-Aufrufen (autoSetupInterrupts_!)
-    // generator_core.js erstellt die Variable 'pinX', diese nutzen wir hier:
+    // 3. NUR noch den attachInterrupt in die Setup-Warteschlange schieben
     let setupCode = `  attachInterrupt(digitalPinToInterrupt(pin${pin}), ${funcName}, ${mode});\n`;
     ArduinoGenerator.autoSetupInterrupts_.push(setupCode);
+
+    // 4. Die ISR-Funktion ganz ans Ende schreiben
+    ArduinoGenerator.isrFunctions_.push(`void ${funcName}() {\n${branch}}\n`);
 };
 
 // --- GENERATOR LOGIK ---
-// Da der Block freischwebend auf der Fläche liegt (nicht im Loop):
 ArduinoGenerator.forBlock['board_pc_interrupt'] = function(block) {
     return '';
 };
