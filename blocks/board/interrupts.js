@@ -5,7 +5,7 @@
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "board_pc_interrupt",
-        "message0": "PC INTERRUPT an Pin %1 %2 Modus: %3 %4 Auslösen bei: %5 %6 Mache: %7",
+        "message0": "INTERRUPT 2,3,8,13 Pin %1 %2 Modus: %3 %4 Auslösen bei: %5 %6 Mache: %7",
         "args0": [
             {
                 "type": "field_number", 
@@ -19,8 +19,8 @@ Blockly.defineBlocksWithJsonArray([
                 "type": "field_dropdown", 
                 "name": "RESISTOR", 
                 "options": [
-                    ["Taster (Interner PULL-UP)", "INPUT_PULLUP"],
-                    ["Sensor (Normaler INPUT)", "INPUT"]
+                    ["PULL-UP", "INPUT_PULLUP"],
+                    ["INPUT", "INPUT"]
                 ]
             },
             {"type": "input_dummy"},
@@ -28,18 +28,18 @@ Blockly.defineBlocksWithJsonArray([
                 "type": "field_dropdown", 
                 "name": "MODE", 
                 "options": [
-                    ["Steigend (RISING)", "RISING"], 
-                    ["Fallend (FALLING)", "FALLING"], 
-                    ["Wechsel (CHANGE)", "CHANGE"], 
-                    ["Tief (LOW)", "LOW"],
-                    ["Hoch (HIGH)", "HIGH"]
+                    ["RISING", "RISING"], 
+                    ["FALLING", "FALLING"], 
+                    ["CHANGE", "CHANGE"], 
+                    ["LOW", "LOW"],
+                    ["HIGH", "HIGH"]
                 ]
             },
             {"type": "input_dummy"},
             {"type": "input_statement", "name": "DO"}
         ],
         "colour": 230,
-        "tooltip": "Führt Code sofort aus. Wähle PULL-UP für Taster gegen GND, sonst normalen INPUT."
+        "tooltip": "Führt Code sofort aus."
     }
 ]);
 
