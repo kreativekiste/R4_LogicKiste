@@ -1,95 +1,49 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Arduino R4_LogicKiste</title>
-    
-    <!-- Externe Libraries -->
-    <script src="https://unpkg.com/blockly@10.4.3/blockly.min.js"></script>
-    
-    <!-- CSS einbinden -->
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>Arduino R4_LogicKiste</title>
+    
+    <!-- Externe Libraries -->
+    <script src="https://unpkg.com/blockly@10.4.3/blockly.min.js"></script>
+    
+    <!-- CSS einbinden -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header>
-    <div class="title">Arduino R4_LogicKiste</div>
-    
-    <!-- UI Controls -->
-    <div class="header-controls">
-        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
-        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
-        <div style="width: 10px;"></div> 
+    <div class="title">Arduino R4_LogicKiste</div>
+    
+    <!-- UI Controls -->
+    <div class="header-controls">
+        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
+        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
+        <div style="width: 10px;"></div> 
 
-        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
-        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
-        <div style="width: 20px;"></div> 
-        
-        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
-        <label class="btn btn-load" for="fileInput">📂 Laden</label>
-        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
-        <div style="width: 20px;"></div>
+        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
+        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
+        <div style="width: 20px;"></div> 
+        
+        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
+        <label class="btn btn-load" for="fileInput">📂 Laden</label>
+        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
+        <div style="width: 20px;"></div>
 
-        <!-- NEU: Copy Button -->
-        <button class="btn btn-ui" id="copyBtn" onclick="copyGeneratedCode()">📋 Code kopieren</button>
-        
-        <button class="btn btn-upload" id="uploadBtn" onclick="uploadCode()">⬆️ Upload</button>
-        <span id="uploadStatus" style="font-size:0.85em; color:#bdc3c7;"></span>
-    </div>
+        <!-- Copy Button -->
+        <button class="btn btn-ui" id="copyBtn" onclick="copyGeneratedCode()">📋 Code kopieren</button>
+        
+        <button class="btn btn-upload" id="uploadBtn" onclick="uploadCode()">⬆️ Upload</button>
+        <span id="uploadStatus" style="font-size:0.85em; color:#bdc3c7;"></span>
+    </div>
 
-    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">C++ Export</div>
+    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">C++ Export</div>
 </header>
 
 <div id="main">
-    <div id="blocklyDiv"></div>
-    <div id="codeExport">// Lade Blöcke...</div>
+    <div id="blocklyDiv"></div>
+    <div id="codeExport">// Lade Blöcke...</div>
 </div>
-
-<!-- ========================================== -->
-<!-- TOOLBOX (XML-Menü für Blockly)             -->
-<!-- ========================================== -->
-<!-- HINWEIS: Wenn du dein Menü in der app.js aus JS/JSON aufbaust, -->
-<!-- kannst du diesen Bereich einfach als Kopiervorlage für die   -->
-<!-- Block-Namen nutzen und hier löschen!                         -->
-<xml id="toolbox" style="display: none">
-    
-    <!-- Hier kommen deine ganzen bisherigen Kategorien (Board, Input, etc.) rein -->
-
-    <category name="Visuals" colour="45">
-        <!-- Hier deine alten Visuals rein (LCD, Matrix etc.) -->
-        
-        <!-- NEU: TM Displays -->
-        <block type="ard_visu_tm1637_setup"></block>
-        <block type="ard_visu_tm1637_print"></block>
-        <block type="ard_visu_tm1638_setup"></block>
-        <block type="ard_visu_tm1638_print"></block>
-        <block type="ard_visu_tm1638_led"></block>
-        <block type="ard_visu_tm1638_button"></block>
-    </category>
-
-    <category name="Erweitert" colour="160">
-        <!-- Serial Kommunikation -->
-        <block type="ard_serial_begin"></block>
-        <block type="ard_serial_print"></block>
-        <block type="ard_serial_available"></block>
-        <block type="ard_serial_read_string"></block>
-        <!-- R4 EEPROM / Flash -->
-        <block type="ard_eeprom_write"></block>
-        <block type="ard_eeprom_read"></block>
-        <!-- SD Karte -->
-        <block type="ard_sd_begin"></block>
-        <block type="ard_sd_write"></block>
-        <block type="ard_sd_exists"></block>
-        <block type="ard_sd_remove"></block>
-        <!-- RFID Modul -->
-        <block type="ard_rfid_setup"></block>
-        <block type="ard_rfid_on_card"></block>
-        <block type="ard_rfid_get_id"></block>
-        <!-- C++ Notausgang -->
-        <block type="ard_custom_code_inline"></block>
-        <block type="ard_custom_code_global"></block>
-    </category>
-</xml>
 
 <!-- ========================================== -->
 <!-- DEINE MODULE LADEN                         -->
@@ -101,6 +55,7 @@
 <!-- Board -->
 <script src="blocks/board/interrupts.js"></script>
 <script src="blocks/board/variables_basic.js"></script>
+<script src="blocks/board/var_literals.js"></script>
 
 <!-- Input -->
 <script src="blocks/input/setup_pullup.js"></script>
@@ -108,7 +63,6 @@
 <script src="blocks/input/read_analog.js"></script>
 <script src="blocks/input/input_counter.js"></script>
 <script src="blocks/input/input_encoder.js"></script>
-<!-- HINWEIS: serial_read.js wurde hier entfernt -->
 
 <!-- Sensor -->
 <script src="blocks/sensor/dht_sensor.js"></script>
@@ -117,7 +71,6 @@
 <!-- Output -->
 <script src="blocks/output/write_digital.js"></script>
 <script src="blocks/output/write_analog.js"></script>
-<!-- HINWEIS: serial_monitor.js wurde hier entfernt -->
 
 <!-- Motor -->
 <script src="blocks/motor/motors.js"></script>
@@ -128,7 +81,8 @@
 <script src="blocks/visuals/lcd_i2c.js"></script>
 <script src="blocks/visuals/tft_displays.js"></script>
 <script src="blocks/visuals/neopixel_basic.js"></script>
-<script src="blocks/visuals/visu_tm.js"></script> <!-- NEU HINZUGEFÜGT -->
+<script src="blocks/visuals/visu_tm.js"></script>
+<script src="blocks/visuals/r4_matrix.js"></script> <!-- HIER IST DIE R4 MATRIX! -->
 
 <!-- Time -->
 <script src="blocks/time/delay.js"></script>
@@ -149,16 +103,14 @@
 <script src="blocks/functions/math_random.js"></script>
 <script src="blocks/functions/functions_custom.js"></script>
 
-<!-- ========================================== -->
-<!-- ADVANCED (ERWEITERT) - NEUER ORDNER        -->
-<!-- ========================================== -->
+<!-- ADVANCED (ERWEITERT) -->
 <script src="blocks/advanced/serial_com.js"></script>
 <script src="blocks/advanced/custom_cpp.js"></script>
 <script src="blocks/advanced/eeprom_r4.js"></script>
 <script src="blocks/advanced/sd_card.js"></script>
 <script src="blocks/advanced/rfid_rc522.js"></script>
 
-<!-- App Logik (Start) -->
+<!-- App Logik (Start - muss immer GANZ UNTEN stehen!) -->
 <script src="js/app.js"></script>
 
 </body>

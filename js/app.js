@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const toolbox = {
         "kind": "categoryToolbox",
         "contents": [
+            // 1. BOARD
             { 
                 "kind": "category", "name": "Board", "colour": "210",
                 "contents": [
@@ -13,18 +14,62 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "board_pc_interrupt"}
                 ] 
             },
+            
+            // 2. STEUERUNG
+            { 
+                "kind": "category", "name": "Steuerung", "colour": "290",
+                "contents": [
+                    {"kind": "block", "type": "logic_if"}, 
+                    {"kind": "block", "type": "logic_if_else"}, 
+                    {"kind": "block", "type": "loop_repeat"},
+                    {"kind": "block", "type": "ard_loop_while"},
+                    {"kind": "block", "type": "ard_time_sys"},
+                    {"kind": "block", "type": "ard_switch"},
+                    {"kind": "block", "type": "ard_case"},
+                    {"kind": "block", "type": "ard_default"},
+                    {"kind": "block", "type": "delay_ms"},
+                    {"kind": "block", "type": "timer_interval"},
+                    {"kind": "block", "type": "ard_blinker_define"},
+                    {"kind": "block", "type": "ard_blinker"},
+                    {"kind": "block", "type": "stopwatch_command"},
+                    {"kind": "block", "type": "stopwatch_read"}
+                ] 
+            },
+
+            // 3. EINGÄNGE
             { 
                 "kind": "category", "name": "Eingänge", "colour": "45",
                 "contents": [
-                    {"kind": "block", "type": "ard_setup_pullup"}, 
-                    {"kind": "block", "type": "ard_read_digital"}, 
-                    {"kind": "block", "type": "read_analog"},
-                    {"kind": "block", "type": "input_counter"},
-                    {"kind": "block", "type": "input_encoder"},
-                    {"kind": "block", "type": "read_dht"},
-                    {"kind": "block", "type": "read_ultrasonic"}
+                    {
+                        "kind": "category", "name": "Standard Pins", "colour": "45",
+                        "contents": [
+                            {"kind": "block", "type": "ard_setup_pullup"}, 
+                            {"kind": "block", "type": "ard_read_digital"}, 
+                            {"kind": "block", "type": "read_analog"}
+                        ]
+                    },
+                    {
+                        "kind": "category", "name": "Taster & Zähler", "colour": "65",
+                        "contents": [
+                            {"kind": "block", "type": "input_counter"},
+                            {"kind": "block", "type": "input_encoder"}
+                        ]
+                    },
+                    {
+                        "kind": "category", "name": "Sensoren", "colour": "85",
+                        "contents": [
+                            {"kind": "block", "type": "read_dht"},
+                            {"kind": "block", "type": "read_ultrasonic"},
+                            {"kind": "label", "text": "--- RFID (RC522) ---"},
+                            {"kind": "block", "type": "ard_rfid_setup"},
+                            {"kind": "block", "type": "ard_rfid_on_card"},
+                            {"kind": "block", "type": "ard_rfid_get_id"}
+                        ]
+                    }
                 ] 
             },
+
+            // 4. AUSGÄNGE
             { 
                 "kind": "category", "name": "Ausgänge", "colour": "160",
                 "contents": [
@@ -51,6 +96,17 @@ document.addEventListener("DOMContentLoaded", () => {
                             {"kind": "block", "type": "neopixel_set_single"},
                             {"kind": "block", "type": "neopixel_set_list"},
                             {"kind": "block", "type": "neopixel_show"},
+                            
+                            // --- NEU: R4 ONBOARD MATRIX ---
+                            {"kind": "label", "text": "--- R4 Onboard Matrix ---"},
+                            {"kind": "block", "type": "r4_matrix_setup"},
+                            {"kind": "block", "type": "r4_matrix_symbol"},
+                            {"kind": "block", "type": "r4_matrix_print_static"}, // <-- HIER IST DER NEUE BLOCK!
+                            {"kind": "block", "type": "r4_matrix_print"},
+                            {"kind": "block", "type": "r4_matrix_pixels"},
+                            {"kind": "block", "type": "r4_matrix_clear"},
+
+                            // Bestehend: MAX7219
                             {"kind": "label", "text": "--- MAX7219 Matrix ---"},
                             {"kind": "block", "type": "max7219_setup"},
                             {"kind": "block", "type": "max7219_print"},
@@ -80,33 +136,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 ] 
             },
+
+            // 5. LOGIK
             { 
-                "kind": "category", "name": "Unterprogramme", "colour": "290",
-                "contents": [
-                    {"kind": "block", "type": "ard_function_define"},
-                    {"kind": "block", "type": "ard_function_call"}
-                ] 
-            },
-            { 
-                "kind": "category", "name": "Steuerung", "colour": "290",
-                "contents": [
-                    {"kind": "block", "type": "logic_if"}, 
-                    {"kind": "block", "type": "logic_if_else"}, 
-                    {"kind": "block", "type": "loop_repeat"},
-                    {"kind": "block", "type": "ard_loop_while"},
-                    {"kind": "block", "type": "ard_time_sys"},
-                    {"kind": "block", "type": "ard_switch"},
-                    {"kind": "block", "type": "ard_case"},
-                    {"kind": "block", "type": "ard_default"},
-                    {"kind": "block", "type": "delay_ms"},
-                    {"kind": "block", "type": "timer_interval"},
-                    {"kind": "block", "type": "ard_blinker"},
-                    {"kind": "block", "type": "stopwatch_command"},
-                    {"kind": "block", "type": "stopwatch_read"}
-                ] 
-            },
-            { 
-                "kind": "category", "name": "Logik & Mathe", "colour": "230",
+                "kind": "category", "name": "Logik", "colour": "230",
                 "contents": [
                     {"kind": "block", "type": "ard_logic_compare"},
                     {"kind": "block", "type": "ard_logic_operation"},
@@ -120,15 +153,29 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "ard_math_random_int"}
                 ] 
             },
+
+            // 6. VARIABLEN
             { 
                 "kind": "category", "name": "Variablen", "colour": "330",
                 "contents": [
+                    {"kind": "block", "type": "var_text_literal"},
+                    {"kind": "block", "type": "var_number_literal"},
                     {"kind": "block", "type": "var_declare"},
                     {"kind": "block", "type": "var_set"},
                     {"kind": "block", "type": "var_get"}
                 ] 
             },
-            // --- NEUE KATEGORIE: ERWEITERT ---
+
+            // 7. UNTERPROGRAMME
+            { 
+                "kind": "category", "name": "Unterprogramme", "colour": "290",
+                "contents": [
+                    {"kind": "block", "type": "ard_function_define"},
+                    {"kind": "block", "type": "ard_function_call"}
+                ] 
+            },
+
+            // 8. ERWEITERT
             { 
                 "kind": "category", "name": "Erweitert", "colour": "160",
                 "contents": [
@@ -145,10 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "ard_sd_write"},
                     {"kind": "block", "type": "ard_sd_exists"},
                     {"kind": "block", "type": "ard_sd_remove"},
-                    {"kind": "label", "text": "--- RFID (RC522) ---"},
-                    {"kind": "block", "type": "ard_rfid_setup"},
-                    {"kind": "block", "type": "ard_rfid_on_card"},
-                    {"kind": "block", "type": "ard_rfid_get_id"},
                     {"kind": "label", "text": "--- C++ Notausgang ---"},
                     {"kind": "block", "type": "ard_custom_code_inline"},
                     {"kind": "block", "type": "ard_custom_code_global"}
