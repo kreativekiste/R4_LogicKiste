@@ -161,6 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "var_text_literal"},
                     {"kind": "block", "type": "var_number_literal"},
                     {"kind": "block", "type": "var_declare"},
+                    {"kind": "block", "type": "var_declare_interrupt"}, // <-- NEUER BLOCK!
                     {"kind": "block", "type": "var_set"},
                     {"kind": "block", "type": "var_get"}
                 ] 

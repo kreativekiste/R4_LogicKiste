@@ -1,9 +1,9 @@
 // ==========================================
-// BAUTEILE: VARIABLEN (3-Säulen System)
+// BAUTEILE: VARIABLEN (3-Säulen System + Interrupts)
 // ==========================================
 
 Blockly.defineBlocksWithJsonArray([
-    // --- 1. ERSTELLEN (Deklarieren mit Typ) ---
+    // --- 1. ERSTELLEN (Normale Variablen) ---
     {
         "type": "var_declare",
         "message0": "Erstelle %1 Variable: %2 Startwert: %3",
@@ -33,7 +33,38 @@ Blockly.defineBlocksWithJsonArray([
         "previousStatement": "VAR_DECLARE",
         "nextStatement": "VAR_DECLARE",
         "colour": 330,
-        "tooltip": "Legt den Datentyp fest. Passt nur in den GLOBAL-Bereich. const int bevorzugen, wenn sich der Wert nicht ändert!"
+        "tooltip": "Legt den Datentyp fest. Passt nur in den GLOBAL-Bereich. const int bevorzugen!"
+    },
+
+    // --- 1.b ERSTELLEN (⚡ Interrupt-Spezial-Variable) ---
+    {
+        "type": "var_declare_interrupt",
+        "message0": "⚡ ERSTELLE INTERRUPT-VARIABLE %1 Typ: %2 Startwert: %3",
+        "args0": [
+            {
+                "type": "field_variable",
+                "name": "VAR_NAME",
+                "variable": "interruptZaehler"
+            },
+            {
+                "type": "field_dropdown",
+                "name": "TYPE",
+                "options": [
+                    ["int (Zahl)", "volatile int"],
+                    ["long (Große Zahl)", "volatile long"],
+                    ["bool (Wahr/Falsch)", "volatile bool"]
+                ]
+            },
+            {
+                "type": "input_value",
+                "name": "VAL"
+            }
+        ],
+        "previousStatement": "VAR_DECLARE",
+        "nextStatement": "VAR_DECLARE",
+        // Etwas heller oder leicht abgesetzte Farbe für das "Spezial"-Gefühl
+        "colour": 300, 
+        "tooltip": "MUSS für Variablen genutzt werden, die innerhalb eines PC INTERRUPT Blocks verändert werden (Setzt 'volatile' in C++)."
     },
 
     // --- 2. SCHREIBEN (Wert zuweisen) ---
@@ -76,21 +107,30 @@ Blockly.defineBlocksWithJsonArray([
 
 // --- GENERATOR LOGIK ---
 
-// ACHTUNG: Der Scanner für var_declare wurde absichtlich gelöscht!
-// Da der Block nur noch im GLOBAL-Slot sitzt, generieren wir die 
-// C++ Variablen-Deklaration direkt als sauberen String.
-
 ArduinoGenerator.forBlock['var_declare'] = function(block) {
     const type = block.getFieldValue('TYPE');
     const name = block.getField('VAR_NAME').getText().replace(/[^a-zA-Z0-9_]/g, '');
     let value = ArduinoGenerator.valueToCode(block, 'VAL', 0);
 
-    // Typ-sicherer Fallback, verhindert String-Kompilierfehler
     if (!value) {
         value = (type === 'String') ? '""' : '0';
     }
 
-    // C++ saubere globale Deklaration (kein Umweg mehr über den Scanner nötig)
+    return `${type} ${name} = ${value};\n`;
+};
+
+// C++ Generator für die Interrupt-Variable
+ArduinoGenerator.forBlock['var_declare_interrupt'] = function(block) {
+    // TYPE enthält jetzt schon das Wort "volatile" (z.B. "volatile int")
+    const type = block.getFieldValue('TYPE'); 
+    const name = block.getField('VAR_NAME').getText().replace(/[^a-zA-Z0-9_]/g, '');
+    let value = ArduinoGenerator.valueToCode(block, 'VAL', 0);
+
+    if (!value) {
+        value = (type === 'volatile bool') ? 'false' : '0';
+    }
+
+    // Wir erzeugen einen schönen, sauberen C++ String
     return `${type} ${name} = ${value};\n`;
 };
 
@@ -98,7 +138,6 @@ ArduinoGenerator.forBlock['var_set'] = function(block) {
     const name = block.getField('VAR_NAME').getText().replace(/[^a-zA-Z0-9_]/g, '');
     let value = ArduinoGenerator.valueToCode(block, 'VAL', 0);
     
-    // Generischer Fallback
     if (!value) value = '0';
     
     return `  ${name} = ${value};\n`;
