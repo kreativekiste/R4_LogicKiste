@@ -1,5 +1,5 @@
 # 📦 R4_LogicKiste
-* **Aktuelle Version:** 0.9 (Prerelease / C++ Compiler Testphase)
+* **Aktuelle Version:** 1.0 (Prerelease / C++ Compiler Testphase)
 * **Hardware-Fokus:** Arduino UNO R4 Minima & WiFi (teilweise kompatibel zu R3)
 * **Webseite und Kontakt:** [www.kreativekiste.de]
 
