@@ -1,5 +1,5 @@
 // ==========================================
-// VARIABLEN: TEXT & ZAHLEN EINGABEN (Literale)
+// BAUTEILE: VARIABLEN & LITERALE (Eingabefelder)
 // ==========================================
 
 Blockly.defineBlocksWithJsonArray([
@@ -11,12 +11,12 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "field_input",
                 "name": "TEXT",
-                "text": "Hallo"
+                "text": ""
             }
         ],
         "output": "String",
-        "colour": 330, // Variablen-Farbe (Pink/Lila)
-        "tooltip": "Ein einfacher Text für Variablen oder Displays."
+        "colour": 160,
+        "tooltip": "Ein einfacher Textbaustein. Schreibe hier deinen Text rein."
     },
     
     // --- ZAHLEN EINGABE ---
@@ -31,21 +31,25 @@ Blockly.defineBlocksWithJsonArray([
             }
         ],
         "output": "Number",
-        "colour": 330, // Variablen-Farbe (Pink/Lila)
-        "tooltip": "Eine feste Zahl (Parameter)."
+        "colour": 230,
+        "tooltip": "Ein einfacher Zahlenwert."
     }
 ]);
 
-// --- GENERATOREN ---
+
+// ==========================================
+// C++ GENERATOREN
+// ==========================================
 
 ArduinoGenerator.forBlock['var_text_literal'] = function(block) {
-    const text = block.getFieldValue('TEXT');
-    // Setzt den Text in Anführungszeichen
-    return [`"${text}"`, ArduinoGenerator.ORDER_ATOMIC];
+    const textValue = block.getFieldValue('TEXT');
+    // FIX A4: Array mit 0 zurückgeben
+    const code = '"' + textValue + '"'; 
+    return [code, 0];
 };
 
 ArduinoGenerator.forBlock['var_number_literal'] = function(block) {
-    const num = block.getFieldValue('NUM');
-    // Gibt die Zahl direkt zurück
-    return [num, ArduinoGenerator.ORDER_ATOMIC];
+    const numberValue = block.getFieldValue('NUM');
+    // FIX A4: Array mit 0 zurückgeben
+    return [String(numberValue), 0];
 };

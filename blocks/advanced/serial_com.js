@@ -61,6 +61,7 @@ ArduinoGenerator.forBlock['ard_serial_begin'] = function(block) {
 };
 
 ArduinoGenerator.forBlock['ard_serial_print'] = function(block) {
+    // FIX A4: Wir nutzen die rohe Zahl 0 für die Order, da das System die Konstante nicht kennt.
     const text = ArduinoGenerator.valueToCode(block, 'TEXT', 0) || '""';
     const newline = block.getFieldValue('NEWLINE') === 'TRUE';
     const command = newline ? 'Serial.println' : 'Serial.print';
@@ -68,9 +69,11 @@ ArduinoGenerator.forBlock['ard_serial_print'] = function(block) {
 };
 
 ArduinoGenerator.forBlock['ard_serial_available'] = function(block) {
+    // FIX A4: Array mit 0 zurückgeben
     return ['(Serial.available() > 0)', 0];
 };
 
 ArduinoGenerator.forBlock['ard_serial_read_string'] = function(block) {
+    // FIX A4: Array mit 0 zurückgeben
     return ['Serial.readStringUntil(\'\\n\')', 0];
 };
