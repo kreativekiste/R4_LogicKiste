@@ -33,8 +33,10 @@ Blockly.Blocks['ard_blinker'] = {
         if (this.workspace) {
             let blocks = this.workspace.getBlocksByType('ard_blinker_define');
             blocks.forEach(b => {
-                let n = b.getFieldValue('VAR_NAME');
-                if (n) options.push([n, n.replace(/[^a-zA-Z0-9_]/g, '')]);
+                let rawName = b.getFieldValue('VAR_NAME');
+                // FIX: Bereinigung hier identisch zum Scanner → konsistenter Name
+                let safeName = rawName.replace(/[^a-zA-Z0-9_]/g, '');
+                if (safeName) options.push([rawName, safeName]);
             });
         }
         return options.length > 0 ? options : [['-- Kein Blinker definiert --', 'NONE']];
@@ -43,8 +45,8 @@ Blockly.Blocks['ard_blinker'] = {
 
 // --- DEZENTRALER SCANNER ---
 
-// Der Definition-Block kümmert sich um die Klasse und die Variable
 ArduinoGenerator.hardwareScanners['ard_blinker_define'] = function(block) {
+    // FIX: Dropdown-Value direkt nutzen (bereits bereinigt durch getBlinkerOptions)
     let varName = block.getFieldValue('VAR_NAME').replace(/[^a-zA-Z0-9_]/g, '');
     if (!varName) return;
 
@@ -61,12 +63,12 @@ class BlockBlinker {
       unsigned long current = millis();
       if (state) {
         if (current - t >= onT) { 
-          t = current; // Korrigiert für robuste Dynamik
+          t = current;
           state = false; 
         }
       } else {
         if (current - t >= offT) { 
-          t = current; // Korrigiert für robuste Dynamik
+          t = current;
           state = true; 
         }
       }
@@ -79,10 +81,10 @@ class BlockBlinker {
     ArduinoGenerator.globals_.add(`BlockBlinker blinker_obj_${varName};`);
 };
 
-// Der Logik-Block kümmert sich um den Code in der loop()
 ArduinoGenerator.hardwareScanners['ard_blinker'] = function(block) {
+    // FIX: Dropdown-Value direkt nutzen (bereits bereinigt)
     let varName = block.getFieldValue('VAR_NAME');
-    if (varName === 'NONE') return;
+    if (!varName || varName === 'NONE') return;
 
     const onTime  = ArduinoGenerator.valueToCode(block, 'ON_TIME', 0) || '1000';
     const offTime = ArduinoGenerator.valueToCode(block, 'OFF_TIME', 0) || '500';
@@ -91,12 +93,10 @@ ArduinoGenerator.hardwareScanners['ard_blinker'] = function(block) {
     loopCode += `  blinker_obj_${varName}.update(${onTime}, ${offTime});\n`;
     loopCode += `  ${varName} = blinker_obj_${varName}.state;\n`;
     
-    // KORREKTUR: .push() statt .add(), da autoLoop_ ein Array ist
     if (ArduinoGenerator.autoLoop_) {
         ArduinoGenerator.autoLoop_.push(loopCode);
     }
 };
 
-// Generatoren für die Blöcke (da sie frei stehen, geben sie keinen direkten Code zurück)
 ArduinoGenerator.forBlock['ard_blinker_define'] = function(block) { return ''; };
 ArduinoGenerator.forBlock['ard_blinker'] = function(block) { return ''; };

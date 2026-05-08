@@ -5,7 +5,7 @@
 Blockly.defineBlocksWithJsonArray([
     // --- 1. DEFINIEREN (Hardware Setup) ---
     {
-        "type": "stepper_setup", // Korrigiert: Muss stepper_setup heißen gem. app.js
+        "type": "stepper_setup",
         "message0": "⚙️ Stepper anlegen: %1",
         "args0": [
             {"type": "field_input", "name": "MOTOR_NAME", "text": "meinMotor"}
@@ -48,9 +48,8 @@ Blockly.Blocks['stepper_move'] = {
             blocks.forEach(b => {
                 let n = b.getFieldValue('MOTOR_NAME');
                 if (n) {
-                    // Anzeige original, intern gesichert mit Präfix
                     let safeName = "sm_" + n.replace(/[^a-zA-Z0-9_]/g, '');
-                    if(safeName !== "sm_") options.push([n, safeName]);
+                    if (safeName !== "sm_") options.push([n, safeName]);
                 }
             });
         }
@@ -59,15 +58,30 @@ Blockly.Blocks['stepper_move'] = {
 };
 
 // --- 3. POSITION RESET ---
+// FIX Bug 1: Eigene getMotorOptions-Methode statt fremden this-Kontext binden
 Blockly.Blocks['stepper_reset'] = {
     init: function() {
         this.appendDummyInput()
             .appendField("📍 Position von")
-            .appendField(new Blockly.FieldDropdown(Blockly.Blocks['stepper_move'].getMotorOptions.bind(this)), "MOTOR_NAME");
+            .appendField(new Blockly.FieldDropdown(this.getMotorOptions.bind(this)), "MOTOR_NAME");
         this.appendValueInput("POS").setCheck("Number").appendField("auf:");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(180);
+    },
+    getMotorOptions: function() {
+        let options = [];
+        if (this.workspace) {
+            let blocks = this.workspace.getBlocksByType('stepper_setup');
+            blocks.forEach(b => {
+                let n = b.getFieldValue('MOTOR_NAME');
+                if (n) {
+                    let safeName = "sm_" + n.replace(/[^a-zA-Z0-9_]/g, '');
+                    if (safeName !== "sm_") options.push([n, safeName]);
+                }
+            });
+        }
+        return options.length > 0 ? options : [['-- Kein Motor --', 'NONE']];
     }
 };
 
@@ -76,8 +90,7 @@ ArduinoGenerator.hardwareScanners['stepper_setup'] = function(block) {
     const rawName = block.getFieldValue('MOTOR_NAME');
     const safeName = "sm_" + rawName.replace(/[^a-zA-Z0-9_]/g, '');
     
-    // Wenn kein gültiger Name existiert, abbrechen
-    if(safeName === "sm_") return;
+    if (safeName === "sm_") return;
 
     const in1 = block.getFieldValue('IN1');
     const in2 = block.getFieldValue('IN2');
@@ -86,19 +99,21 @@ ArduinoGenerator.hardwareScanners['stepper_setup'] = function(block) {
     const stepsRev = block.getFieldValue('STEPS_REV');
     const trackPos = block.getFieldValue('TRACK_POS') === 'TRUE';
 
-    // 1. Saubere Pin-Registrierung im Core
+    // 1. Pin-Registrierung im Core
     ArduinoGenerator.usedPinsOutput.add(in1);
     ArduinoGenerator.usedPinsOutput.add(in2);
     ArduinoGenerator.usedPinsOutput.add(in3);
     ArduinoGenerator.usedPinsOutput.add(in4);
 
-    // 2. Library & Objekt (Nutzt die pinX Variablen)
+    // 2. Library & Objekt
     ArduinoGenerator.includes_.add('#include <Stepper.h>');
     ArduinoGenerator.globals_.add(`Stepper ${safeName}(${stepsRev}, pin${in1}, pin${in3}, pin${in2}, pin${in4});`);
     
+    // FIX Bug 3: Tracking über separates Set statt fragilen String-Vergleich
     if (trackPos) {
-        // C++ Map Simulieren für Track-Prüfung in der Code-Generierung
-        ArduinoGenerator.globals_.add(`long ${safeName}_pos = 0; // TRACKING_ACTIVE`);
+        ArduinoGenerator.trackingMotors_ = ArduinoGenerator.trackingMotors_ || new Set();
+        ArduinoGenerator.trackingMotors_.add(safeName);
+        ArduinoGenerator.globals_.add(`long ${safeName}_pos = 0;`);
     }
 };
 
@@ -117,8 +132,8 @@ ArduinoGenerator.forBlock['stepper_move'] = function(block) {
     let code = `  ${safeName}.setSpeed(${tempo});\n`;
     code += `  ${safeName}.step(${steps} * ${dir});\n`;
 
-    // Prüfen, ob für diesen Motor Tracking-Variablen existieren (nutzt den Kommentar-Tag)
-    if (ArduinoGenerator.globals_.has(`long ${safeName}_pos = 0; // TRACKING_ACTIVE`)) {
+    // FIX Bug 3: Tracking über separates Set prüfen
+    if (ArduinoGenerator.trackingMotors_?.has(safeName)) {
         code += `  ${safeName}_pos += (${steps} * ${dir});\n`;
     }
     return code;
@@ -128,7 +143,8 @@ ArduinoGenerator.forBlock['stepper_reset'] = function(block) {
     const safeName = block.getFieldValue('MOTOR_NAME');
     const pos = ArduinoGenerator.valueToCode(block, 'POS', 0) || '0';
     
-    if (safeName !== 'NONE' && safeName && ArduinoGenerator.globals_.has(`long ${safeName}_pos = 0; // TRACKING_ACTIVE`)) {
+    // FIX Bug 3: Tracking über separates Set prüfen
+    if (safeName !== 'NONE' && safeName && ArduinoGenerator.trackingMotors_?.has(safeName)) {
         return `  ${safeName}_pos = ${pos};\n`;
     }
     return `  // Tracking für ${safeName} nicht aktiv oder Motor fehlt\n`;

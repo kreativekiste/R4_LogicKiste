@@ -107,12 +107,16 @@ Blockly.defineBlocksWithJsonArray([
 // --- DEZENTRALE SCANNERS ---
 
 const setupTFT = function(block, model) {
+    // FIX Bug 2: Wächter – nur einmal initialisieren pro Generierungs-Lauf
+    if (ArduinoGenerator.initializedTFT) return;
+    ArduinoGenerator.initializedTFT = true;
+
     const cs = block.getFieldValue('CS').trim();
     const dc = block.getFieldValue('DC').trim();
     const rst = block.getFieldValue('RST').trim();
     const rot = block.getFieldValue('ROTATION');
 
-    // 1. PIN-MANAGEMENT (Core Integration)
+    // PIN-MANAGEMENT (Core Integration)
     ArduinoGenerator.usedPinsOutput.add(cs);
     ArduinoGenerator.usedPinsOutput.add(dc);
     ArduinoGenerator.usedPinsOutput.add(rst);

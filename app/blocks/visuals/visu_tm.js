@@ -77,7 +77,7 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "output": "Boolean",
         "colour": 45,
-        "tooltip": "Gibt WAHR zurück, wenn die ausgewählte Taste gedrückt wird. Perfekt für WENN-DANN Blöcke!"
+        "tooltip": "Gibt WAHR zurück, wenn die ausgewählte Taste gedrückt wird."
     }
 ]);
 
@@ -87,22 +87,31 @@ Blockly.defineBlocksWithJsonArray([
 
 // --- TM1637 Scanner ---
 ArduinoGenerator.hardwareScanners['ard_visu_tm1637_setup'] = function(block) {
+    // FIX Bug 4: Wächter gegen doppelte Deklaration
+    if (ArduinoGenerator.initializedTM1637) return;
+    ArduinoGenerator.initializedTM1637 = true;
+
     const clk = block.getFieldValue('CLK');
     const dio = block.getFieldValue('DIO');
     
-    ArduinoGenerator.globals_.add(`#include <TM1637Display.h>`);
+    // FIX Bug 3: includes_ statt globals_ für #include
+    ArduinoGenerator.includes_.add('#include <TM1637Display.h>');
     ArduinoGenerator.globals_.add(`const int TM1637_CLK = ${clk};\nconst int TM1637_DIO = ${dio};`);
     ArduinoGenerator.globals_.add(`TM1637Display displayTM(TM1637_CLK, TM1637_DIO);`);
 };
 
 // --- TM1638 Scanner ---
-// Wir nutzen die beliebte "TM1638plus" Library, da sie extrem stabil ist.
 ArduinoGenerator.hardwareScanners['ard_visu_tm1638_setup'] = function(block) {
+    // FIX Bug 4: Wächter gegen doppelte Deklaration
+    if (ArduinoGenerator.initializedTM1638) return;
+    ArduinoGenerator.initializedTM1638 = true;
+
     const stb = block.getFieldValue('STB');
     const clk = block.getFieldValue('CLK');
     const dio = block.getFieldValue('DIO');
     
-    ArduinoGenerator.globals_.add(`#include <TM1638plus.h>`);
+    // FIX Bug 3: includes_ statt globals_ für #include
+    ArduinoGenerator.includes_.add('#include <TM1638plus.h>');
     ArduinoGenerator.globals_.add(`const int TM1638_STB = ${stb};\nconst int TM1638_CLK = ${clk};\nconst int TM1638_DIO = ${dio};`);
     // false = Standardfrequenz, gut für die meisten Boards
     ArduinoGenerator.globals_.add(`TM1638plus tm(TM1638_STB, TM1638_CLK, TM1638_DIO, false);`);

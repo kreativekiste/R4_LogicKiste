@@ -30,15 +30,14 @@ Blockly.defineBlocksWithJsonArray([{
 // Das Set verhindert doppelte Einträge, und generator_core.js erzeugt
 // daraus automatisch die pinMode(..., OUTPUT)-Zeile im Setup.
 ArduinoGenerator.hardwareScanners['write_digital'] = function(block) {
-    const pin = block.getFieldValue('PIN');
+    const pin = block.getFieldValue('PIN').trim();
     ArduinoGenerator.usedPinsOutput.add(pin);
 };
 
 // --- GENERATOR LOGIK ---
 ArduinoGenerator.forBlock['write_digital'] = function(block) {
-    const pin = block.getFieldValue('PIN');
+    const pin = block.getFieldValue('PIN').trim();
     const state = block.getFieldValue('STATE');
-    
     // Erzeugt sauberen C++ Code wie: digitalWrite(pin13, HIGH);
     return `  digitalWrite(pin${pin}, ${state});\n`;
 };

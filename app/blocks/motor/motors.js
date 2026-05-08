@@ -13,7 +13,7 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "previousStatement": null,
         "nextStatement": null,
-        "colour": 180, // Korrigiert gem. app.js
+        "colour": 180,
         "tooltip": "Dreht einen Servo auf einen bestimmten Winkel (0-180 Grad)."
     }
 ]);
@@ -27,11 +27,14 @@ ArduinoGenerator.hardwareScanners['out_servo'] = function(block) {
     ArduinoGenerator.includes_.add('#include <Servo.h>');
     ArduinoGenerator.usedPinsOutput.add(pin);
     
-    // 2. Instanz global erstellen (Nutzt die pinX Variable)
+    // 2. Instanz global erstellen
     ArduinoGenerator.globals_.add(`Servo servo_pin${pin};`);
     
-    // 3. Im Setup attach() aufrufen (Korrigierter Array-Name)
-    ArduinoGenerator.autoSetup_.push(`  servo_pin${pin}.attach(pin${pin});\n`);
+    // FIX Bug 2: attach() nur einmal ins Setup pushen (Array deduplizieren)
+    const attachCode = `  servo_pin${pin}.attach(pin${pin});\n`;
+    if (!ArduinoGenerator.autoSetup_.includes(attachCode)) {
+        ArduinoGenerator.autoSetup_.push(attachCode);
+    }
 };
 
 // --- GENERATOR LOGIK ---

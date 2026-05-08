@@ -17,19 +17,10 @@ Blockly.defineBlocksWithJsonArray([{
     "tooltip": "Liest einen analogen Wert (0 bis 1023). Unterstützt A0 bis A5 und weitere analogfähige Pins des R4."
 }]);
 
-// --- DEZENTRALER SCANNER ---
-ArduinoGenerator.hardwareScanners['read_analog'] = function(block) {
-    const pin = block.getFieldValue('PIN');
-    
-    // KORREKTUR: Wir nutzen das bewährte usedPinsInput Set.
-    // generator_core.js erstellt daraus "const int pinA0 = A0;" und pinMode(pinA0, INPUT);
-    ArduinoGenerator.usedPinsInput.add(pin);
-};
+// FIX: Kein Scanner – Analogpins brauchen kein pinMode.
+// Pin wird direkt in analogRead() genutzt, keine Core-Registrierung.
 
-// --- GENERATOR LOGIK ---
 ArduinoGenerator.forBlock['read_analog'] = function(block) {
     const pin = block.getFieldValue('PIN');
-    
-    // Wir rufen konsequent die vom Core generierte Variable auf (z.B. pinA0)
-    return [`analogRead(pin${pin})`, 0];
+    return [`analogRead(${pin})`, 0];
 };

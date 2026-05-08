@@ -34,9 +34,8 @@ Blockly.defineBlocksWithJsonArray([
 
 ArduinoGenerator.forBlock['ard_math_random_seed'] = function(block) {
     const pin = block.getFieldValue('PIN');
-    // Analog-Pin anmelden (kein INPUT_PULLUP, kein pinMode nötig)
-    ArduinoGenerator.usedPinsAnalog.add(pin);
-    return `  randomSeed(analogRead(pin${pin}));\n`;
+    // FIX: Pin direkt nutzen, kein usedPinsInput – Analogpins brauchen kein pinMode
+    return `  randomSeed(analogRead(${pin}));\n`;
 };
 
 ArduinoGenerator.forBlock['ard_math_random_int'] = function(block) {

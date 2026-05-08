@@ -26,15 +26,17 @@ ArduinoGenerator.hardwareScanners['read_dht'] = function(block) {
     const dhtName = `dht_pin${safePin}`;
 
     // 1. Library & Pin-Anmeldung im Core
-    ArduinoGenerator.includes_.add('#include <DHT.h>'); // Konsistente Syntax
-    ArduinoGenerator.usedPinsInput.add(rawPin); // Pin im System registrieren
+    ArduinoGenerator.includes_.add('#include <DHT.h>');
+    ArduinoGenerator.usedPinsInput.add(rawPin);
 
     // 2. Instanz für diesen spezifischen Pin erstellen
-    // Nutzt die vom Core generierte Variable pinX
     ArduinoGenerator.globals_.add(`DHT ${dhtName}(pin${rawPin}, DHT${type});`);
 
-    // 3. Sensor im Setup starten (Array-Name korrigiert)
-    ArduinoGenerator.autoSetup_.push(`  ${dhtName}.begin();`);
+    // 3. Sensor im Setup starten – FIX: kein doppeltes begin() bei mehrfachem Block
+    const beginCode = `  ${dhtName}.begin();\n`;`
+    if (!ArduinoGenerator.autoSetup_.includes(beginCode)) {
+        ArduinoGenerator.autoSetup_.push(beginCode);
+    }
 };
 
 // --- GENERATOR LOGIK ---

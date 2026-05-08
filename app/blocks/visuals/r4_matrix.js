@@ -2,6 +2,12 @@
 // BAUTEIL: ARDUINO UNO R4 WIFI LED MATRIX
 // ==========================================
 
+// Hilfsfunktion: Includes sauber einzeln registrieren (Set dedupliziert automatisch)
+function r4_addIncludes() {
+    ArduinoGenerator.includes_.add('#include <ArduinoGraphics.h>');
+    ArduinoGenerator.includes_.add('#include <Arduino_LED_Matrix.h>');
+}
+
 // --- 1. SETUP BLOCK ---
 Blockly.Blocks['r4_matrix_setup'] = {
     init: function() {
@@ -34,7 +40,7 @@ Blockly.Blocks['r4_matrix_print'] = {
     }
 };
 
-// --- 3. NEU: STATISCHER TEXT (Ohne Scrollen, blitzschnell) ---
+// --- 3. STATISCHER TEXT (Ohne Scrollen, blitzschnell) ---
 Blockly.Blocks['r4_matrix_print_static'] = {
     init: function() {
         this.jsonInit({
@@ -116,7 +122,7 @@ Blockly.Blocks['r4_matrix_clear'] = {
 
 // --- 1. SETUP ---
 ArduinoGenerator.forBlock['r4_matrix_setup'] = function(block) {
-    ArduinoGenerator.includes_.add('#include <ArduinoGraphics.h>\n#include <Arduino_LED_Matrix.h>');
+    r4_addIncludes();
     ArduinoGenerator.globals_.add('ArduinoLEDMatrix matrix;');
     return '  matrix.begin();\n';
 };
@@ -126,7 +132,7 @@ ArduinoGenerator.forBlock['r4_matrix_print'] = function(block) {
     const text = ArduinoGenerator.valueToCode(block, 'TEXT', 0) || '""';
     const speed = ArduinoGenerator.valueToCode(block, 'SPEED', 0) || '60';
 
-    ArduinoGenerator.includes_.add('#include <ArduinoGraphics.h>\n#include <Arduino_LED_Matrix.h>');
+    r4_addIncludes();
     ArduinoGenerator.globals_.add('ArduinoLEDMatrix matrix;');
 
     let code = `  // --- R4 Laufschrift ---\n`;
@@ -142,21 +148,19 @@ ArduinoGenerator.forBlock['r4_matrix_print'] = function(block) {
     return code;
 };
 
-// --- 3. NEU: STATISCHER TEXT ---
+// --- 3. STATISCHER TEXT ---
 ArduinoGenerator.forBlock['r4_matrix_print_static'] = function(block) {
     const text = ArduinoGenerator.valueToCode(block, 'TEXT', 0) || '""';
 
-    ArduinoGenerator.includes_.add('#include <ArduinoGraphics.h>\n#include <Arduino_LED_Matrix.h>');
+    r4_addIncludes();
     ArduinoGenerator.globals_.add('ArduinoLEDMatrix matrix;');
 
     let code = `  // --- R4 Statischer Text ---\n`;
     code += `  matrix.beginDraw();\n`;
     code += `  matrix.stroke(0xFFFFFFFF);\n`;
     code += `  matrix.textFont(Font_5x7);\n`;
-    // X=0, Y=1 positioniert den Text oben links
     code += `  matrix.beginText(0, 1, 0xFFFFFF);\n`;
     code += `  matrix.print(String(${text}));\n`;
-    // NO_SCROLL verhindert das Blockieren und zeigt es sofort an!
     code += `  matrix.endText(NO_SCROLL);\n`;
     code += `  matrix.endDraw();\n`;
 
@@ -167,7 +171,7 @@ ArduinoGenerator.forBlock['r4_matrix_print_static'] = function(block) {
 ArduinoGenerator.forBlock['r4_matrix_symbol'] = function(block) {
     const symbol = block.getFieldValue('SYMBOL');
     
-    ArduinoGenerator.includes_.add('#include <ArduinoGraphics.h>\n#include <Arduino_LED_Matrix.h>');
+    r4_addIncludes();
     ArduinoGenerator.globals_.add('ArduinoLEDMatrix matrix;');
 
     let arrayName = "r4_sym_" + symbol.toLowerCase();
@@ -201,7 +205,7 @@ ArduinoGenerator.forBlock['r4_matrix_symbol'] = function(block) {
 ArduinoGenerator.forBlock['r4_matrix_pixels'] = function(block) {
     const pixelsStr = block.getFieldValue('PIXELS');
     
-    ArduinoGenerator.includes_.add('#include <ArduinoGraphics.h>\n#include <Arduino_LED_Matrix.h>');
+    r4_addIncludes();
     ArduinoGenerator.globals_.add('ArduinoLEDMatrix matrix;');
 
     const safeId = block.id.replace(/[^a-zA-Z0-9]/g, '');
@@ -226,7 +230,7 @@ ArduinoGenerator.forBlock['r4_matrix_pixels'] = function(block) {
 
 // --- 6. MATRIX AUS ---
 ArduinoGenerator.forBlock['r4_matrix_clear'] = function(block) {
-    ArduinoGenerator.includes_.add('#include <ArduinoGraphics.h>\n#include <Arduino_LED_Matrix.h>');
+    r4_addIncludes();
     ArduinoGenerator.globals_.add('ArduinoLEDMatrix matrix;');
 
     ArduinoGenerator.globals_.add(`uint8_t r4_sym_leer[8][12] = {
