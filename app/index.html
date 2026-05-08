@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Arduino R4_LogicKiste</title>
+    
+    <script src="/app/js/blockly_compressed.js"></script>
+    <script src="/app/js/javascript_compressed.js"></script>
+    <script src="/app/js/de.js"></script>
+    <link rel="stylesheet" href="/app/css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="title">Arduino R4_LogicKiste</div>
+    
+    <a href="/index.html" class="btn btn-ui" style="text-decoration: none; margin-right: 20px;">
+    ⬅ Startseite
+    </a>
+    
+    <div class="header-controls">
+        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
+        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
+        <div style="width: 10px;"></div> 
+
+        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
+        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
+        <div style="width: 20px;"></div> 
+        
+        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
+        <label class="btn btn-load" for="fileInput">📂 Laden</label>
+        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
+        <div style="width: 20px;"></div>
+
+        <button class="btn btn-ui" id="copyBtn" onclick="copyGeneratedCode()">📋 Code kopieren</button>
+    </div>
+
+    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">C++ Export</div>
+</header>
+
+<div id="main">
+    <div id="blocklyDiv"></div>
+    <div id="codeExport">// Lade Blöcke...</div>
+</div>
+
+<script src="/app/js/generator_core.js"></script>
+
+<script src="/app/blocks/board/interrupts.js"></script>
+<script src="/app/blocks/board/variables_basic.js"></script>
+<script src="/app/blocks/board/var_literals.js"></script>
+
+<script src="/app/blocks/input/setup_pullup.js"></script>
+<script src="/app/blocks/input/read_digital.js"></script>
+<script src="/app/blocks/input/read_analog.js"></script>
+<script src="/app/blocks/input/input_counter.js"></script>
+<script src="/app/blocks/input/input_encoder.js"></script>
+
+<script src="/app/blocks/sensor/dht_sensor.js"></script>
+<script src="/app/blocks/sensor/ultrasonic_hc_sr04.js"></script>
+
+<script src="/app/blocks/output/write_digital.js"></script>
+<script src="/app/blocks/output/write_analog.js"></script>
+
+<script src="/app/blocks/motor/motors.js"></script>
+<script src="/app/blocks/motor/stepper_advanced.js"></script>
+
+<script src="/app/blocks/visuals/max7219_matrix.js"></script>
+<script src="/app/blocks/visuals/lcd_i2c.js"></script>
+<script src="/app/blocks/visuals/tft_displays.js"></script>
+<script src="/app/blocks/visuals/neopixel_basic.js"></script>
+<script src="/app/blocks/visuals/visu_tm.js"></script>
+<script src="/app/blocks/visuals/r4_matrix.js"></script> 
+<script src="/app/blocks/time/delay.js"></script>
+<script src="/app/blocks/time/timer_interval.js"></script>
+<script src="/app/blocks/time/time_system.js"></script>
+<script src="/app/blocks/time/stopwatch.js"></script>
+
+<script src="/app/blocks/functions/logic_if.js"></script>
+<script src="/app/blocks/functions/logic_compare.js"></script>
+<script src="/app/blocks/functions/loop_repeat.js"></script>
+<script src="/app/blocks/functions/loop_while.js"></script>
+<script src="/app/blocks/functions/blinker.js"></script>
+<script src="/app/blocks/functions/state_machine.js"></script>
+<script src="/app/blocks/functions/logic_basic.js"></script>
+<script src="/app/blocks/functions/math_basic.js"></script>
+<script src="/app/blocks/functions/math_advanced.js"></script>
+<script src="/app/blocks/functions/math_random.js"></script>
+<script src="/app/blocks/functions/functions_custom.js"></script>
+
+<script src="/app/blocks/advanced/serial_com.js"></script>
+<script src="/app/blocks/advanced/custom_cpp.js"></script>
+<script src="/app/blocks/advanced/eeprom_r4.js"></script>
+<script src="/app/blocks/advanced/sd_card.js"></script>
+<script src="/app/blocks/advanced/rfid_rc522.js"></script>
+
+<script src="/app/js/app.js"></script>
+
+</body>
+</html>

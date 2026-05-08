@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# --- HTTPS erzwingen ---
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- www → ohne www (Kanonisierung für SEO) ---
+RewriteCond %{HTTP_HOST} ^www\.logickiste\.de [NC]
+RewriteRule ^(.*)$ https://logickiste.de/$1 [L,R=301]
+
+# --- Security-Header ---
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
