@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             {"kind": "label", "text": "--- R4 Onboard Matrix ---"},
                             {"kind": "block", "type": "r4_matrix_setup"},
                             {"kind": "block", "type": "r4_matrix_symbol"},
-                            {"kind": "block", "type": "r4_matrix_print_static"}, // <-- HIER IST DER NEUE BLOCK!
+                            {"kind": "block", "type": "r4_matrix_print_static"}, 
                             {"kind": "block", "type": "r4_matrix_print"},
                             {"kind": "block", "type": "r4_matrix_pixels"},
                             {"kind": "block", "type": "r4_matrix_clear"},
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "var_text_literal"},
                     {"kind": "block", "type": "var_number_literal"},
                     {"kind": "block", "type": "var_declare"},
-                    {"kind": "block", "type": "var_declare_interrupt"}, // <-- NEUER BLOCK!
+                    {"kind": "block", "type": "var_declare_interrupt"},
                     {"kind": "block", "type": "var_set"},
                     {"kind": "block", "type": "var_get"}
                 ] 
@@ -203,6 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox,
+        media: 'media/', // WICHTIG: Prüfen, ob der Ordner "media" auf gleicher Ebene wie die index.html liegt!
         grid: {spacing: 20, length: 3, colour: '#ccc', snap: true},
         scrollbars: true
     });
@@ -215,8 +216,26 @@ document.addEventListener("DOMContentLoaded", () => {
             Blockly.Events.BLOCK_DELETE,
         ];
         if (!relevant.includes(event.type)) return;
+        
         const root = workspace.getBlocksByType('arduino_main')[0];
-        document.getElementById('codeExport').innerText = root ? ArduinoGenerator.blockToCode(root) : "// Bitte Start-Block einfügen";
+        const codeDisplay = document.getElementById('codeExport');
+
+        if (root) {
+            // PRO-TIPP: Fehler abfangen, damit nicht die ganze App abstürzt!
+            try {
+                if (typeof ArduinoGenerator !== 'undefined') {
+                    ArduinoGenerator.init(workspace);
+                    codeDisplay.innerText = ArduinoGenerator.blockToCode(root);
+                } else {
+                     codeDisplay.innerText = "// WARNUNG: ArduinoGenerator ist nicht definiert.";
+                }
+            } catch (error) {
+                console.error("Code-Generierungs-Fehler:", error);
+                codeDisplay.innerText = "// FEHLER bei der C++ Generierung.\n// Bitte öffne die F12 Entwicklerkonsole für Details.";
+            }
+        } else {
+             codeDisplay.innerText = "// Bitte Start-Block einfügen";
+        }
     });
 
     // --- Start-Block wird als "unzerstörbar" (deletable: false) geladen ---
@@ -276,62 +295,6 @@ function copyGeneratedCode() {
     }).catch(err => {
         console.error('Fehler beim Kopieren: ', err);
     });
-}
-
-async function uploadCode() {
-    const root = workspace.getBlocksByType('arduino_main')[0];
-    if (!root) {
-        alert("Kein PROGRAMM START Block gefunden!");
-        return;
-    }
-
-    const code = ArduinoGenerator.blockToCode(root);
-    const btn = document.getElementById('uploadBtn');
-    const status = document.getElementById('uploadStatus');
-
-    btn.disabled = true;
-    btn.textContent = '⏳ Upload...';
-    status.style.color = '#bdc3c7';
-    status.textContent = 'Kompiliere...';
-
-    try {
-        const response = await fetch('http://localhost:5000/upload', {
-            method: 'POST',
-            headers: {'Content-Type': 'text/plain'},
-            body: code
-        });
-
-        const text = await response.text();
-
-        if (response.ok) {
-            btn.textContent = '✅ Fertig!';
-            status.style.color = '#1abc9c';
-            status.textContent = text.split('\n')[0]; // Erste Zeile anzeigen
-            setTimeout(() => {
-                btn.textContent = '⬆️ Upload';
-                status.textContent = '';
-            }, 4000);
-        } else {
-            btn.textContent = '❌ Fehler';
-            status.style.color = '#e74c3c';
-            status.textContent = 'Siehe Konsole';
-            console.error("Upload Fehler:\n" + text);
-            setTimeout(() => {
-                btn.textContent = '⬆️ Upload';
-                status.textContent = '';
-            }, 5000);
-        }
-    } catch (err) {
-        btn.textContent = '❌ Keine Bridge';
-        status.style.color = '#e74c3c';
-        status.textContent = 'start_bridge.bat starten!';
-        setTimeout(() => {
-            btn.textContent = '⬆️ Upload';
-            status.textContent = '';
-        }, 5000);
-    }
-
-    btn.disabled = false;
 }
 
 function toggleCode() {
