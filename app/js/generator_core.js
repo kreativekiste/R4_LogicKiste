@@ -43,10 +43,21 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
     ArduinoGenerator.autoSetupInterrupts_ = []; // Interrupts IMMER nach pinMode
     ArduinoGenerator.autoLoop_ = [];            // Array: Reihenfolge wichtig
     ArduinoGenerator.isrFunctions_ = [];        // Array: ISR-Funktionen
-    
+
     ArduinoGenerator.mx_modules = 0;
     ArduinoGenerator.useSerial = false;
-    
+
+    // FIX Bug 1: Alle initialized-Flags bei jeder Generierung zurücksetzen
+    ArduinoGenerator.initializedLCDs = new Set();
+    ArduinoGenerator.initializedNeoPixel = false;
+    ArduinoGenerator.initializedParola = false;
+    ArduinoGenerator.initializedFastLEDs = new Set();
+    ArduinoGenerator.initializedMatrices = new Set();
+    ArduinoGenerator.initializedTFT = false;
+    ArduinoGenerator.initializedTM1637 = false;
+    ArduinoGenerator.initializedTM1638 = false;
+    ArduinoGenerator.trackingMotors_ = new Set();
+
     // 2. Alle Blöcke auf dem Workspace durchsuchen und deren eigene Scanner aufrufen
     const allBlocks = block.workspace.getAllBlocks(false);
     allBlocks.forEach(b => {

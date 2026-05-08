@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "contents": [
                     {"kind": "block", "type": "logic_if"}, 
                     {"kind": "block", "type": "logic_if_else"}, 
+					{"kind": "block", "type": "logic_if_elseif_else"},
                     {"kind": "block", "type": "loop_repeat"},
                     {"kind": "block", "type": "ard_loop_while"},
                     {"kind": "block", "type": "ard_time_sys"},
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "timer_interval"},
                     {"kind": "block", "type": "ard_blinker_define"},
                     {"kind": "block", "type": "ard_blinker"},
+					{"kind": "block", "type": "stopwatch_define"}, 
                     {"kind": "block", "type": "stopwatch_command"},
                     {"kind": "block", "type": "stopwatch_read"}
                 ] 
