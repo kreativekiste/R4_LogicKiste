@@ -1,99 +1,112 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Arduino R4_LogicKiste</title>
-    
-    <script src="/app/js/blockly_compressed.js"></script>
-    <script src="/app/js/javascript_compressed.js"></script>
-    <script src="/app/js/de.js"></script>
-    <link rel="stylesheet" href="/app/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>LogicKiste – Visuelle Programmierung für Arduino R4 (ArduBlock Alternative)</title>
+  <meta name="description" content="Professionelle grafische Programmierung für den Arduino R4. Die moderne ArduBlock Alternative: Entwickle echten C++ Code visuell, werbefrei und direkt im Browser.">
+  
+  <meta name="keywords" content="Arduino, R4, Blockly, ArduBlock, Programmieren, C++, Maker, ArduBlock Alternative für R4, Arduino Profi grafische Programmierung, Visuelle Programmierung für Arduino, Code Generator im Browser, DSGVO freundlicher Blockly Editor">
+  
+  <meta name="author" content="Ronnie Berzins">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://logickiste.de/">
+  <meta property="og:title" content="LogicKiste – Profi grafische Programmierung für Arduino">
+  <meta property="og:description" content="Echte Programme statt Spielerei. Die moderne ArduBlock Alternative für deinen Arduino R4 WiFi.">
+  <meta property="og:image" content="https://logickiste.de/favicon.ico">
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
+  <div class="mobile-warning">
+    ⚠️ Für das beste Erlebnis beim Coden wechsle bitte zu einem Desktop-PC oder Tablet.
+  </div>
 
-<header>
-    <div class="title">Arduino R4_LogicKiste</div>
-    
-    <a href="/index.html" class="btn btn-ui" style="text-decoration: none; margin-right: 20px;">
-    ⬅ Startseite
-    </a>
-    
-    <div class="header-controls">
-        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
-        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
-        <div style="width: 10px;"></div> 
+  <header>
+    <nav>
+      <ul class="block-menu">
+        <li>
+          <a href="./app/index.html" class="menu-block block-dark">
+            Programmiere <span class="value-field">"<span class="brand-gradient">Logic</span>Kiste"</span>
+          </a>
+        </li>
+        <li>
+          <a href="./index.html" class="menu-block block-green">
+            Gehe zu <span class="value-field">"Startseite"</span>
+          </a>
+        </li>
+        <li>
+        <a href="./handbuch.html" class="menu-block block-purple">
+          Lese <span class="value-field">"Handbuch"</span>
+        </a>
+        </li>
+        <li>
+          <a href="./pixel/index.html" class="menu-block block-dark">
+            Designe <span class="value-field">"Pixel"</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://kreativekiste.de" target="_blank" class="menu-block block-orange">
+            Lade <span class="value-field">"KreativeKiste"</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
-        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
-        <div style="width: 20px;"></div> 
+  <main>
+    <section class="hero">
+      <h1>Visuelle Programmierung<br>für deinen Arduino R4.</h1>
+      <p>Echte Programme statt nur Spielerei. Entwickle komplexe Arduino-Projekte mit der Geschwindigkeit von Blockly und der vollen Power von C++.</p>
+      
+      <a href="./app/index.html" class="cta-button">Editor im Browser starten</a>
+    </section>
+	
+	 <section id="features" class="features">
+      
+      <div class="feature-grid">
         
-        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
-        <label class="btn btn-load" for="fileInput">📂 Laden</label>
-        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
-        <div style="width: 20px;"></div>
+        <div class="feature-card">
+          <div class="feature-icon" style="color: var(--color-logik)">🚫</div>
+          <h2>100% Werbefrei</h2>
+          <p>Konzentriere dich voll auf deine Projekte, ohne nervige Banner oder Popups.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon" style="color: var(--color-zeit)">🛡️</div>
+          <h2>DSGVO-freundlich</h2>
+          <p>Deine Daten gehören dir. Wir verzichten auf Tracking und Analyse-Tools.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon" style="color: var(--color-mathe)">🚀</div>
+          <h2>Perfekt für den R4</h2>
+          <p>Nutze maßgeschneiderte Blöcke für den Arduino R4.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon" style="color: #4CAF50">🛠️</div>
+          <h2>Produktivität im Fokus</h2>
+          <p>Erstelle komplexe und echte C++ Programme für den Arduino.</p>
+        </div>
 
-        <button class="btn btn-ui" id="copyBtn" onclick="copyGeneratedCode()">📋 Code kopieren</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="./impressum.html">Impressum</a>
+	  <a href="./kontakt.html">Kontakt</a>
+      <a href="./datenschutz.html">Datenschutz</a>
     </div>
-
-    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">C++ Export</div>
-</header>
-
-<div id="main">
-    <div id="blocklyDiv"></div>
-    <div id="codeExport">// Lade Blöcke...</div>
-</div>
-
-<script src="/app/js/generator_core.js"></script>
-
-<script src="/app/blocks/board/interrupts.js"></script>
-<script src="/app/blocks/board/variables_basic.js"></script>
-<script src="/app/blocks/board/var_literals.js"></script>
-
-<script src="/app/blocks/input/setup_pullup.js"></script>
-<script src="/app/blocks/input/read_digital.js"></script>
-<script src="/app/blocks/input/read_analog.js"></script>
-<script src="/app/blocks/input/input_counter.js"></script>
-<script src="/app/blocks/input/input_encoder.js"></script>
-
-<script src="/app/blocks/sensor/dht_sensor.js"></script>
-<script src="/app/blocks/sensor/ultrasonic_hc_sr04.js"></script>
-
-<script src="/app/blocks/output/write_digital.js"></script>
-<script src="/app/blocks/output/write_analog.js"></script>
-
-<script src="/app/blocks/motor/motors.js"></script>
-<script src="/app/blocks/motor/stepper_advanced.js"></script>
-
-<script src="/app/blocks/visuals/max7219_matrix.js"></script>
-<script src="/app/blocks/visuals/lcd_i2c.js"></script>
-<script src="/app/blocks/visuals/tft_displays.js"></script>
-<script src="/app/blocks/visuals/neopixel_basic.js"></script>
-<script src="/app/blocks/visuals/visu_tm.js"></script>
-<script src="/app/blocks/visuals/r4_matrix.js"></script> 
-<script src="/app/blocks/time/delay.js"></script>
-<script src="/app/blocks/time/timer_interval.js"></script>
-<script src="/app/blocks/time/time_system.js"></script>
-<script src="/app/blocks/time/stopwatch.js"></script>
-
-<script src="/app/blocks/functions/logic_if.js"></script>
-<script src="/app/blocks/functions/logic_compare.js"></script>
-<script src="/app/blocks/functions/loop_repeat.js"></script>
-<script src="/app/blocks/functions/loop_while.js"></script>
-<script src="/app/blocks/functions/blinker.js"></script>
-<script src="/app/blocks/functions/state_machine.js"></script>
-<script src="/app/blocks/functions/logic_basic.js"></script>
-<script src="/app/blocks/functions/math_basic.js"></script>
-<script src="/app/blocks/functions/math_advanced.js"></script>
-<script src="/app/blocks/functions/math_random.js"></script>
-<script src="/app/blocks/functions/functions_custom.js"></script>
-
-<script src="/app/blocks/advanced/serial_com.js"></script>
-<script src="/app/blocks/advanced/custom_cpp.js"></script>
-<script src="/app/blocks/advanced/eeprom_r4.js"></script>
-<script src="/app/blocks/advanced/sd_card.js"></script>
-<script src="/app/blocks/advanced/rfid_rc522.js"></script>
-
-<script src="/app/js/app.js"></script>
+    <p>Copyright © 2026 | Version 1.1.3 | Ein Projekt von Ronnie Berzins.</p>
+  </footer>
 
 </body>
 </html>
