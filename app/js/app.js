@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 "contents": [
                     {"kind": "block", "type": "logic_if"}, 
                     {"kind": "block", "type": "logic_if_else"}, 
-					{"kind": "block", "type": "logic_if_elseif_else"},
                     {"kind": "block", "type": "loop_repeat"},
+                    {"kind": "block", "type": "loop_for"}, 
                     {"kind": "block", "type": "ard_loop_while"},
                     {"kind": "block", "type": "ard_time_sys"},
                     {"kind": "block", "type": "ard_switch"},
@@ -32,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "timer_interval"},
                     {"kind": "block", "type": "ard_blinker_define"},
                     {"kind": "block", "type": "ard_blinker"},
-					{"kind": "block", "type": "stopwatch_define"}, 
+					{"kind": "block", "type": "ard_blinker_get"},
+					{"kind": "block", "type": "stopwatch_define"},
                     {"kind": "block", "type": "stopwatch_command"},
                     {"kind": "block", "type": "stopwatch_read"}
                 ] 
@@ -47,7 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         "contents": [
                             {"kind": "block", "type": "ard_setup_pullup"}, 
                             {"kind": "block", "type": "ard_read_digital"}, 
-                            {"kind": "block", "type": "read_analog"}
+                            {"kind": "block", "type": "read_analog"},
+                            {"kind": "block", "type": "analog_smooth"} 
                         ]
                     },
                     {
@@ -62,6 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         "contents": [
                             {"kind": "block", "type": "read_dht"},
                             {"kind": "block", "type": "read_ultrasonic"},
+                            {"kind": "label", "text": "--- Gyro (MPU6050) ---"},
+                            {"kind": "block", "type": "gyro_setup"}, 
+                            {"kind": "block", "type": "gyro_read"},  
                             {"kind": "label", "text": "--- RFID (RC522) ---"},
                             {"kind": "block", "type": "ard_rfid_setup"},
                             {"kind": "block", "type": "ard_rfid_on_card"},
@@ -79,13 +84,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         "kind": "category", "name": "Standard Pins", "colour": "160",
                         "contents": [
                             {"kind": "block", "type": "write_digital"}, 
-                            {"kind": "block", "type": "write_analog"}
+                            {"kind": "block", "type": "write_analog"},
+                            {"kind": "block", "type": "output_tone"} 
                         ]
                     },
                     {
                         "kind": "category", "name": "Antrieb (Motoren)", "colour": "180",
                         "contents": [
                             {"kind": "block", "type": "out_servo"},
+                            {"kind": "block", "type": "out_servo_ramp"},
+                            {"kind": "block", "type": "out_servo_attach"},
+                            {"kind": "block", "type": "out_servo_detach"},
                             {"kind": "block", "type": "stepper_setup"},
                             {"kind": "block", "type": "stepper_move"},
                             {"kind": "block", "type": "stepper_reset"}
@@ -94,12 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     {
                         "kind": "category", "name": "Licht & Matrix", "colour": "140",
                         "contents": [
+                            {"kind": "label", "text": "--- NeoPixel (FastLED) ---"},
                             {"kind": "block", "type": "neopixel_setup"},
                             {"kind": "block", "type": "neopixel_set_single"},
                             {"kind": "block", "type": "neopixel_set_list"},
                             {"kind": "block", "type": "neopixel_show"},
-                            
-                            // --- NEU: R4 ONBOARD MATRIX ---
+                            {"kind": "block", "type": "neopixel_brightness"},
+                            {"kind": "block", "type": "neopixel_clear"},
+                            {"kind": "block", "type": "neopixel_custom_code"},
+
+                            // --- R4 ONBOARD MATRIX ---
                             {"kind": "label", "text": "--- R4 Onboard Matrix ---"},
                             {"kind": "block", "type": "r4_matrix_setup"},
                             {"kind": "block", "type": "r4_matrix_symbol"},
@@ -112,16 +125,23 @@ document.addEventListener("DOMContentLoaded", () => {
                             {"kind": "label", "text": "--- MAX7219 Matrix ---"},
                             {"kind": "block", "type": "max7219_setup"},
                             {"kind": "block", "type": "max7219_print"},
+                            {"kind": "block", "type": "max7219_animation"},  
+                            {"kind": "block", "type": "max7219_set_intensity"},
                             {"kind": "block", "type": "max7219_set_pixel"},
                             {"kind": "block", "type": "max7219_set_list"},
                             {"kind": "block", "type": "max7219_control"}
                         ]
                     },
-                    {
+					
+                 {
                         "kind": "category", "name": "Displays", "colour": "120",
                         "contents": [
+                            {"kind": "label", "text": "--- I2C LCD ---"},
+                            {"kind": "block", "type": "setup_lcd_i2c"},
                             {"kind": "block", "type": "out_lcd_i2c"},
                             {"kind": "block", "type": "out_lcd_clear"},
+                            {"kind": "block", "type": "out_lcd_action"},
+                            {"kind": "label", "text": "--- TFT Displays ---"},
                             {"kind": "block", "type": "tft_setup_st7735"},
                             {"kind": "block", "type": "tft_setup_ili9486"},
                             {"kind": "block", "type": "tft_print_text"},
@@ -132,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             {"kind": "block", "type": "ard_visu_tm1637_print"},
                             {"kind": "block", "type": "ard_visu_tm1638_setup"},
                             {"kind": "block", "type": "ard_visu_tm1638_print"},
-                            {"kind": "block", "type": "ard_visu_tm1638_led"},
                             {"kind": "block", "type": "ard_visu_tm1638_button"}
                         ]
                     }
@@ -147,8 +166,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "ard_logic_operation"},
                     {"kind": "block", "type": "ard_logic_negate"},
                     {"kind": "block", "type": "ard_logic_boolean"},
+                    {"kind": "block", "type": "logic_ternary"}, 
                     {"kind": "block", "type": "ard_math_arithmetic"},
                     {"kind": "block", "type": "ard_math_number"},
+                    {"kind": "block", "type": "math_modulo"}, 
                     {"kind": "block", "type": "ard_math_map"},
                     {"kind": "block", "type": "ard_math_constrain"},
                     {"kind": "block", "type": "ard_math_random_seed"},
@@ -160,12 +181,21 @@ document.addEventListener("DOMContentLoaded", () => {
             { 
                 "kind": "category", "name": "Variablen", "colour": "330",
                 "contents": [
+                    {
+                        "kind": "button",
+                        "text": "➕ Neue Variable erstellen...",
+                        "callbackKey": "CREATE_VAR_BTN"
+                    },
                     {"kind": "block", "type": "var_text_literal"},
                     {"kind": "block", "type": "var_number_literal"},
                     {"kind": "block", "type": "var_declare"},
                     {"kind": "block", "type": "var_declare_interrupt"},
                     {"kind": "block", "type": "var_set"},
-                    {"kind": "block", "type": "var_get"}
+                    {"kind": "block", "type": "var_get"},
+                    {"kind": "label", "text": "--- Tabellen (Arrays) ---"},
+                    {"kind": "block", "type": "array_declare"}, 
+                    {"kind": "block", "type": "array_write"},   
+                    {"kind": "block", "type": "array_read"}     
                 ] 
             },
 
@@ -187,6 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "ard_serial_print"},
                     {"kind": "block", "type": "ard_serial_available"},
                     {"kind": "block", "type": "ard_serial_read_string"},
+                    {"kind": "block", "type": "ard_serial_read_number"},
                     {"kind": "label", "text": "--- Flash / EEPROM ---"},
                     {"kind": "block", "type": "ard_eeprom_write"},
                     {"kind": "block", "type": "ard_eeprom_read"},
@@ -205,9 +236,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox,
-        media: 'media/', // WICHTIG: Prüfen, ob der Ordner "media" auf gleicher Ebene wie die index.html liegt!
+        media: './media/',
         grid: {spacing: 20, length: 3, colour: '#ccc', snap: true},
         scrollbars: true
+    });
+
+    workspace.registerButtonCallback('CREATE_VAR_BTN', function(button) {
+        Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace(), null, '');
     });
 
     workspace.addChangeListener((event) => {
@@ -223,7 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const codeDisplay = document.getElementById('codeExport');
 
         if (root) {
-            // PRO-TIPP: Fehler abfangen, damit nicht die ganze App abstürzt!
             try {
                 if (typeof ArduinoGenerator !== 'undefined') {
                     ArduinoGenerator.init(workspace);
@@ -240,7 +274,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- Start-Block wird als "unzerstörbar" (deletable: false) geladen ---
     Blockly.serialization.workspaces.load({
         "blocks": {
             "languageVersion": 0, 
@@ -286,7 +319,6 @@ function loadWorkspace(event) {
     event.target.value = '';
 }
 
-// --- Code in Zwischenablage kopieren ---
 function copyGeneratedCode() {
     const code = document.getElementById('codeExport').innerText;
     navigator.clipboard.writeText(code).then(() => {

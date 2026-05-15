@@ -43,21 +43,18 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
     ArduinoGenerator.autoSetupInterrupts_ = []; // Interrupts IMMER nach pinMode
     ArduinoGenerator.autoLoop_ = [];            // Array: Reihenfolge wichtig
     ArduinoGenerator.isrFunctions_ = [];        // Array: ISR-Funktionen
-
+    
     ArduinoGenerator.mx_modules = 0;
     ArduinoGenerator.useSerial = false;
+    ArduinoGenerator.suppressedVars_ = new Set(); // ISR-Variablen die NICHT nochmal deklariert werden dürfen
+    ArduinoGenerator._encoderCount = 0;              // Zähler für Encoder-ISR zurücksetzen
+    ArduinoGenerator._counterCount = 0;              // Zähler für entprellte Counter zurücksetzen
 
-    // FIX Bug 1: Alle initialized-Flags bei jeder Generierung zurücksetzen
-    ArduinoGenerator.initializedLCDs = new Set();
-    ArduinoGenerator.initializedNeoPixel = false;
-    ArduinoGenerator.initializedParola = false;
-    ArduinoGenerator.initializedFastLEDs = new Set();
-    ArduinoGenerator.initializedMatrices = new Set();
-    ArduinoGenerator.initializedTFT = false;
-    ArduinoGenerator.initializedTM1637 = false;
-    ArduinoGenerator.initializedTM1638 = false;
-    ArduinoGenerator.trackingMotors_ = new Set();
-
+    // Sicherheits-Reset: alle persistenten Flags löschen die Scanner-Deduplication steuern
+    // Verhindert dass alte .js-Dateien mit "if (initializedXYZ) return" beim 2. Mal nichts tun
+    ArduinoGenerator.initializedMPU6050 = false;
+    ArduinoGenerator.dht_setup_done = {};
+    
     // 2. Alle Blöcke auf dem Workspace durchsuchen und deren eigene Scanner aufrufen
     const allBlocks = block.workspace.getAllBlocks(false);
     allBlocks.forEach(b => {
@@ -102,9 +99,22 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
     }
 
     // Nutzer-Globals (Variablen, die im GLOBAL-Slot deklariert wurden)
-    if (globalCode.trim().length > 0) {
+    // Gesperrte Variablen (z.B. volatile ISR-Variablen) werden herausgefiltert
+    // um doppelte Deklarationen zu verhindern (Compiler-Fehler "redefinition")
+    let filteredGlobalCode = globalCode;
+    if (ArduinoGenerator.suppressedVars_.size > 0) {
+        filteredGlobalCode = globalCode.split('\n').filter(line => {
+            for (const varName of ArduinoGenerator.suppressedVars_) {
+                // Zeile überspringen wenn sie diese Variable deklariert
+                const pattern = new RegExp('\\b' + varName + '\\b.*=');
+                if (pattern.test(line)) return false;
+            }
+            return true;
+        }).join('\n');
+    }
+    if (filteredGlobalCode.trim().length > 0) {
         fullCode += "\n// --- BENUTZER GLOBALS ---\n";
-        fullCode += globalCode;
+        fullCode += filteredGlobalCode;
     }
 
     // Auto-Setup: erst allgemeines Setup, dann Interrupts (NACH allen pinMode-Aufrufen!)
