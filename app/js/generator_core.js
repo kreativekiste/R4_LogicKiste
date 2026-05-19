@@ -2,7 +2,7 @@ const ArduinoGenerator = new Blockly.Generator('Arduino');
 ArduinoGenerator.PRECEDENCE = 0;
 ArduinoGenerator.INDENT = '  ';
 
-// Ein zentrales Register für Blöcke, die freischwebend Code generieren müssen
+// Zentrales Register
 ArduinoGenerator.hardwareScanners = {};
 
 ArduinoGenerator.init = function(workspace) {
@@ -15,7 +15,7 @@ ArduinoGenerator.scrub_ = function(block, code, opt_thisOnly) {
     return code + nextCode;
 };
 
-// --- DER HAUPTRAHMEN (Das Gehirn der Arduino R4_LogicKiste) ---
+// DER HAUPTRAHMEN
 Blockly.defineBlocksWithJsonArray([{
     "type": "arduino_main",
     "message0": "PROGRAMM START",
@@ -39,19 +39,18 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
     ArduinoGenerator.customVariables = new Map();
     ArduinoGenerator.includes_ = new Set();
     ArduinoGenerator.globals_ = new Set();
-    ArduinoGenerator.autoSetup_ = [];          // Array: Reihenfolge wichtig, kein Dedup-Risiko
-    ArduinoGenerator.autoSetupInterrupts_ = []; // Interrupts IMMER nach pinMode
-    ArduinoGenerator.autoLoop_ = [];            // Array: Reihenfolge wichtig
-    ArduinoGenerator.isrFunctions_ = [];        // Array: ISR-Funktionen
+    ArduinoGenerator.autoSetup_ = [];          
+    ArduinoGenerator.autoSetupInterrupts_ = []; 
+    ArduinoGenerator.autoLoop_ = [];            
+    ArduinoGenerator.isrFunctions_ = [];        
     
     ArduinoGenerator.mx_modules = 0;
-    ArduinoGenerator.useSerial = false;
-    ArduinoGenerator.suppressedVars_ = new Set(); // ISR-Variablen die NICHT nochmal deklariert werden dürfen
-    ArduinoGenerator._encoderCount = 0;              // Zähler für Encoder-ISR zurücksetzen
-    ArduinoGenerator._counterCount = 0;              // Zähler für entprellte Counter zurücksetzen
+    ArduinoGenerator.suppressedVars_ = new Set(); 
+    ArduinoGenerator._encoderCount = 0;              
+    ArduinoGenerator._counterCount = 0;             
+    ArduinoGenerator._repeatCount = 0;              
 
-    // Sicherheits-Reset: alle persistenten Flags löschen die Scanner-Deduplication steuern
-    // Verhindert dass alte .js-Dateien mit "if (initializedXYZ) return" beim 2. Mal nichts tun
+    // Sicherheits-Reset
     ArduinoGenerator.initializedMPU6050 = false;
     ArduinoGenerator.dht_setup_done = {};
     
@@ -69,7 +68,7 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
     const loopCode = ArduinoGenerator.statementToCode(block, 'LOOP');
     
     // 4. Alles zusammenbauen (Die Kisten ausleeren)
-    let fullCode = "// Arduino R4_LogicKiste // © kreativekiste.de\n\n";
+    let fullCode = "// Arduino R4_LogicKiste // © kreativekiste.de // \n\n";
     
     if (ArduinoGenerator.includes_.size > 0) {
         ArduinoGenerator.includes_.forEach(inc => { fullCode += inc + "\n"; });
@@ -78,8 +77,6 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
     if (ArduinoGenerator.globals_.size > 0) {
         ArduinoGenerator.globals_.forEach(glob => { fullCode += glob + "\n"; });
     }
-
-    if (ArduinoGenerator.useSerial) { ArduinoGenerator.autoSetup_.push("  Serial.begin(9600);\n"); }
 
     // Pins und Variablen verarbeiten
     let allPins = new Set([...ArduinoGenerator.usedPinsOutput, ...ArduinoGenerator.usedPinsInput, ...ArduinoGenerator.usedPinsAnalog]);
@@ -98,16 +95,14 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
         ArduinoGenerator.customVariables.forEach((type, name) => { fullCode += `${type} ${name};\n`; });
     }
 
-    // Nutzer-Globals (Variablen, die im GLOBAL-Slot deklariert wurden)
-    // Gesperrte Variablen (z.B. volatile ISR-Variablen) werden herausgefiltert
-    // um doppelte Deklarationen zu verhindern (Compiler-Fehler "redefinition")
+    // Nutzer-Globals
     let filteredGlobalCode = globalCode;
     if (ArduinoGenerator.suppressedVars_.size > 0) {
         filteredGlobalCode = globalCode.split('\n').filter(line => {
+            const trimmed = line.trim();            
+            const tokens = trimmed.split(/[\s;,()\[\]*&]+/).filter(Boolean);
             for (const varName of ArduinoGenerator.suppressedVars_) {
-                // Zeile überspringen wenn sie diese Variable deklariert
-                const pattern = new RegExp('\\b' + varName + '\\b.*=');
-                if (pattern.test(line)) return false;
+                if (tokens.includes(varName) && trimmed.includes('=')) return false;
             }
             return true;
         }).join('\n');
@@ -132,19 +127,111 @@ ArduinoGenerator.forBlock['arduino_main'] = function(block) {
         ArduinoGenerator.isrFunctions_.forEach(isr => { fullCode += isr + "\n"; });
     }
 
-    // --- UNTERPROGRAMME SCANNEN ---
+    // UNTERPROGRAMME SCANNEN
     if (!ArduinoGenerator.userFunctions) ArduinoGenerator.userFunctions = new Map();
     ArduinoGenerator.userFunctions.clear();
     block.workspace.getBlocksByType('ard_function_define').forEach(funcBlock => {
         ArduinoGenerator.blockToCode(funcBlock);
     });
 
+block.workspace.getBlocksByType('ard_function_define_return').forEach(funcBlockReturn => {
+        ArduinoGenerator.blockToCode(funcBlockReturn);
+    });
+
     if (ArduinoGenerator.userFunctions.size > 0) {
+        fullCode += "\n// --- UNTERPROGRAMME ---\n";
+        ArduinoGenerator.userFunctions.forEach((funcCode, name) => 
+		{
+            fullCode += funcCode + "\n";
+        });
+    }
+  if (ArduinoGenerator.userFunctions.size > 0) {
         fullCode += "\n// --- UNTERPROGRAMME ---\n";
         ArduinoGenerator.userFunctions.forEach((funcCode, name) => {
             fullCode += funcCode + "\n";
         });
     }
 
+    block.workspace.getBlocksByType('board_pc_interrupt').forEach(isrBlock => {
+        ArduinoGenerator.blockToCode(isrBlock);
+    });
+
     return fullCode;
+};
+
+// DEZENTRALE SCANNER & GENERATOREN
+
+// TM1637 Scanner 
+ArduinoGenerator.hardwareScanners['ard_visu_tm1637_setup'] = function(block) {
+    const clk = block.getFieldValue('CLK');
+    const dio = block.getFieldValue('DIO');
+    
+    ArduinoGenerator.globals_.add(`#include <TM1637Display.h>`);
+    ArduinoGenerator.globals_.add(`const int TM1637_CLK = ${clk};\nconst int TM1637_DIO = ${dio};`);
+    ArduinoGenerator.globals_.add(`TM1637Display displayTM(TM1637_CLK, TM1637_DIO);`);
+};
+
+// TM1638 Scanner 
+ArduinoGenerator.hardwareScanners['ard_visu_tm1638_setup'] = function(block) {
+    const stb = block.getFieldValue('STB');
+    const clk = block.getFieldValue('CLK');
+    const dio = block.getFieldValue('DIO');
+    
+    ArduinoGenerator.globals_.add(`#include <TM1638plus_Model2.h>`);
+    ArduinoGenerator.globals_.add(`#define STROBE_TM ${stb}\n#define CLOCK_TM  ${clk}\n#define DIO_TM    ${dio}`);
+    ArduinoGenerator.globals_.add(`TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM, DIO_TM, false, false);`);
+};
+
+// GENERATOR LOGIK (Setup & Loop) FÜR TM DISPLAYS
+// --- TM1637 ---
+ArduinoGenerator.forBlock['ard_visu_tm1637_setup'] = function(block) {
+    ArduinoGenerator.autoSetup_.push(`  displayTM.setBrightness(0x0f);\n`);
+    return '';
+};
+
+ArduinoGenerator.forBlock['ard_visu_tm1637_print'] = function(block) {
+    const num = ArduinoGenerator.valueToCode(block, 'NUM', 0) || '0';
+    const colon = block.getFieldValue('COLON') === 'TRUE';
+    if (colon) {
+        return `  displayTM.showNumberDecEx(${num}, 0b01000000, false);\n`; 
+    } else {
+        return `  displayTM.showNumberDec(${num}, false);\n`; 
+    }
+};
+
+// TM1638 Display & LED
+ArduinoGenerator.forBlock['ard_visu_tm1638_setup'] = function(block) {
+    ArduinoGenerator.autoSetup_.push(`  tm.displayBegin();\n  tm.reset();\n`);
+    return '';
+};
+
+ArduinoGenerator.forBlock['ard_visu_tm1638_print'] = function(block) {
+    const num = ArduinoGenerator.valueToCode(block, 'NUM', 0) || '0';
+    const dots = block.getFieldValue('DOTS');
+    const leadZero = block.getFieldValue('LEAD_ZERO');
+    const align = block.getFieldValue('ALIGN');
+    return `  tm.DisplayDecNum(${num}, ${dots}, ${leadZero}, ${align});\n`;
+};
+
+ArduinoGenerator.forBlock['ard_visu_tm1638_led'] = function(block) {
+    const ledIndex = block.getFieldValue('LED_NUM') - 1;
+    const state = ArduinoGenerator.valueToCode(block, 'STATE', 0) || 'false';
+    return `  tm.setLED(${ledIndex}, ${state});\n`;
+};
+
+// TM1638 TASTER-GENERATOREN
+
+ArduinoGenerator.forBlock['ard_visu_tm1638_read_key'] = function(block) {
+    const field = block.getField('VAR');
+    const varName = field ? field.getText() : 'unbekannt';
+    return `  ${varName} = tm.ReadKey16();\n`;
+};
+
+ArduinoGenerator.forBlock['ard_visu_tm1638_key_pressed'] = function(block) {
+    const keyNum = block.getFieldValue('KEY_NUM');
+    return [`(tm.ReadKey16() == ${keyNum})`, 0];
+};
+
+ArduinoGenerator.forBlock['ard_visu_tm1638_any_key'] = function(block) {
+    return [`(tm.ReadKey16() != 0)`, 0];
 };

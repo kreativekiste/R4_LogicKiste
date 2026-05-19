@@ -2,7 +2,7 @@ let workspace;
 let codeVisible = true;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // --- TOOLBOX SETUP (JSON) ---
+    // TOOLBOX SETUP (JSON)
     const toolbox = {
         "kind": "categoryToolbox",
         "contents": [
@@ -16,27 +16,42 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             
             // 2. STEUERUNG
-            { 
+            {
                 "kind": "category", "name": "Steuerung", "colour": "290",
                 "contents": [
-                    {"kind": "block", "type": "logic_if"}, 
-                    {"kind": "block", "type": "logic_if_else"}, 
+                    {"kind": "block", "type": "logic_if"},
+                    {"kind": "block", "type": "logic_if_else"},
                     {"kind": "block", "type": "loop_repeat"},
-                    {"kind": "block", "type": "loop_for"}, 
+                    {"kind": "block", "type": "loop_for"},
                     {"kind": "block", "type": "ard_loop_while"},
-                    {"kind": "block", "type": "ard_time_sys"},
                     {"kind": "block", "type": "ard_switch"},
                     {"kind": "block", "type": "ard_case"},
-                    {"kind": "block", "type": "ard_default"},
+                    {"kind": "block", "type": "ard_default"}
+                ]
+            },
+
+            // 2b. ZEIT & MULTITASKING
+            {
+                "kind": "category", "name": "Zeit", "colour": "290",
+                "contents": [
+                    {"kind": "label", "text": "--- Warten ---"},
                     {"kind": "block", "type": "delay_ms"},
-                    {"kind": "block", "type": "timer_interval"},
+                    {"kind": "block", "type": "delay_micros"},
+                    {"kind": "label", "text": "--- Systemzeit ---"},
+                    {"kind": "block", "type": "ard_time_sys"},
+                    {"kind": "label", "text": "--- Stoppuhr ---"},
+                    {"kind": "block", "type": "stopwatch_define"},
+                    {"kind": "block", "type": "stopwatch_command"},
+                    {"kind": "block", "type": "stopwatch_read"},
+                    {"kind": "label", "text": "--- Blinker ---"},
                     {"kind": "block", "type": "ard_blinker_define"},
                     {"kind": "block", "type": "ard_blinker"},
-					{"kind": "block", "type": "ard_blinker_get"},
-					{"kind": "block", "type": "stopwatch_define"},
-                    {"kind": "block", "type": "stopwatch_command"},
-                    {"kind": "block", "type": "stopwatch_read"}
-                ] 
+                    {"kind": "block", "type": "ard_blinker_get"},
+					{"kind": "label", "text": "--- Interne RTC ---"},
+                    {"kind": "block", "type": "ard_rtc_setup"},
+                    {"kind": "block", "type": "ard_rtc_read"},
+                    {"kind": "block", "type": "ard_rtc_write"}
+                ]
             },
 
             // 3. EINGÄNGE
@@ -89,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ]
                     },
                     {
-                        "kind": "category", "name": "Antrieb (Motoren)", "colour": "180",
+                        "kind": "category", "name": "(Motoren)", "colour": "180",
                         "contents": [
                             {"kind": "block", "type": "out_servo"},
                             {"kind": "block", "type": "out_servo_ramp"},
@@ -152,7 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
                             {"kind": "block", "type": "ard_visu_tm1637_print"},
                             {"kind": "block", "type": "ard_visu_tm1638_setup"},
                             {"kind": "block", "type": "ard_visu_tm1638_print"},
-                            {"kind": "block", "type": "ard_visu_tm1638_button"}
+                            {"kind": "block", "type": "ard_visu_tm1638_led"},
+                            {"kind": "label", "text": "--- TM1638 Taster ---"},
+                            {"kind": "block", "type": "ard_visu_tm1638_read_key"},
+                            {"kind": "block", "type": "ard_visu_tm1638_key_pressed"},
+                            {"kind": "block", "type": "ard_visu_tm1638_any_key"}
                         ]
                     }
                 ] 
@@ -169,11 +188,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "logic_ternary"}, 
                     {"kind": "block", "type": "ard_math_arithmetic"},
                     {"kind": "block", "type": "ard_math_number"},
-                    {"kind": "block", "type": "math_modulo"}, 
+                    
                     {"kind": "block", "type": "ard_math_map"},
                     {"kind": "block", "type": "ard_math_constrain"},
                     {"kind": "block", "type": "ard_math_random_seed"},
-                    {"kind": "block", "type": "ard_math_random_int"}
+                    {"kind": "block", "type": "ard_math_random_int"},
+					{"kind": "label", "text": "--- Erweiterte Mathe ---"},
+					{"kind": "block", "type": "math_correction_single"},
+					{"kind": "block", "type": "math_correction_double"},
+					{"kind": "block", "type": "math_trig_root"},
+					{"kind": "block", "type": "math_power"},
+					{"kind": "block", "type": "math_pi"},
                 ] 
             },
 
@@ -203,8 +228,13 @@ document.addEventListener("DOMContentLoaded", () => {
             { 
                 "kind": "category", "name": "Unterprogramme", "colour": "290",
                 "contents": [
+                    {"kind": "label", "text": "--- Ohne Rückgabewert ---"},
                     {"kind": "block", "type": "ard_function_define"},
-                    {"kind": "block", "type": "ard_function_call"}
+                    {"kind": "block", "type": "ard_function_call"},
+                    {"kind": "label", "text": "--- Mit Rückgabewert ---"},
+                    {"kind": "block", "type": "ard_function_define_return"},
+                    {"kind": "block", "type": "ard_function_return"},
+                    {"kind": "block", "type": "ard_function_call_return"}
                 ] 
             },
 
@@ -230,9 +260,36 @@ document.addEventListener("DOMContentLoaded", () => {
                     {"kind": "block", "type": "ard_custom_code_inline"},
                     {"kind": "block", "type": "ard_custom_code_global"}
                 ] 
-            }
+            },
+			
+			{ 
+                "kind": "category", "name": "WLAN", "colour": "210",
+                "contents": [
+                    {"kind": "block", "type": "web_setup"},
+                    {"kind": "block", "type": "web_listen"},
+					{"kind": "block", "type": "web_ip"},
+                    {"kind": "block", "type": "web_status_read"},
+                    {"kind": "label", "text": "--- Daten senden (zu Web) ---"},
+                    {"kind": "block", "type": "web_digital_write"},
+                    {"kind": "block", "type": "web_analog_write"},
+                    {"kind": "label", "text": "--- Daten empfangen (von Web) ---"},
+                    {"kind": "block", "type": "web_digital_read"},
+                    {"kind": "block", "type": "web_analog_read"}
+                ] 
+            },
+				
         ]
     };
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
     workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox,
@@ -245,15 +302,9 @@ document.addEventListener("DOMContentLoaded", () => {
         Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace(), null, '');
     });
 
-    workspace.addChangeListener((event) => {
-        const relevant = [
-            Blockly.Events.BLOCK_CHANGE,
-            Blockly.Events.BLOCK_MOVE,
-            Blockly.Events.BLOCK_CREATE,
-            Blockly.Events.BLOCK_DELETE,
-        ];
-        if (!relevant.includes(event.type)) return;
-        
+    let debounceTimer = null;
+
+    function generateCode() {
         const root = workspace.getBlocksByType('arduino_main')[0];
         const codeDisplay = document.getElementById('codeExport');
 
@@ -263,15 +314,31 @@ document.addEventListener("DOMContentLoaded", () => {
                     ArduinoGenerator.init(workspace);
                     codeDisplay.innerText = ArduinoGenerator.blockToCode(root);
                 } else {
-                     codeDisplay.innerText = "// WARNUNG: ArduinoGenerator ist nicht definiert.";
+                    codeDisplay.innerText = "// WARNUNG: ArduinoGenerator ist nicht definiert.";
                 }
             } catch (error) {
                 console.error("Code-Generierungs-Fehler:", error);
                 codeDisplay.innerText = "// FEHLER bei der C++ Generierung.\n// Bitte öffne die F12 Entwicklerkonsole für Details.";
             }
         } else {
-             codeDisplay.innerText = "// Bitte Start-Block einfügen";
+            codeDisplay.innerText = "// Bitte Start-Block einfügen";
         }
+    }
+
+    workspace.addChangeListener((event) => {
+        const relevant = [
+            Blockly.Events.BLOCK_CHANGE,
+            Blockly.Events.BLOCK_MOVE,
+            Blockly.Events.BLOCK_CREATE,
+            Blockly.Events.BLOCK_DELETE,
+        ];
+        if (!relevant.includes(event.type)) return;
+
+        // Während eines laufenden Drag-Vorgangs gar nicht auslösen
+        if (event.type === Blockly.Events.BLOCK_MOVE && event.reason?.includes('drag')) return;
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(generateCode, 250);
     });
 
     Blockly.serialization.workspaces.load({
