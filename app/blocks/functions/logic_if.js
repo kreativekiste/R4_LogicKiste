@@ -1,9 +1,6 @@
-// ==========================================
-// BAUTEIL: LOGIK (WENN-DANN, SONST-WENN, SONST)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
-    // --- 1. WENN-DANN ---
+    // 1. WENN-DANN
     {
         "type": "logic_if",
         "message0": "WENN %1",
@@ -11,7 +8,7 @@ Blockly.defineBlocksWithJsonArray([
             { 
                 "type": "input_value", 
                 "name": "CONDITION",
-                "check": "Boolean" // Akzeptiert nur Wahrheitswerte oder Logik-Blöcke
+                "check": "Boolean" 
             }
         ],
         "message1": "DANN %1",
@@ -22,7 +19,7 @@ Blockly.defineBlocksWithJsonArray([
         "tooltip": "Führt den DANN-Teil nur aus, wenn die Bedingung WAHR ist."
     },
 
-    // --- 2. WENN-DANN-SONST ---
+    // 2. WENN-DANN-SONST
     {
         "type": "logic_if_else",
         "message0": "WENN %1",
@@ -43,7 +40,7 @@ Blockly.defineBlocksWithJsonArray([
         "tooltip": "Führt den DANN-Teil aus, wenn WAHR, andernfalls den SONST-Teil."
     },
 
-    // --- 3. WENN - SONST WENN - SONST (NEU) ---
+    // 3. WENN - SONST WENN - SONST
     {
         "type": "logic_if_elseif_else",
         "message0": "WENN %1",
@@ -75,7 +72,7 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- GENERATOR FÜR WENN-DANN ---
+// GENERATOR FÜR WENN-DANN 
 ArduinoGenerator.forBlock['logic_if'] = function(block) {
     const condition = ArduinoGenerator.valueToCode(block, 'CONDITION', 0) || 'false';
     const branch = ArduinoGenerator.statementToCode(block, 'DO');
@@ -83,7 +80,7 @@ ArduinoGenerator.forBlock['logic_if'] = function(block) {
     return `  if (${condition}) {\n${branch}  }\n`;
 };
 
-// --- GENERATOR FÜR WENN-DANN-SONST ---
+// GENERATOR FÜR WENN-DANN-SONST
 ArduinoGenerator.forBlock['logic_if_else'] = function(block) {
     const condition = ArduinoGenerator.valueToCode(block, 'CONDITION', 0) || 'false';
     const branchDo = ArduinoGenerator.statementToCode(block, 'DO');
@@ -92,7 +89,7 @@ ArduinoGenerator.forBlock['logic_if_else'] = function(block) {
     return `  if (${condition}) {\n${branchDo}  } else {\n${branchElse}  }\n`;
 };
 
-// --- GENERATOR FÜR WENN - SONST WENN - SONST ---
+// GENERATOR FÜR WENN - SONST WENN - SONST
 ArduinoGenerator.forBlock['logic_if_elseif_else'] = function(block) {
     const cond1 = ArduinoGenerator.valueToCode(block, 'COND_1', 0) || 'false';
     const branchDo1 = ArduinoGenerator.statementToCode(block, 'DO_1');

@@ -1,9 +1,6 @@
-// ==========================================
-// BAUTEILE: LOGIK GRUNDLAGEN
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
-    // UND / ODER (Mit ard_ Präfix, um Blockly-Konflikte zu vermeiden)
+    // UND / ODER
     {
         "type": "ard_logic_operation",
         "message0": "%1 %2 %3",
@@ -36,14 +33,12 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- GENERATOR LOGIK ---
-// Diese Blöcke generieren nur Inline-Code und benötigen keinen Scanner.
+// GENERATOR LOGIK
 
 ArduinoGenerator.forBlock['ard_logic_operation'] = function(block) {
     const valA = ArduinoGenerator.valueToCode(block, 'A', 0) || 'false';
     const op = block.getFieldValue('OP');
     const valB = ArduinoGenerator.valueToCode(block, 'B', 0) || 'false';
-    // Die Klammern um den gesamten Ausdruck erzwingen die korrekte C++ Operatorrangfolge
     return [`(${valA} ${op} ${valB})`, 0];
 };
 

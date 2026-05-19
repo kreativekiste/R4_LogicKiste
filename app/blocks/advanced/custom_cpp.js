@@ -1,9 +1,5 @@
-// ==========================================
-// BAUTEILE: CUSTOM C++ CODE (Notausgang)
-// ==========================================
-
 Blockly.defineBlocksWithJsonArray([
-    // --- INLINE CODE (Für Setup & Loop) ---
+    // INLINE CODE (Für Setup & Loop)
     {
         "type": "ard_custom_code_inline",
         "message0": "C++ Code (Ablauf) %1 %2",
@@ -16,7 +12,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Wird exakt so in den Ablauf (Setup oder Loop) geschrieben. Pass auf Semikolons auf!"
     },
-    // --- GLOBALER CODE (Frei schwebend) ---
+    // GLOBALER CODE
     {
         "type": "ard_custom_code_global",
         "message0": "C++ Code (Global) %1 %2",
@@ -29,7 +25,7 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- DEZENTRALER SCANNER FÜR GLOBAL ---
+//DEZENTRALER SCANNER FÜR GLOBAL
 ArduinoGenerator.hardwareScanners['ard_custom_code_global'] = function(block) {
     const code = block.getFieldValue('CODE');
     if (code && code.trim() !== "") {
@@ -37,14 +33,12 @@ ArduinoGenerator.hardwareScanners['ard_custom_code_global'] = function(block) {
     }
 };
 
-// --- GENERATOR FÜR INLINE ---
+//GENERATOR FÜR INLINE
 ArduinoGenerator.forBlock['ard_custom_code_inline'] = function(block) {
     const code = block.getFieldValue('CODE');
-    // Wir rücken den Code für die Lesbarkeit leicht ein
+
     return `  // --- Custom Code ---\n  ${code.split('\n').join('\n  ')}\n`;
 };
-
-// Freischwebend gibt im direkten Flow nichts zurück
 ArduinoGenerator.forBlock['ard_custom_code_global'] = function(block) {
     return '';
 };

@@ -1,9 +1,6 @@
-// ==========================================
-// BAUTEILE: SERIAL (Senden & Empfangen)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
-    // --- STARTEN (Ins Setup) ---
+    // STARTEN (Ins Setup)
     {
         "type": "ard_serial_begin",
         "message0": "Start Serial Monitor (Baudrate: %1)",
@@ -24,7 +21,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Startet die serielle Kommunikation. Gehört zwingend in den SETUP-Block!"
     },
-    // --- SENDEN ---
+    // SENDEN
     {
         "type": "ard_serial_print",
         "message0": "Sende an Serial: %1 %2 Neue Zeile am Ende",
@@ -37,7 +34,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Sendet Text, Zahlen oder Variablen an den Serial Monitor."
     },
-    // --- VERFÜGBAR PRÜFEN ---
+    // VERFÜGBAR PRÜFEN
     {
         "type": "ard_serial_available",
         "message0": "Serial Daten empfangen?",
@@ -45,7 +42,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Gibt WAHR zurück, wenn Daten vom PC eingetroffen sind."
     },
-    // --- LESEN ---
+    // LESEN
     {
         "type": "ard_serial_read_string",
         "message0": "Lese Serial Daten (als Text)",
@@ -61,7 +58,6 @@ ArduinoGenerator.forBlock['ard_serial_begin'] = function(block) {
 };
 
 ArduinoGenerator.forBlock['ard_serial_print'] = function(block) {
-    // FIX A4: Wir nutzen die rohe Zahl 0 für die Order, da das System die Konstante nicht kennt.
     const text = ArduinoGenerator.valueToCode(block, 'TEXT', 0) || '""';
     const newline = block.getFieldValue('NEWLINE') === 'TRUE';
     const command = newline ? 'Serial.println' : 'Serial.print';
@@ -69,11 +65,9 @@ ArduinoGenerator.forBlock['ard_serial_print'] = function(block) {
 };
 
 ArduinoGenerator.forBlock['ard_serial_available'] = function(block) {
-    // FIX A4: Array mit 0 zurückgeben
     return ['(Serial.available() > 0)', 0];
 };
 
 ArduinoGenerator.forBlock['ard_serial_read_string'] = function(block) {
-    // FIX A4: Array mit 0 zurückgeben
     return ['Serial.readStringUntil(\'\\n\')', 0];
 };

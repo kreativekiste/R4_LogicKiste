@@ -1,8 +1,6 @@
-// ==========================================
-// BAUTEIL: BLINKER GENERATOR (Modular & Sicher)
-// ==========================================
 
-// --- 1. DEFINIEREN (Den Blinker anlegen) ---
+
+//. DEFINIEREN (Den Blinker anlegen) 
 Blockly.defineBlocksWithJsonArray([{
     "type": "ard_blinker_define",
     "message0": "Blinker anlegen: %1",
@@ -13,7 +11,7 @@ Blockly.defineBlocksWithJsonArray([{
     "tooltip": "Erstellt einen neuen Blinker-Namen. Dieser Name kann dann im Generator-Block ausgewählt werden."
 }]);
 
-// --- 2. GENERATOR (Die Logik) ---
+// 2. GENERATOR (Die Logik)
 Blockly.Blocks['ard_blinker'] = {
     init: function() {
         this.appendDummyInput()
@@ -30,27 +28,56 @@ Blockly.Blocks['ard_blinker'] = {
     },
     getBlinkerOptions: function() {
         let options = [];
-        if (this.workspace) {
-            let blocks = this.workspace.getBlocksByType('ard_blinker_define');
+        let ws = this.workspace;
+        if (ws && ws.isFlyout) {
+            ws = ws.targetWorkspace;
+        }
+
+        if (ws) {
+            let blocks = ws.getBlocksByType('ard_blinker_define');
             blocks.forEach(b => {
                 let rawName = b.getFieldValue('VAR_NAME');
-                // FIX: Bereinigung hier identisch zum Scanner → konsistenter Name
                 let safeName = rawName.replace(/[^a-zA-Z0-9_]/g, '');
                 if (safeName) options.push([rawName, safeName]);
             });
         }
-        return options.length > 0 ? options : [['-- Kein Blinker definiert --', 'NONE']];
+
+        if (options.length === 0) {
+            options.push(['-- Kein Blinker definiert --', 'NONE']);
+        }
+        let currentVal = this.getFieldValue ? this.getFieldValue('VAR_NAME') : null;
+        if (currentVal && currentVal !== 'NONE') {
+            let valueExists = options.some(opt => opt[1] === currentVal);
+            if (!valueExists) {
+                options.push([currentVal + ' (Fehlt!)', currentVal]);
+            }
+        }
+
+        return options;
     }
 };
 
-// --- DEZENTRALER SCANNER ---
+// 3. AUSLESEN (Der neue Block für IF-Bedingungen)
+Blockly.Blocks['ard_blinker_get'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Zustand von Blinker:")
+            .appendField(new Blockly.FieldDropdown(this.getBlinkerOptions.bind(this)), "VAR_NAME");
+        this.setOutput(true, "Boolean");
+        this.setColour(290);
+        this.setTooltip("Gibt WAHR oder FALSCH zurück, je nachdem ob der Blinker gerade AN oder AUS ist.");
+    },
+    getBlinkerOptions: Blockly.Blocks['ard_blinker'].getBlinkerOptions
+};
+
+
+// DEZENTRALER SCANNER
 
 ArduinoGenerator.hardwareScanners['ard_blinker_define'] = function(block) {
-    // FIX: Dropdown-Value direkt nutzen (bereits bereinigt durch getBlinkerOptions)
     let varName = block.getFieldValue('VAR_NAME').replace(/[^a-zA-Z0-9_]/g, '');
     if (!varName) return;
 
-    // 1. Die C++ Klassen-Definition (nur 1x im Code)
+    // 1. Die C++ Klassen-Definition
     ArduinoGenerator.globals_.add(`
 #ifndef BLOCKBLINKER_H
 #define BLOCKBLINKER_H
@@ -82,7 +109,6 @@ class BlockBlinker {
 };
 
 ArduinoGenerator.hardwareScanners['ard_blinker'] = function(block) {
-    // FIX: Dropdown-Value direkt nutzen (bereits bereinigt)
     let varName = block.getFieldValue('VAR_NAME');
     if (!varName || varName === 'NONE') return;
 
@@ -98,5 +124,16 @@ ArduinoGenerator.hardwareScanners['ard_blinker'] = function(block) {
     }
 };
 
+// GENERATOR LOGIK
+
 ArduinoGenerator.forBlock['ard_blinker_define'] = function(block) { return ''; };
 ArduinoGenerator.forBlock['ard_blinker'] = function(block) { return ''; };
+
+// Generator für den neuen Auslese-Block
+ArduinoGenerator.forBlock['ard_blinker_get'] = function(block) {
+    let varName = block.getFieldValue('VAR_NAME');
+    if (!varName || varName === 'NONE') return ['false', 0];
+    
+    // Gibt die boolesche Variable zurück
+    return [varName, 0];
+};

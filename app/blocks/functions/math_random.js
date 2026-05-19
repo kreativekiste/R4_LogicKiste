@@ -1,9 +1,6 @@
-// ==========================================
-// BAUTEILE: ZUFALL (Random)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
-    // --- 1. RANDOM SEED (Gehört ins Setup) ---
+    // RANDOM SEED
     {
         "type": "ard_math_random_seed",
         "message0": "Zufall initialisieren (Rauschen von %1 nutzen)",
@@ -18,7 +15,6 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 230,
         "tooltip": "Liest einen offenen analogen Pin aus, um einen echten Zufalls-Startwert zu generieren. Ins SETUP packen!"
     },
-    // --- 2. ZUFALLSZAHL GENERIEREN ---
     {
         "type": "ard_math_random_int",
         "message0": "Zufallszahl zwischen %1 und %2",
@@ -34,15 +30,14 @@ Blockly.defineBlocksWithJsonArray([
 
 ArduinoGenerator.forBlock['ard_math_random_seed'] = function(block) {
     const pin = block.getFieldValue('PIN');
-    // FIX: Pin direkt nutzen, kein usedPinsInput – Analogpins brauchen kein pinMode
-    return `  randomSeed(analogRead(${pin}));\n`;
+    // Analog-Pin anmelden (kein INPUT_PULLUP, kein pinMode nötig)
+    ArduinoGenerator.usedPinsAnalog.add(pin);
+    return `  randomSeed(analogRead(pin${pin}));\n`;
 };
 
 ArduinoGenerator.forBlock['ard_math_random_int'] = function(block) {
     const min = ArduinoGenerator.valueToCode(block, 'MIN', 0) || '0';
     const max = ArduinoGenerator.valueToCode(block, 'MAX', 0) || '100';
-    
-    // WICHTIG: Die Arduino-Funktion random(min, max) schließt das Maximum aus!
-    // Zur Sicherheit max einklammern, falls eine Formel angedockt wird.
+	
     return [`random(${min}, (${max}) + 1)`, 0];
 };

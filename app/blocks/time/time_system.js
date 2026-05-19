@@ -1,6 +1,3 @@
-// ==========================================
-// BAUTEILE: SYSTEMZEIT (Millis & Micros)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
     {
@@ -18,7 +15,7 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- GENERATOR LOGIK ---
+// GENERATOR LOGIK
 ArduinoGenerator.forBlock['ard_time_sys'] = function(block) {
     const unit = block.getFieldValue('UNIT');
     // Generiert direkt den Funktionsaufruf millis() oder micros()

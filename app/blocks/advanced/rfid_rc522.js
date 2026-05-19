@@ -1,9 +1,6 @@
-// ==========================================
-// BAUTEILE: RFID RC522 (Kartenleser)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
-    // --- 1. INITIALISIEREN (Setup) ---
+    // 1. INITIALISIEREN (Setup)
     {
         "type": "ard_rfid_setup",
         "message0": "RFID-Leser starten (SDA/SS Pin: %1, RST Pin: %2)",
@@ -16,45 +13,60 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Startet den RC522. Die Pins SCK, MOSI und MISO müssen an die festen SPI-Pins des Arduinos! Gehört ins SETUP."
     },
-    // --- 2. EVENT: WENN KARTE ERKANNT ---
+    // 2. ID LESEN & SERIAL AUSGABE
     {
-        "type": "ard_rfid_on_card",
-        "message0": "Wenn RFID-Karte erkannt: %1",
-        "args0": [
-            { "type": "input_statement", "name": "DO" }
-        ],
+        "type": "ard_rfid_read_to_serial",
+        "message0": "RFID-Karte lesen und ID ausgeben (Serial)",
         "previousStatement": null,
         "nextStatement": null,
         "colour": 160,
-        "tooltip": "Prüft, ob eine Karte da ist. Alles hier drinnen wird nur ausgeführt, wenn eine Karte vorgehalten wird."
+        "tooltip": "Liest eine RFID Karte und gibt die ID direkt auf dem seriellen Monitor aus. Gehört in den LOOP."
     },
-    // --- 3. UID LESEN ---
+    // 3. WENN IRGENDEINE KARTE ANLIEGT (Boolean)
+    {
+        "type": "ard_rfid_on_card",
+        "message0": "irgendeine RFID-Karte erkannt",
+        "output": "Boolean",
+        "colour": 160,
+        "tooltip": "Gibt WAHR zurück, wenn eine beliebige Karte auf dem Leser liegt. Passt in einen WENN-Block."
+    },
+    // 4. WENN SPEZIFISCHE KARTE ANLIEGT (Boolean)
     {
         "type": "ard_rfid_get_id",
-        "message0": "Lese Karten-ID (UID) als Text",
-        "output": "String",
+        "message0": "RFID-Karte entspricht ID: %1",
+        "args0": [
+            { "type": "field_input", "name": "RFID_ID", "text": "33 0E B9 17" }
+        ],
+        "output": "Boolean",
         "colour": 160,
-        "tooltip": "Gibt die einzigartige Nummer der Karte zurück (z.B. 'E3 2C C8 17'). Nutze dies INNEN im 'Wenn Karte erkannt'-Block!"
+        "tooltip": "Gibt WAHR zurück, wenn exakt diese Karten-ID erkannt wird."
     }
 ]);
 
-// --- DEZENTRALER SCANNER ---
-ArduinoGenerator.hardwareScanners['ard_rfid_setup'] = function(block) {
-    const ssPin = block.getFieldValue('SS_PIN');
-    const rstPin = block.getFieldValue('RST_PIN');
+// DEZENTRALER SCANNER
+const rfidScannerLogic = function(block) {
+    let ssPin = 10;
+    let rstPin = 9;
     
-    // Libraries und das globale Reader-Objekt
-    ArduinoGenerator.globals_.add(`#include <SPI.h>\n#include <MFRC522.h>\n`);
-    ArduinoGenerator.globals_.add(`MFRC522 mfrc522(${ssPin}, ${rstPin});\n`);
+    // Versuche, den Setup-Block zu finden, um die Pins auszulesen
+    const setupBlock = block.workspace.getBlocksByType('ard_rfid_setup', false)[0];
+    if (setupBlock) {
+        ssPin = setupBlock.getFieldValue('SS_PIN');
+        rstPin = setupBlock.getFieldValue('RST_PIN');
+    }
+
+    // Zurück auf deine Original-Struktur mit .add() !
+    ArduinoGenerator.globals_.add(`#include <SPI.h>`);
+    ArduinoGenerator.globals_.add(`#include <MFRC522.h>`);
+    ArduinoGenerator.globals_.add(`MFRC522 mfrc522(${ssPin}, ${rstPin});`);
     
-    // Eine versteckte Helfer-Funktion, die die UID schön als Hex-String formatiert (MIT LEERZEICHEN)
     ArduinoGenerator.globals_.add(`
 String getRFID_UID() {
   String uid = "";
   for (byte i = 0; i < mfrc522.uid.size; i++) {
     if (mfrc522.uid.uidByte[i] < 0x10) uid += "0";
     uid += String(mfrc522.uid.uidByte[i], HEX);
-    if (i < mfrc522.uid.size - 1) uid += " "; // Fügt das Leerzeichen zwischen den Blöcken ein
+    if (i < mfrc522.uid.size - 1) uid += " ";
   }
   uid.toUpperCase();
   return uid;
@@ -62,28 +74,34 @@ String getRFID_UID() {
 `);
 };
 
-// --- GENERATOR LOGIK ---
+// Scanner an alle RFID-Blöcke binden
+ArduinoGenerator.hardwareScanners['ard_rfid_setup'] = rfidScannerLogic;
+ArduinoGenerator.hardwareScanners['ard_rfid_read_to_serial'] = rfidScannerLogic;
+ArduinoGenerator.hardwareScanners['ard_rfid_on_card'] = rfidScannerLogic;
+ArduinoGenerator.hardwareScanners['ard_rfid_get_id'] = rfidScannerLogic;
+
+// GENERATOR LOGIK
 
 ArduinoGenerator.forBlock['ard_rfid_setup'] = function(block) {
-    // Die Initialisierung im Setup
     return `  SPI.begin();\n  mfrc522.PCD_Init();\n`;
 };
 
-ArduinoGenerator.forBlock['ard_rfid_on_card'] = function(block) {
-    const branch = ArduinoGenerator.statementToCode(block, 'DO');
-    
-    // Die doppelte Prüfung ist bei der MFRC522 Library Pflicht!
-    // 1. Ist eine neue Karte da? 2. Lässt sie sich lesen?
+ArduinoGenerator.forBlock['ard_rfid_read_to_serial'] = function(block) {
     let code = `  if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {\n`;
-    code += branch;
-    // Wichtig: Karte in den Halt-Zustand versetzen, sonst liest er sie 1000x pro Sekunde
-    code += `    mfrc522.PICC_HaltA();\n`; 
+    code += `    Serial.println(getRFID_UID());\n`;
+    code += `    mfrc522.PICC_HaltA();\n`;
+    code += `    mfrc522.PCD_StopCrypto1();\n`;
     code += `  }\n`;
-    
     return code;
 };
 
+ArduinoGenerator.forBlock['ard_rfid_on_card'] = function(block) {
+    let code = `(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial())`;
+    return [code, 0];
+};
+
 ArduinoGenerator.forBlock['ard_rfid_get_id'] = function(block) {
-    // Ruft einfach unsere Helfer-Funktion aus den Globals auf
-    return ['getRFID_UID()', 0];
+    const expectedId = block.getFieldValue('RFID_ID');
+    let code = `(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial() && getRFID_UID() == "${expectedId}")`;
+    return [code, 0];
 };

@@ -1,6 +1,3 @@
-// ==========================================
-// BAUTEILE: STATE MACHINE (Switch-Case)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
     // --- 1. DER HAUPT-CONTAINER (SWITCH) ---

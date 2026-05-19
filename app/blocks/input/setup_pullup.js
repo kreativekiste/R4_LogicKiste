@@ -1,6 +1,3 @@
-// ==========================================
-// BAUTEIL: PULLUP AKTIVIEREN (Explizit)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
     {
@@ -20,17 +17,12 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- DEZENTRALER SCANNER ---
+// DEZENTRALER SCANNER
 ArduinoGenerator.hardwareScanners['ard_setup_pullup'] = function(block) {
     // Kleine Pro-Sicherheit: Versehentliche Leerzeichen des Nutzers entfernen
     const pin = block.getFieldValue('PIN').trim();
-    
-    // Saubere Integration in den Core. 
-    // Das System generiert daraus dedupliziert "pinMode(pinX, INPUT_PULLUP);" im Setup
-    // und legt "const int pinX = X;" global an.
     ArduinoGenerator.usedPinsInput.add(pin);
-    
-    // Safety-Check für die Map (verhindert Absturz, falls der Core mal anders lädt)
+
     if (!ArduinoGenerator.pinModes) {
         ArduinoGenerator.pinModes = new Map();
     }
@@ -38,12 +30,9 @@ ArduinoGenerator.hardwareScanners['ard_setup_pullup'] = function(block) {
     ArduinoGenerator.pinModes.set(pin, 'INPUT_PULLUP');
 };
 
-// --- GENERATOR LOGIK ---
+// GENERATOR LOGIK
 ArduinoGenerator.forBlock['ard_setup_pullup'] = function(block) {
-    // Auch hier das trim() für die saubere Variablen-Referenz
     const pin = block.getFieldValue('PIN').trim();
-    
-    // Da die Arbeit im Setup (via Scanner) erledigt wird, 
-    // hinterlassen wir im Loop nur einen hilfreichen Kommentar mit der korrekten Variable.
+
     return `  // Pin pin${pin} wird vom System automatisch im Setup als PULLUP konfiguriert\n`;
 };

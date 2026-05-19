@@ -1,6 +1,3 @@
-// ==========================================
-// BAUTEILE: LOGIK VERGLEICH (>, <, ==, !=)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
     {
@@ -10,8 +7,6 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "A"
-                // ACHTUNG: Kein "check" definiert, um Flexibilität (String vs String, Int vs Int) zu wahren.
-                // Kann bei Mischung (String vs Int) zu C++ Compilerfehlern führen.
             },
             {
                 "type": "field_dropdown",
@@ -50,11 +45,7 @@ ArduinoGenerator.forBlock['ard_logic_compare'] = function(block) {
         'GTE': '>='
     };
     
-    // Holt die beiden Werte, die an den Block angesteckt wurden (Standard ist 0, falls leer)
     const a = ArduinoGenerator.valueToCode(block, 'A', 0) || '0';
     const b = ArduinoGenerator.valueToCode(block, 'B', 0) || '0';
-    
-    // Setzt die Logik-Prüfung in Klammern, damit sie in komplexen Formeln sicher funktioniert
-    // Priorität 0 stellt sicher, dass die Klammern von Blockly nicht wegoptimiert werden
     return [`(${a} ${operatorMap[op]} ${b})`, 0];
 };

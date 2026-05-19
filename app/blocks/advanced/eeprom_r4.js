@@ -1,9 +1,5 @@
-// ==========================================
-// BAUTEILE: FLASH / EEPROM SPEICHER (R4)
-// ==========================================
-
 Blockly.defineBlocksWithJsonArray([
-    // --- SCHREIBEN ---
+    // SCHREIBEN
     {
         "type": "ard_eeprom_write",
         "message0": "Speichere in Flash/EEPROM %1 Adresse (0-1023): %2 %3 Wert (0-255): %4",
@@ -18,7 +14,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Speichert einen Wert (nur 0 bis 255) dauerhaft auf dem R4 ab. Nutzt EEPROM.write()."
     },
-    // --- LESEN ---
+    // LESEN
     {
         "type": "ard_eeprom_read",
         "message0": "Lese Flash/EEPROM %1 Adresse (0-1023): %2",
@@ -32,8 +28,7 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- DEZENTRALER SCANNER ---
-// Bindet die EEPROM Library ein, sobald einer der Blöcke genutzt wird
+// DEZENTRALER SCANNER
 ArduinoGenerator.hardwareScanners['ard_eeprom_write'] = function(block) {
     ArduinoGenerator.globals_.add(`#include <EEPROM.h>`);
 };
@@ -41,13 +36,10 @@ ArduinoGenerator.hardwareScanners['ard_eeprom_read'] = function(block) {
     ArduinoGenerator.globals_.add(`#include <EEPROM.h>`);
 };
 
-// --- GENERATOR LOGIK ---
+// GENERATOR LOGIK
 ArduinoGenerator.forBlock['ard_eeprom_write'] = function(block) {
     const addr = ArduinoGenerator.valueToCode(block, 'ADDR', 0) || '0';
     const val = ArduinoGenerator.valueToCode(block, 'VAL', 0) || '0';
-    
-    // Wir nutzen EEPROM.update() statt write(), das schont den Flash-Speicher des R4!
-    // Es schreibt nur, wenn der Wert sich wirklich geändert hat.
     return `  EEPROM.update(${addr}, ${val});\n`;
 };
 

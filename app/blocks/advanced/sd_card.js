@@ -1,9 +1,6 @@
-// ==========================================
-// BAUTEILE: SD-KARTE (Einfach & Sicher)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
-    // --- 1. INITIALISIEREN (Setup) ---
+    // 1. INITIALISIEREN (Setup)
     {
         "type": "ard_sd_begin",
         "message0": "SD-Karte starten (CS-Pin: %1)",
@@ -15,7 +12,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Startet die SD-Karte am angegebenen Chip-Select (CS) Pin. Gehört ins SETUP!"
     },
-    // --- 2. SCHREIBEN (Append) ---
+    // 2. SCHREIBEN (Append)
     {
         "type": "ard_sd_write",
         "message0": "Schreibe in Datei %1 Text: %2 %3 Neue Zeile",
@@ -29,7 +26,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Schreibt Daten in eine Datei. Wenn die Datei nicht existiert, wird sie erstellt. (Dateiname max. 8 Zeichen + .txt)"
     },
-    // --- 3. EXISTIERT PRÜFEN ---
+    // 3. EXISTIERT PRÜFEN
     {
         "type": "ard_sd_exists",
         "message0": "Datei %1 existiert?",
@@ -40,7 +37,7 @@ Blockly.defineBlocksWithJsonArray([
         "colour": 160,
         "tooltip": "Gibt WAHR zurück, wenn die Datei auf der SD-Karte gefunden wurde."
     },
-    // --- 4. LÖSCHEN ---
+    // 4. LÖSCHEN
     {
         "type": "ard_sd_remove",
         "message0": "Lösche Datei %1",
@@ -54,18 +51,17 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- DEZENTRALER SCANNER ---
-// Wenn IRGENDEIN SD-Block verwendet wird, binden wir die Libraries ein
+// DEZENTRALER SCANNER
 const addSDIncludes = function() {
-    ArduinoGenerator.globals_.add(`#include <SPI.h>\n#include <SD.h>`);
+    ArduinoGenerator.globals_.add(`#include <SPI.h>`);
+    ArduinoGenerator.globals_.add(`#include <SD.h>`);
 };
 ArduinoGenerator.hardwareScanners['ard_sd_begin'] = addSDIncludes;
 ArduinoGenerator.hardwareScanners['ard_sd_write'] = addSDIncludes;
 ArduinoGenerator.hardwareScanners['ard_sd_exists'] = addSDIncludes;
 ArduinoGenerator.hardwareScanners['ard_sd_remove'] = addSDIncludes;
 
-// --- GENERATOR LOGIK ---
-
+// GENERATOR LOGIK
 ArduinoGenerator.forBlock['ard_sd_begin'] = function(block) {
     const csPin = block.getFieldValue('CS_PIN');
     return `  SD.begin(${csPin});\n`;
@@ -77,8 +73,6 @@ ArduinoGenerator.forBlock['ard_sd_write'] = function(block) {
     const newline = block.getFieldValue('NEWLINE') === 'TRUE';
     const command = newline ? 'println' : 'print';
     
-    // Wir packen das in einen Scope { }, damit wir File myFile mehrfach im Code verwenden können, 
-    // ohne dass sich die C++ Variablen überschneiden (Redeclaration Error).
     return `  {\n    File myFile = SD.open(${filename}, FILE_WRITE);\n    if (myFile) {\n      myFile.${command}(${text});\n      myFile.close();\n    }\n  }\n`;
 };
 
@@ -89,5 +83,5 @@ ArduinoGenerator.forBlock['ard_sd_exists'] = function(block) {
 
 ArduinoGenerator.forBlock['ard_sd_remove'] = function(block) {
     const filename = ArduinoGenerator.valueToCode(block, 'FILENAME', 0) || '"daten.txt"';
-    return `  if (SD.exists(${filename})) {\n    SD.remove(${filename});\n  }\n`;
+    return `  SD.remove(${filename});\n`;
 };

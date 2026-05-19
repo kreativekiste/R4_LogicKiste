@@ -1,8 +1,6 @@
-// ==========================================
-// BAUTEILE: STOPPUHR (Modular mit Dropdown)
-// ==========================================
 
-// --- 1. DEFINIEREN (Die Uhr anlegen) ---
+
+// 1. DEFINIEREN (Die Uhr anlegen)
 Blockly.defineBlocksWithJsonArray([{
     "type": "stopwatch_define",
     "message0": "Stoppuhr anlegen: %1",
@@ -13,7 +11,7 @@ Blockly.defineBlocksWithJsonArray([{
     "tooltip": "Erstellt eine neue Stoppuhr. Der Name erscheint dann in den anderen Stoppuhr-Blöcken."
 }]);
 
-// --- 2. STEUERN (Start/Stop/etc) ---
+// 2. STEUERN (Start/Stop/etc)
 Blockly.Blocks['stopwatch_command'] = {
     init: function() {
         this.appendDummyInput()
@@ -36,7 +34,6 @@ Blockly.Blocks['stopwatch_command'] = {
             blocks.forEach(b => {
                 let n = b.getFieldValue('NAME');
                 if (n) {
-                    // C++ Schutz-Präfix 'sw_' hinzufügen, um Kollisionen mit reservierten Wörtern zu vermeiden
                     let safeName = "sw_" + n.replace(/[^a-zA-Z0-9_]/g, '');
                     options.push([n, safeName]);
                 }
@@ -46,7 +43,7 @@ Blockly.Blocks['stopwatch_command'] = {
     }
 };
 
-// --- 3. AUSLESEN ---
+// 3. AUSLESEN
 Blockly.Blocks['stopwatch_read'] = {
     init: function() {
         this.appendDummyInput()
@@ -62,7 +59,7 @@ Blockly.Blocks['stopwatch_read'] = {
     getWatchOptions: Blockly.Blocks['stopwatch_command'].getWatchOptions
 };
 
-// --- DEZENTRALER SCANNER ---
+// DEZENTRALER SCANNER
 ArduinoGenerator.hardwareScanners['stopwatch_define'] = function(block) {
     let rawName = block.getFieldValue('NAME');
     let safeName = "sw_" + rawName.replace(/[^a-zA-Z0-9_]/g, '');
@@ -90,7 +87,7 @@ class BlockStopwatch {
     ArduinoGenerator.globals_.add(`BlockStopwatch ${safeName};`);
 };
 
-// --- GENERATOR ---
+// GENERATOR
 ArduinoGenerator.forBlock['stopwatch_define'] = function(block) { return ''; };
 
 ArduinoGenerator.forBlock['stopwatch_command'] = function(block) {

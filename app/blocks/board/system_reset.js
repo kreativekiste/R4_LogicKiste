@@ -1,6 +1,3 @@
-// ==========================================
-// BAUTEILE: SYSTEM-STEUERUNG (R4 exklusiv)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([
     {
@@ -13,10 +10,8 @@ Blockly.defineBlocksWithJsonArray([
     }
 ]);
 
-// --- GENERATOR LOGIK ---
+// GENERATOR LOGIK
 
 ArduinoGenerator.forBlock['ard_sys_reset'] = function(block) {
-    // Der offizielle Weg für den Arduino R4 (Renesas Core ARM Cortex-M4)
-    // Nutzt das NVIC (Nested Vectored Interrupt Controller) System-Reset
     return '  NVIC_SystemReset();\n';
 };

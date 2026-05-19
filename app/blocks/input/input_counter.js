@@ -1,6 +1,3 @@
-// ==========================================
-// BAUTEIL: ENTPRELLTER COUNTER (Taster)
-// ==========================================
 
 Blockly.defineBlocksWithJsonArray([{
     "type": "input_counter",
@@ -30,7 +27,7 @@ Blockly.defineBlocksWithJsonArray([{
     "tooltip": "Zählt jeden Tastendruck (fallende Flanke). Nutzt internen PULLUP. Die Variable wird automatisch als Integer erstellt."
 }]);
 
-// --- DEZENTRALER SCANNER ---
+// DEZENTRALER SCANNER
 ArduinoGenerator.hardwareScanners['input_counter'] = function(block) {
     const rawPin = block.getFieldValue('PIN');
     const varName = block.getField('VAR_NAME').getText();
@@ -48,15 +45,14 @@ ArduinoGenerator.hardwareScanners['input_counter'] = function(block) {
     ArduinoGenerator.globals_.add(`unsigned long lastDebounce_${safeId} = 0;`);
 };
 
-// --- GENERATOR LOGIK ---
+// GENERATOR LOGIK
 ArduinoGenerator.forBlock['input_counter'] = function(block) {
     const rawPin = block.getFieldValue('PIN');
     const varName = block.getField('VAR_NAME').getText();
     const debounce = ArduinoGenerator.valueToCode(block, 'DEBOUNCE', 0) || '50';
     const safeId = block.id.replace(/[^a-zA-Z0-9]/g, '');
 
-    // C++ Logik: Flankenerkennung mit Zeitprüfung
-    // WICHTIG: Nutzt pinX aus dem Generator, nicht rawPin
+    // Flankenerkennung mit Zeitprüfung
     let code = `  // --- Entprellter Zähler (${varName}) ---\n`;
     code += `  bool currentState_${safeId} = digitalRead(pin${rawPin});\n`;
     code += `  if (currentState_${safeId} == LOW && lastState_${safeId} == HIGH && (millis() - lastDebounce_${safeId} > ${debounce})) {\n`;

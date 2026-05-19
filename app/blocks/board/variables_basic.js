@@ -1,9 +1,5 @@
-// ==========================================
-// BAUTEILE: VARIABLEN (3-Säulen System + Interrupts)
-// ==========================================
-
 Blockly.defineBlocksWithJsonArray([
-    // --- 1. ERSTELLEN (Normale Variablen) ---
+    //1. ERSTELLEN (Normale Variablen)
     {
         "type": "var_declare",
         "message0": "Erstelle %1 Variable: %2 Startwert: %3",
@@ -36,7 +32,7 @@ Blockly.defineBlocksWithJsonArray([
         "tooltip": "Legt den Datentyp fest. Passt nur in den GLOBAL-Bereich. const int bevorzugen!"
     },
 
-    // --- 1.b ERSTELLEN (⚡ Interrupt-Spezial-Variable) ---
+    // 1.b ERSTELLEN (⚡ Interrupt-Spezial-Variable)
     {
         "type": "var_declare_interrupt",
         "message0": "⚡ ERSTELLE INTERRUPT-VARIABLE %1 Typ: %2 Startwert: %3",
@@ -67,7 +63,7 @@ Blockly.defineBlocksWithJsonArray([
         "tooltip": "MUSS für Variablen genutzt werden, die innerhalb eines PC INTERRUPT Blocks verändert werden (Setzt 'volatile' in C++)."
     },
 
-    // --- 2. SCHREIBEN (Wert zuweisen) ---
+    //2. SCHREIBEN (Wert zuweisen)
     {
         "type": "var_set",
         "message0": "Schreibe %1 = %2",
@@ -88,7 +84,7 @@ Blockly.defineBlocksWithJsonArray([
         "tooltip": "Weist einer Variablen einen neuen Wert zu."
     },
 
-    // --- 3. LESEN (Wert abrufen) ---
+    // 3. LESEN
     {
         "type": "var_get",
         "message0": "%1",
