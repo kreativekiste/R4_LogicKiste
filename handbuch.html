@@ -128,101 +128,54 @@
       <hr>
 
       <h2>1. EINLEITUNG: WAS IST DIE R4_LOGICKISTE?</h2>
-      <p>Die R4_LogicKiste ist eine visuelle Programmierumgebung, die speziell für den Arduino UNO R4 WiFi entwickelt wurde. Anstatt komplizierten C++ Code von Hand tippen zu müssen, steckst du dein Programm einfach aus bunten Logik-Blöcken (basierend auf Google Blockly) zusammen.</p>
+      <p>Die R4_LogicKiste ist eine visuelle Programmierumgebung, die speziell für den Arduino UNO R4 WiFi entwickelt wurde. Anstatt C++ Code von Hand tippen zu müssen, steckst du das Programm aus Logik-Blöcken zusammen.</p>
       
       <p><strong>Wie funktioniert das?</strong><br>
-      Das Herzstück der LogicKiste ist ein intelligenter Generator, der direkt in deinem Browser läuft. Während du Blöcke auf die Arbeitsfläche ziehst, übersetzt das System deine Logik im Hintergrund in fehlerfreien, hochwertigen Arduino C++ Code. Du lernst also das EVA-Prinzip (Eingabe, Verarbeitung, Ausgabe) intuitiv kennen und kannst dir gleichzeitig den echten Code ansehen, um den Übergang zur Textprogrammierung zu meistern.</p>
+      Das Herzstück der LogicKiste ist ein intelligenter Generator, der direkt im Browser läuft. Während Blöcke auf die Arbeitsfläche gezogen werden, übersetzt das System die Logik im Hintergrund in C++ Code. Du lernst das EVA-Prinzip (Eingabe, Verarbeitung, Ausgabe) intuitiv kennen und kannst dir den Code ansehen, um den Übergang zur Textprogrammierung zu meistern.</p>
       <hr>
 
       <h2>2. NUTZUNG: ONLINE VS. OFFLINE</h2>
-      <p>Die R4_LogicKiste ist extrem flexibel und passt sich deiner Arbeitsumgebung an. Da die gesamte Code-Generierung lokal in deinem Browser über JavaScript passiert, hast du zwei Möglichkeiten:</p>
+      <p>Die gesamte Code-Generierung passiert lokal im Browser. Du hast zwei Möglichkeiten:</p>
 
       <h3>Variante A: Online nutzen (Im Browser)</h3>
-      <p>Du kannst die LogicKiste einfach über die bereitgestellte Webseite aufrufen. Du brauchst keine Installation, um Programme zusammenzuklicken und dir den C++ Code generieren zu lassen. Den generierten Code kannst du dann über den Button "Code kopieren" in deine normale Arduino IDE einfügen und von dort hochladen.<br>
-      <strong>Ideal für:</strong> Tablets, Schulrechner mit Installationssperre oder schnelles Ausprobieren.</p>
+      <p>Die LogicKiste wird über die Webseite aufgerufen. Es ist keine Installation nötig. Den generierten Code kannst du über "Code kopieren" in die Arduino IDE einfügen und hochladen.</p>
 
       <h3>Variante B: Offline nutzen (Lokal auf dem PC)</h3>
-      <p>Du kannst dir demnächst (ist in Arbeit) eine Version der LogicKiste direkt als Download auf GitHub herunterladen. Lade dir dort einfach die kompletten Projektdateien herunter, entpacke den Ordner auf deinem Computer und öffne die Datei <code>index.html</code> mit einem Doppelklick in deinem Webbrowser. So kannst du die LogicKiste komplett lokal und ohne Internetverbindung nutzen.</p>
+      <p>Du kannst die Projektdateien herunterladen, den Ordner entpacken und die Datei <code>index.html</code> im Browser öffnen. So ist die LogicKiste komplett lokal und ohne Internetverbindung nutzbar.</p>
       <hr>
 
-      <h2>3. DER DIREKTE UPLOAD-BUTTON (DIE LOKALE BRIDGE)</h2>
-      <p>Der absolute Clou der R4_LogicKiste ist der "Upload"-Button. Anstatt den Code mühsam in die Arduino IDE zu kopieren, kannst du dein Programm mit nur einem Klick direkt auf deinen Arduino R4 flashen!</p>
-      
-      <p><strong>Warum brauche ich dafür ein Zusatzprogramm?</strong><br>
-      Aus Sicherheitsgründen dürfen Webbrowser nicht direkt auf die USB-Anschlüsse deines Computers zugreifen. Damit der Upload-Button funktioniert, nutzen wir ein kleines Hintergrundprogramm (die Bridge). Sie nimmt den Code aus dem Browser entgegen, kompiliert ihn im Hintergrund und schickt ihn über das USB-Kabel auf den Arduino.</p>
-
-      <h3>ERSTMALIGE EINRICHTUNG DER BRIDGE (Nur einmalig nötig!):</h3>
-      <p><strong>Schritt 1: Arduino-CLI herunterladen</strong></p>
-      <ol>
-        <li>Gehe auf die Arduino Website.</li>
-        <li>Lade die passende Version für dein Betriebssystem herunter (z.B. Windows 64-bit).</li>
-        <li>Entpacke die heruntergeladene .zip-Datei.</li>
-        <li>Verschiebe die darin enthaltene Datei <code>arduino-cli.exe</code> exakt in den Ordner <code>tools</code> deiner R4_LogicKiste.</li>
-      </ol>
-
-      <p><strong>Schritt 2: Python Vorbereitungen</strong></p>
-      <p>Da die Bridge in Python geschrieben ist, muss Python auf deinem PC installiert sein. Außerdem benötigt die Bridge zwei kleine Erweiterungen:<br>
-      Öffne die Eingabeaufforderung (CMD) und tippe folgenden Befehl ein:<br>
-      <code>pip install flask flask-cors</code></p>
-
-      <p><strong>Schritt 3: Welcher USB-Port?</strong></p>
-      <p>Die Bridge muss wissen, an welchem COM-Port dein Arduino R4 hängt. Öffne die Datei <code>last_port.txt</code> in einem Texteditor und trage dort deinen aktuellen Port ein (z. B. COM3, COM11). Speichere die Datei ab.</p>
-
-      <h3>SO STARTEST DU DIE BRIDGE IM ALLTAG:</h3>
-      <p>Mache einfach einen Doppelklick auf die Datei <code>start_bridge.bat</code>.<br>
-      Es öffnet sich ein schwarzes Fenster, das anzeigt:<br>
-      <em>"Bridge laeuft — Port: COM11"</em>.<br>
-      Lass dieses Fenster einfach im Hintergrund offen, während du programmierst!<br>
-      Klickst du nun in der LogicKiste auf "Upload", übernimmt die Bridge vollautomatisch den Rest.</p>
-      <hr>
-
-      <h2>4. BLÖCKE & FUNKTIONEN: KATEGORIE "BOARD"</h2>
-      <p>In dieser Kategorie findest du das absolute Fundament für jedes deiner Programme. Ohne den Programm-Start-Block läuft gar nichts!</p>
+      <h2>3. BOARD</h2>
+      <p>Das Fundament für jedes Programm.</p>
 
       <h3>➔ Block: Programm Start (Main)</h3>
       <ul>
-        <li><strong>Ordner/Datei:</strong> <code>js/app.js</code> (Basiert auf den Core-Generatoren)</li>
-        <li><strong>Menü:</strong> Board ➔ Programm Start</li>
+        <li><strong>Ordner/Datei:</strong> <code>js/generator_core.js</code></li>
+        <li><strong>Menü:</strong> Board</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Das ist das Herzstück deines Codes. Dieser Block ist unverwüstlich (er kann nicht gelöscht werden) und unterteilt dein Programm in drei wichtige Bereiche:</p>
-      <ol>
-        <li><strong>GLOBAL:</strong> Für Bibliotheken und Setup-Einstellungen, die ganz oben im Code stehen müssen.</li>
-        <li><strong>SETUP:</strong> Wird vom Arduino genau ein einziges Mal beim Starten (oder nach einem Reset) ausgeführt. Perfekt, um Pins zu aktivieren oder Bildschirme zu starten.</li>
-        <li><strong>LOOP:</strong> Die Endlosschleife. Alles, was hier angedockt wird, wiederholt der Arduino rasend schnell immer und immer wieder.</li>
-      </ol>
+      Das Herzstück des Codes. Unterteilt das Programm in GLOBAL (Bibliotheken), SETUP (einmalige Ausführung beim Start) und LOOP (Endlosschleife).</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Hier klinkst du alle weiteren Blöcke deines Programms ein.</li>
-        <li><strong>Wichtige Hinweise:</strong> Ohne diesen Block wird kein Code generiert!</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA. Dies ist die Standard-Struktur jedes Arduinos.</li>
+        <li><strong>Praxis-Beispiel:</strong> Hier werden alle weiteren Blöcke des Programms eingeklinkt.</li>
+        <li><strong>Wichtige Hinweise:</strong> Dieser Block kann nicht gelöscht werden. Ohne ihn wird kein Code generiert.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
       <h3>➔ Block: Hardware Interrupt (PC Interrupt)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/board/interrupts.js</code></li>
-        <li><strong>Menü:</strong> Board ➔ PC Interrupt</li>
+        <li><strong>Menü:</strong> Board</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Ein Interrupt ist der "Notfall-Plan" deines Arduinos. Dieser Block schwebt frei auf der Arbeitsfläche und wartet auf ein Ereignis an einem Pin. Sobald dieses eintritt, unterbricht der Arduino sofort seine aktuelle Arbeit (die Loop-Schleife), springt blitzschnell in den Interrupt-Block, führt den Code darin aus und kehrt danach exakt an die Stelle zurück, an der er aufgehört hat.</p>
+      Unterbricht das Hauptprogramm bei einem Flankenwechsel am Pin sofort, führt den angedockten Code aus und kehrt zurück.</p>
       <ul>
-        <li><strong>Die Einstellungen im Block:</strong>
-          <ol>
-            <li><strong>Modus "Taster (Interner PULL-UP)":</strong> Nutze dies, wenn du einen Taster direkt gegen GND (Minus) angeschlossen hast. Der Arduino aktiviert den internen Widerstand für dich.</li>
-            <li><strong>Modus "Sensor (Normaler INPUT)":</strong> Nutze dies für Sensoren, die ein sauberes 5V/0V Signal liefern.</li>
-            <li><strong>Auslösen:</strong> Bestimme, ob die Aktion beim Drücken (FALLING), Loslassen (RISING) oder bei jeder Änderung (CHANGE) starten soll.</li>
-          </ol>
-        </li>
-        <li><strong>Wichtige Hardware-Regel:</strong> Obwohl der R4 sehr flexibel ist, solltest du für Interrupts bevorzugt die Pins 2, 3, 8 oder 13 nutzen. Diese sind physikalisch am besten für Hochgeschwindigkeits-Signale geeignet.</li>
-        <li><strong>Die Goldene Regel für Variablen:</strong> Wenn du in einem Interrupt einen Wert ändern willst (z.B. einen Zähler +1), MUSS diese Variable im Menü "Variablen" mit dem speziellen Block "⚡ ERSTELLE INTERRUPT-VARIABLE" angelegt werden. Nur so weiß der Computer, dass sich dieser Wert jederzeit "flüchtig" (volatile) ändern kann.</li>
-        <li><strong>Achtung:</strong> Im Interrupt darfst du niemals "Warten"-Blöcke (delay) oder komplizierte Dinge wie Laufschriften nutzen! Der Code muss extrem kurz sein, damit das Hauptprogramm nicht ins Stocken gerät.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/PmtCcG-osAk" target="_blank" rel="noopener">Interrupt Pins grafisch programmieren</a></li>
+        <li><strong>Praxis-Beispiel:</strong> Einen Not-Aus-Schalter abfragen oder einen extrem schnellen Drehzahlmesser auslesen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Der Code im Interrupt muss extrem kurz sein (kein delay!). Verwendete Variablen müssen zwingend als Interrupt-Variable (volatile) deklariert sein. Empfohlene Pins am R4: 2, 3, 8 oder 13.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
       <hr>
 
-      <h2>5. BLÖCKE & FUNKTIONEN: KATEGORIE "EINGÄNGE"</h2>
-      <p>Eingänge sind die Sinnesorgane deines Arduinos. Hier liest du die Außenwelt ein. Während normale Eingangs-Blöcke im Loop geduldig darauf warten, dass sie an der Reihe sind, sind INTERRUPTS die "Vordrängler", die sofortige Aufmerksamkeit erzwingen.</p>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Standard Pins</h3>
+      <h2>4. EINGÄNGE</h2>
+      <p>Die Sensoren und Taster des Arduinos.</p>
 
       <h3>➔ Block: Aktiviere internen Pullup</h3>
       <ul>
@@ -230,11 +183,11 @@
         <li><strong>Menü:</strong> Eingänge ➔ Standard Pins</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Dieser Block schaltet den eingebauten Widerstand (Pullup) eines digitalen Pins ein. Dadurch wird der Pin intern dauerhaft unter Strom (HIGH) gesetzt. Das verhindert "flackernde" oder unsaubere Signale, wenn ein Schalter gedrückt wird.</p>
+      Schaltet den internen Widerstand eines digitalen Pins ein, um den Pin dauerhaft auf HIGH zu ziehen.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Perfekt, um nackte Taster direkt zwischen den Pin und den Ground-Anschluss (GND) zu stecken ganz ohne externe Widerstände verbauen zu müssen!</li>
-        <li><strong>Wichtige Hinweise:</strong> Muss zwingend in den SETUP-Block eingefügt werden! Achtung: Die Logik dreht sich dadurch um. Ein gedrückter Taster liefert nun FALSCH (LOW), ein losgelassener liefert WAHR (HIGH).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
+        <li><strong>Praxis-Beispiel:</strong> Nackte Taster direkt zwischen Pin und GND anschließen, ohne externe Widerstände zu verbauen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Muss in den SETUP-Bereich. Ein gedrückter Taster liefert dann LOW (FALSCH), ein losgelassener HIGH (WAHR).</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
       <h3>➔ Block: Lese digitalen PIN</h3>
@@ -243,32 +196,24 @@
         <li><strong>Menü:</strong> Eingänge ➔ Standard Pins</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Liest den Zustand eines Pins aus. Die Antwort ist immer strikt digital, also entweder WAHR (Strom fließt / HIGH) oder FALSCH (Kein Strom / LOW).</p>
+      Liest den Zustand eines Pins aus (WAHR/HIGH oder FALSCH/LOW).</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Auslesen, ob ein Schalter umgelegt, ein Taster gedrückt oder ein digitaler Bewegungsmelder ausgelöst wurde.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> 
-          <a href="https://youtu.be/xZBaKNIeUMQ" target="_blank" rel="noopener">
-            Die Eingänge grafisch programmieren
-          </a>
-        </li>
+        <li><strong>Praxis-Beispiel:</strong> Abfragen, ob ein Schalter umgelegt oder ein Taster gedrückt ist.</li>
+        <li><strong>Wichtige Hinweise:</strong> Pin muss korrekt beschaltet sein (Pullup/Pulldown), um schwebende Zustände zu vermeiden.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3>➔ Block: Lese analogen PIN (A0 - A5)</h3>
+      <h3>➔ Block: Lese analogen PIN</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/input/read_analog.js</code></li>
         <li><strong>Menü:</strong> Eingänge ➔ Standard Pins</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Im Gegensatz zu digitalen Pins, die nur "An" oder "Aus" kennen, misst dieser Block Spannungen stufenlos und gibt sie als Zahlenwert zurück (beim normalen Arduino von 0 bis 1023).</p>
+      Misst Spannungen stufenlos und gibt sie als Zahlenwert zurück.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Die Stellung eines Drehreglers (Potentiometer) bestimmen oder die Helligkeit eines einfachen Lichtsensors auslesen.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> 
-          <a href="https://youtu.be/TRRe3LRM2cQ" target="_blank" rel="noopener">
-            Analoge Eingänge auslesen
-          </a>
-        </li>
+        <li><strong>Praxis-Beispiel:</strong> Stellung eines Drehreglers (Potentiometer) bestimmen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Funktioniert nur an analogen Pins (A0 bis A5).</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
       <h3>➔ Block: Analogwert Glätten</h3>
@@ -277,13 +222,12 @@
         <li><strong>Menü:</strong> Eingänge ➔ Standard Pins</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Dieser Block hilft dir dabei, schwankende analoge Sensorwerte (Rauschen) zu beruhigen, indem er im Hintergrund einen gleitenden Mittelwert über mehrere Messungen bildet.</p>
+      Beruhigt schwankende analoge Sensorwerte durch die Bildung eines gleitenden Mittelwerts.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Stabilisierung von stark schwankenden Messwerten eines Licht- oder Temperatursensors.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
+        <li><strong>Praxis-Beispiel:</strong> Stabilisierung von stark schwankenden Lichtsensorwerten.</li>
+        <li><strong>Wichtige Hinweise:</strong> Benötigt etwas Speicher für das Array im Hintergrund.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Taster & Zähler</h3>
 
       <h3>➔ Block: Tasterdruck Zähler</h3>
       <ul>
@@ -291,10 +235,11 @@
         <li><strong>Menü:</strong> Eingänge ➔ Taster & Zähler</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Ein intelligenter Block, die nicht nur merkt, dass ein Taster gedrückt wurde, sondern direkt mitzählt, <em>wie oft</em>. Er besitzt eine integrierte "Entprell"-Funktion (Debounce). Das verhindert, dass ein einzelner Fingerdruck durch winzige mechanische Wackler im Schalter aus Versehen doppelt oder dreifach gezählt wird.</p>
+      Zählt Tasterdrücke und integriert automatisch eine Entprell-Funktion (Debounce), um mechanische Wackler herauszufiltern.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Den Punktestand in einem Spiel hochzählen oder durch verschiedene Menüseiten auf einem Display schalten.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
+        <li><strong>Praxis-Beispiel:</strong> Menüseiten auf einem Display durchschalten.</li>
+        <li><strong>Wichtige Hinweise:</strong> Ersetzt komplizierte millis()-Konstrukte zur Tasterentprellung.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
       <h3>➔ Block: Drehgeber (Rotary Encoder)</h3>
@@ -303,84 +248,68 @@
         <li><strong>Menü:</strong> Eingänge ➔ Taster & Zähler</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Liest die Drehbewegung eines "Endlos-Drehreglers" aus und speichert die Position direkt in einer Variablen ab. Drehst du nach rechts, steigt die Zahl, drehst du nach links, sinkt sie.</p>
+      Liest die Endlos-Drehbewegung eines Encoders aus und aktualisiert kontinuierlich einen Variablenwert.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Perfekt, um die Helligkeit der LED-Matrix anzupassen oder die Scrollgeschwindigkeit deiner Laufschrift fließend einzustellen.</li>
-        <li><strong>Wichtige Hinweise:</strong> Benötigt zwei digitale Pins (CLK und DT).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
+        <li><strong>Praxis-Beispiel:</strong> Helligkeit einstellen oder in Menüs scrollen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Benötigt zwei Pins (CLK und DT).</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Sensoren</h3>
-
-      <h3>➔ Block: Lese DHT (Temperatur/Feuchtigkeit)</h3>
+      <h3>➔ Block: DHT Sensor (Temperatur/Feuchtigkeit)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/sensor/dht_sensor.js</code></li>
         <li><strong>Menü:</strong> Eingänge ➔ Sensoren</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Liest die exakten Werte eines DHT11 oder DHT22 Sensors aus. Über das Dropdown-Menü kannst du wählen, ob der Block die aktuelle Temperatur (in °C) oder die Luftfeuchtigkeit (in %) als Zahl ausgeben soll.</p>
+      Liest Werte eines DHT11 oder DHT22 aus (Temperatur oder Luftfeuchtigkeit).</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Bau einer eigenen Wetterstation oder Steuerung einer Lüftung, wenn die Temperatur über 25 Grad steigt.</li>
-        <li><strong>Wichtige Hinweise:</strong> Benötigt im Hintergrund oft eine Sensor-Library. DHT Sensoren sind etwas träge lies sie nicht öfter als einmal pro Sekunde aus!</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/PmtCcG-osAk" target="_blank" rel="noopener">DHT und Ultraschall Sensor programmieren</a></li>
+        <li><strong>Praxis-Beispiel:</strong> Steuerung eines Lüfters ab 25 Grad.</li>
+        <li><strong>Wichtige Hinweise:</strong> Benötigt die DHT.h Bibliothek. Maximal einmal pro Sekunde auslesen, da der Sensor extrem träge ist.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3>➔ Block: Ultraschall Entfernung (HC-SR04)</h3>
+      <h3>➔ Block: Ultraschall Sensor (HC-SR04)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/sensor/ultrasonic_hc_sr04.js</code></li>
         <li><strong>Menü:</strong> Eingänge ➔ Sensoren</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Misst die Distanz zu einem Hindernis und gibt den Abstand direkt in Zentimetern aus. Der Sensor sendet einen unhörbaren Ton (wie eine Fledermaus) aus und stoppt die Zeit, bis das Echo zurückkommt.</p>
+      Misst Distanzen zu Hindernissen per Ultraschall-Laufzeit und gibt diese in Zentimetern aus.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Ein Roboterauto, das automatisch vor einer Wand stoppt, oder eine Abstandswarnung per roter LED.</li>
-        <li><strong>Wichtige Hinweise:</strong> Benötigt immer zwei getrennte Pins, einen zum Senden (Trigger) und einen zum Hören (Echo).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/PmtCcG-osAk" target="_blank" rel="noopener">DHT und Ultraschall Sensor programmieren</a></li>
+        <li><strong>Praxis-Beispiel:</strong> Roboterauto vor einer Wand stoppen lassen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Benötigt Trigger- und Echo-Pin. Die integrierte Intervall-Messung verhindert das Blockieren der Loop.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
       <h3>➔ Block-System: Gyro Sensor (MPU6050)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/sensor/gyro_mpu6050.js</code></li>
-        <li><strong>Menü:</strong> Eingänge ➔ Sensoren ➔ Gyro (MPU6050)</li>
+        <li><strong>Menü:</strong> Eingänge ➔ Sensoren</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Liest die Werte eines MPU6050 Beschleunigungs- und Lagesensors aus. Das System besteht aus einem SETUP-Block (der in den Setup-Bereich gehört) und einem Lese-Block. Über ein Dropdown-Menü im Lese-Block wählst du aus, ob die Beschleunigung (X, Y, Z), die Rotation (X, Y, Z) oder die Temperatur ausgegeben werden soll.</p>
+      Liest Beschleunigung, Rotation oder Temperatur über den I2C-Bus aus.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine Wasserwaage bauen oder die Neigung eines ferngesteuerten Autos überwachen.</li>
-        <li><strong>Wichtige Hinweise:</strong> Der Sensor wird über I2C angeschlossen (SDA und SCL).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/yDXp36UNw8E" target="_blank" rel="noopener">GYRO und Temperatur Sensor grafisch programmieren</a></li>
+        <li><strong>Praxis-Beispiel:</strong> Digitale Wasserwaage bauen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Setup-Block muss in den Setup-Bereich. Benötigt Adafruit MPU6050 Library.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
       <h3>➔ Block-System: RFID (RC522)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/advanced/rfid_rc522.js</code></li>
-        <li><strong>Menü:</strong> Eingänge ➔ Sensoren ➔ RFID</li>
+        <li><strong>Menü:</strong> Eingänge ➔ Sensoren</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Das RFID-System in der LogicKiste besteht aus 4 perfekt aufeinander abgestimmten Blöcken:</p>
-      <ol>
-        <li><strong>SETUP:</strong> Startet das System (muss zwingend in den Setup-Bereich!).</li>
-        <li><strong>RFID-Karte lesen und ID ausgeben (Serial):</strong> Liest eine Karte und gibt die ID direkt auf dem seriellen Monitor aus.</li>
-        <li><strong>WENN irgendeine RFID-Karte erkannt:</strong> Ein Prüfblock für deine Wenn-Dann-Abfragen. Gibt WAHR zurück, wenn ein beliebiger Chip an den Leser gehalten wird.</li>
-        <li><strong>WENN RFID-Karte entspricht ID:</strong> Ein Vergleicher, der WAHR zurückgibt, wenn exakt die eingetragene Karten-ID erkannt wird.</li>
-      </ol>
-      <p><strong>Wie finde ich die ID meiner Karte heraus?</strong><br>
-      Um die ID (UID) deiner Karten für den Vergleicher-Block herauszufinden, kannst du den vorbereiteten Code nutzen: <a href="./app/media/card_id_read_arduino.txt" target="_blank" rel="noopener">card_id_read_arduino.txt</a>. Öffne den Link, kopiere den Code in deine Arduino IDE, lade ihn hoch und halte deine Karten an den Leser – die ID erscheint im Seriellen Monitor.</p>
+      Erkennt NFC/RFID-Chips und gleicht deren UID ab.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine Alarmanlage, die nur mit dem richtigen Schlüsselchip deaktiviert werden kann, oder eine Kiste, die sich nur für dich öffnet.</li>
-        <li><strong>Wichtige Hinweise:</strong> Der RFID-Leser kommuniziert über den extrem schnellen SPI-Bus. Das bedeutet, einige Pins sind fest vorgegeben (MISO, MOSI, SCK), während du andere (SDA/RST) frei wählen kannst.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/tWAOvmRNsag" target="_blank" rel="noopener">RFID RC522 Kartenleser grafisch programmieren</a></li>
+        <li><strong>Praxis-Beispiel:</strong> Elektronisches Türschloss.</li>
+        <li><strong>Wichtige Hinweise:</strong> Nutzt den SPI-Bus (MISO, MOSI, SCK fest vorgegeben). Setup-Block muss in den Setup-Bereich.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
       <hr>
 
-      <h2>6. BLÖCKE & FUNKTIONEN: KATEGORIE "AUSGÄNGE"</h2>
-      <p>Während Eingänge die "Sinne" sind, sind die Ausgänge die "Muskeln" und die "Stimme" deines Arduinos. Hier programmierst du alles, was sich bewegen, leuchten oder Daten anzeigen soll.</p>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Standard Pins</h3>
+      <h2>5. AUSGÄNGE</h2>
+      <p>Signale senden, Motoren steuern und Displays beschreiben.</p>
 
       <h3>➔ Block: Schreibe digitalen PIN</h3>
       <ul>
@@ -388,109 +317,89 @@
         <li><strong>Menü:</strong> Ausgänge ➔ Standard Pins</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Schaltet einen ausgewählten Pin entweder auf WAHR (An / 5V) oder FALSCH (Aus / 0V). Das ist der grundlegendste Befehl, um in der Elektronik Dinge zu steuern.</p>
+      Schaltet einen Pin auf HIGH (5V) oder LOW (0V).</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine LED einschalten, ein Relais für eine Wasserpumpe klacken lassen oder einen Summer betätigen.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> 
-          <a href="https://youtu.be/-YyXR4SIE1Q" target="_blank" rel="noopener">
-            Die Ausgänge grafisch programmieren
-          </a>
-        </li>
+        <li><strong>Praxis-Beispiel:</strong> LED einschalten oder Relais schalten.</li>
+        <li><strong>Wichtige Hinweise:</strong> PinMode wird automatisch generiert.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
+
       <h3>➔ Block: Schreibe analogen PIN (PWM)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/output/write_analog.js</code></li>
         <li><strong>Menü:</strong> Ausgänge ➔ Standard Pins</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Dieser Block schaltet einen Pin nicht nur strikt ein oder aus, sondern kann Zwischenwerte von 0 (ganz aus) bis 255 (volle Power) ausgeben. Der Arduino macht das über blitzschnelles Ein- und Ausschalten (Pulsweitenmodulation / PWM).</p>
+      Gibt per Pulsweitenmodulation einen Wert zwischen 0 und 255 aus.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine LED langsam dimmen oder die Geschwindigkeit eines einfachen Gleichstrommotors (über einen Transistor) regeln.</li>
-        <li><strong>Wichtige Hinweise:</strong> Das funktioniert nur an Pins, die die PWM-Funktion unterstützen (meist mit einer Tilde "~" auf dem Board markiert, z. B. Pin 3, 5, 6, 9, 10, 11).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-		<li><strong>Video-Anleitung:</strong> 
-          <a href="https://youtu.be/qrcZVTUd7BA" target="_blank" rel="noopener">
-            Analogen Ausgänge grafisch programmieren
-          </a>
+        <li><strong>Praxis-Beispiel:</strong> LED dimmen oder Motor-Geschwindigkeit regeln.</li>
+        <li><strong>Wichtige Hinweise:</strong> Funktioniert nur an PWM-fähigen Pins (markiert mit ~).</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3>➔ Block: Spiele Ton an Pin (Buzzer)</h3>
+      <h3>➔ Block: Spiele Ton (Buzzer)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/output/output_tone.js</code></li>
         <li><strong>Menü:</strong> Ausgänge ➔ Standard Pins</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Erzeugt ein Tonsignal (Rechteckwelle) an einem bestimmten Pin. Du kannst die Frequenz (in Hertz) und die Dauer (in Millisekunden) festlegen, um Töne oder Melodien über einen Piezo-Buzzer oder kleinen Lautsprecher abzuspielen.</p>
+      Gibt ein Rechtecksignal mit festgelegter Frequenz und Dauer aus.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Ein kurzes Piepsen als Bestätigung bei einem Tastendruck oder eine Alarm-Sirene.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
+        <li><strong>Praxis-Beispiel:</strong> Akustisches Feedback bei Tastendruck.</li>
+        <li><strong>Wichtige Hinweise:</strong> Blockiert das Programm nicht, läuft über Hardware-Timer.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Antrieb (Motoren)</h3>
-
-      <h3>➔ Block: Servo steuern</h3>
+      <h3>➔ Block-System: Servo</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/motor/motors.js</code></li>
-        <li><strong>Menü:</strong> Ausgänge ➔ Antrieb (Motoren)</li>
+        <li><strong>Menü:</strong> Ausgänge ➔ (Motoren)</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Steuert einen Modellbau-Servomotor präzise an. Du übergibst dem Block einfach eine Gradzahl zwischen 0 und 180, und der Motorarm fährt automatisch exakt in diese Position.</p>
+      Fährt einen Servomotor auf einen bestimmten Winkel (0-180 Grad). Enthält Blöcke für direkte Fahrt, Rampen-Fahrt sowie Attach/Detach.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine Schranke öffnen, die Lenkung für ein Roboterauto bauen oder ein Thermometer mit einem echten Zeiger basteln.</li>
-        <li><strong>Wichtige Hinweise:</strong> Servos ziehen oft sehr viel Strom! Schließe große Servos niemals direkt an den 5V Pin des Arduinos an, sondern nutze eine externe Batterie.</li>
-        <li><strong>Servo Rampe:</strong> Es gibt eine Rampe, bei der man einstellen kann, wie schnell der Motor hoch und runter fährt.</li>
-        <li><strong>Servo trennen/verbinden:</strong> Es gibt Servo trennen und Servo verbinden.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/GL532JDNnXQ" target="_blank" rel="noopener">Servo Motoren mit Rampe grafisch programmieren</a></li>
+        <li><strong>Praxis-Beispiel:</strong> Schranke öffnen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Servos benötigen viel Strom. Externe Stromversorgung nutzen.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3>➔ Block-System: Schrittmotoren (Stepper)</h3>
+      <h3>➔ Block-System: Stepper (Schrittmotor)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/motor/stepper_advanced.js</code></li>
-        <li><strong>Menü:</strong> Ausgänge ➔ Antrieb (Motoren)</li>
+        <li><strong>Menü:</strong> Ausgänge ➔ (Motoren)</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Schrittmotoren können (im Gegensatz zu Servos) endlos im Kreis rotieren, wissen aber trotzdem jederzeit millimetergenau, wo sie stehen. Das System besteht aus Blöcken zum Setup (wo Pins und Geschwindigkeit festgelegt werden) und Move-Blöcken, um eine genaue Anzahl an Schritten vorwärts oder rückwärts zu fahren.</p>
+      Präzise Steuerung von Schrittmotoren über Einzelschritte.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Die Achsen eines 3D-Druckers steuern oder einen Präzisions-Futterautomaten bauen.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
+        <li><strong>Praxis-Beispiel:</strong> Achsensteuerung für Automatisierungsprojekte.</li>
+        <li><strong>Wichtige Hinweise:</strong> Setup-Block zwingend im Setup-Bereich platzieren.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Licht & Matrix</h3>
-
-      <h3>➔ Block-System: NeoPixel (WS2812)</h3>
+      <h3>➔ Block-System: NeoPixel</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/visuals/neopixel_basic.js</code></li>
         <li><strong>Menü:</strong> Ausgänge ➔ Licht & Matrix</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Steuert intelligente RGB-LED-Streifen (NeoPixel). Das geniale daran: Du brauchst nur einen einzigen Daten-Pin, um Hunderte von LEDs einzeln in jeder beliebigen Farbe leuchten zu lassen. Zuerst verwendest du den Setup-Block, definierst dann die Farben für einzelne LEDs und schickst das fertige Bild mit dem "Show"-Block an den Streifen.</p>
+      Steuert intelligente WS2812 LED-Streifen. Farben werden gesetzt und mit dem "Show"-Block an die Hardware gesendet.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine coole Treppenbeleuchtung oder ein buntes Stimmungslicht für den Schreibtisch.</li>
-        <li><strong>Wichtige Hinweise:</strong> Benötigt die Adafruit NeoPixel Bibliothek.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/2TuZRbYUtBM" target="_blank" rel="noopener">NeoPixel LED Streifen grafisch programmieren</a></li>
+        <li><strong>Praxis-Beispiel:</strong> Treppenbeleuchtung oder Status-Licht.</li>
+        <li><strong>Wichtige Hinweise:</strong> Benötigt Adafruit_NeoPixel.h. Immer externen Strom nutzen, R4 liefert nicht genug Strom für viele LEDs.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3>➔ Block-System: R4 Onboard Matrix (DAS HIGHLIGHT!)</h3>
+      <h3>➔ Block-System: R4 Onboard Matrix</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/visuals/r4_matrix.js</code></li>
         <li><strong>Menü:</strong> Ausgänge ➔ Licht & Matrix</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Diese Blöcke steuern die eingebaute 12x8 rote LED-Matrix, die sich direkt auf der Platine des Arduino UNO R4 WiFi befindet. Das System bietet dir 5 mächtige Werkzeuge:</p>
-      <ol>
-        <li><strong>Setup:</strong> Startet die Matrix (Muss in den Setup-Bereich!).</li>
-        <li><strong>Symbol zeigen:</strong> Wähle aus fertigen Bildern (Herz, Smiley, X) im Dropdown-Menü.</li>
-        <li><strong>Statischer Text:</strong> Zeigt 2-3 Zeichen oder Zahlen blitzschnell auf der Matrix an. Ideal für schnelle Sensordaten (z.B. vom Encoder), da dieser Block das Programm NICHT blockiert!</li>
-        <li><strong>Laufschrift:</strong> Lässt längere Texte oder Variablen sanft über den Bildschirm scrollen. Das Tempo ist einstellbar. ACHTUNG: Dies ist ein blockierender Befehl. Während der Text läuft, wird das restliche Programm pausiert!</li>
-        <li><strong>Pixel-Liste:</strong> Gib einfach Komma-getrennte Zahlen (0 bis 95) ein, um bestimmte LEDs gezielt anzuschalten. Oben links ist 0, unten rechts ist 95.</li>
-      </ol>
+      Steuert die interne 12x8 LED-Matrix des Arduino R4 WiFi. Bietet Symbole, statischen Text, blockierende Laufschriften und direkte Pixel-Ansteuerung.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Den Punktestand für ein Spiel anzeigen, eine "Bitte lächeln"-Nachricht scrollen lassen oder kleine Animationen bauen.</li>
-        <li><strong>Wichtige Hinweise:</strong> Benötigt die "ArduinoGraphics" Bibliothek im Arduino Bibliotheksverwalter.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ❌ NEIN. Diese Matrix existiert physisch nur auf dem R4 WiFi!</li>
+        <li><strong>Praxis-Beispiel:</strong> Spielstandsanzeige direkt auf dem Mainboard.</li>
+        <li><strong>Wichtige Hinweise:</strong> Setup-Block muss ins Setup. Laufschrift pausiert das Programm.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ❌ NEIN (Nur R4 WiFi Hardware)</li>
       </ul>
 
       <h3>➔ Block-System: MAX7219 Matrix</h3>
@@ -499,460 +408,51 @@
         <li><strong>Menü:</strong> Ausgänge ➔ Licht & Matrix</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Mit diesen Blöcken steuerst du externe, rote 8x8 LED-Matrizen an. Du kannst auch mehrere dieser Module aneinanderreihen. Sie sind der klassische Vorgänger der R4-Onboard-Matrix.</p>
+      Steuert externe 8x8 Dot-Matrix-Module über SPI. Ideal für Laufschriften.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Große Laufschriften für Schaufenster oder ein digitales Tetris-Spiel.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> 
-          <a href="https://youtu.be/6JQCw9YasO8" target="_blank" rel="noopener">
-            8x8 MAX7219 DOT Matrix Module über Arduino Programmieren
-          </a>
-        </li>
+        <li><strong>Praxis-Beispiel:</strong> Große Laufschrift für Fenster.</li>
+        <li><strong>Wichtige Hinweise:</strong> Benötigt MD_Parola.h. Animations-Block muss zyklisch im Loop aufgerufen werden.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
 
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Displays</h3>
-
-      <h3>➔ Block-System: LCD Display (I2C)</h3>
+      <h3>➔ Block-System: I2C LCD Display</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/visuals/lcd_i2c.js</code></li>
         <li><strong>Menü:</strong> Ausgänge ➔ Displays</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Mit diesen Blöcken steuerst du die klassischen Text-Displays (meist blau oder gelb-grün mit 16x2 oder 20x4 Zeichen). Dank des I2C-Moduls auf der Rückseite des Displays benötigst du dafür nur noch 4 Kabel (Strom, GND, SDA, SCL). Du startest das Display im Setup und kannst dann mit dem Text-Block an einer bestimmten Zeile und Spalte schreiben oder weitere Display-Aktionen ausführen.</p>
+      Steuert Text-LCDs über den I2C-Bus (SDA/SCL).</p>
       <ul>
-          <li><strong>Blöcke im System:</strong>
-            <ol>
-                <li><strong>I2C Setup:</strong> Initialisiert das Display. Dieser Block muss zwingend in den <strong>SETUP</strong>-Bereich deines Programms gezogen werden.</li>
-                <li><strong>Schreibe Text:</strong> Schreibt Text an eine bestimmte Zeile und Spalte.</li>
-                <li><strong>Löschen:</strong> Leert das Display.</li>
-                <li><strong>Aktion:</strong> Führt weitere Aktionen wie "Cursor blinken EIN" oder "Hintergrundlicht AUS" aus.</li>
-            </ol>
-          </li>
-        <li><strong>Praxis-Beispiel:</strong> Ausgabe von Sensordaten, Bau eines Taschenrechners oder eines Menüs für eine Maschine.</li>
-        <li><strong>Wichtige Hinweise:</strong> Wenn das Display nur leuchtet, aber keinen Text zeigt, drehe hinten am kleinen blauen Rädchen (Kontrast). Die Standard-I2C-Adresse ist meistens 0x27, manchmal auch 0x3F.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-		<li><strong>Video-Anleitung:</strong> 
-          <a href="https://youtu.be/vr8qv0HhDF0" target="_blank" rel="noopener">
-            LCD über I2C über Arduino Programmieren
-          </a>
-        </li>
+        <li><strong>Praxis-Beispiel:</strong> Text-Menü für Steuerungen.</li>
+        <li><strong>Wichtige Hinweise:</strong> Setup-Block erforderlich. I2C Adresse prüfen (oft 0x27 oder 0x3F).</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
-      <h3>➔ Block-System: Farbige TFT Displays</h3>
+
+      <h3>➔ Block-System: TFT Displays</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/visuals/tft_displays.js</code></li>
         <li><strong>Menü:</strong> Ausgänge ➔ Displays</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Diese Blöcke bringen richtig Farbe ins Spiel! Du kannst grafische TFT Bildschirme (ST7735 oder ILI9486) ansteuern, um bunten Text, Rechtecke, Kreise oder Linien zu zeichnen. Zuerst wählst du den passenden Setup-Block für deinen Bildschirm-Typ, danach stehen dir alle Zeichen- Befehle frei zur Verfügung.</p>
+      Farb-Displays (ST7735 / ILI9486) zur grafischen Ausgabe von Formen und Text.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine bunte Wetterstation, ein kleines Oszilloskop oder sogar kleine Videospiele.</li>
-        <li><strong>Wichtige Hinweise:</strong> TFT-Displays nutzen den SPI-Bus und benötigen viele Kabel. Sie sind außerdem extrem speicherhungrig. Hier glänzt der Arduino R4 mit seinem großen Speicher!</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA. (Achtung: Auf dem klassischen R3 wird bei komplexen Grafiken sehr schnell der Speicherplatz knapp).</li>
+        <li><strong>Praxis-Beispiel:</strong> Sensor-Dashboard oder Oszilloskop.</li>
+        <li><strong>Wichtige Hinweise:</strong> Extrem speicherhungrig. Nutzt den SPI Bus.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ⚠️ EINGESCHRÄNKT (RAM-Limit beim R3)</li>
       </ul>
-	  <li><strong>Video-Anleitung:</strong> 
-          <a href="https://youtu.be/Zssf6LC9A5g" target="_blank" rel="noopener">
-            TFT mit ILI9486_SPI.h über Arduino Programmieren
-          </a>
-        </li>
-      <h3>➔ Block-System: TM1637 & TM1638 (7-Segment Anzeigen)</h3>
+
+      <h3>➔ Block-System: TM Displays (TM1637 / TM1638)</h3>
       <ul>
         <li><strong>Ordner/Datei:</strong> <code>blocks/visuals/visu_tm.js</code></li>
         <li><strong>Menü:</strong> Ausgänge ➔ Displays</li>
       </ul>
       <p><strong>Beschreibung:</strong><br>
-      Das TM1637 ist eine klassische 4-stellige Digitaluhr-Anzeige (7-Segment). Das TM1638 ist der große Bruder mit 8 Ziffern, 8 zusätzlichen roten LEDs und 8 integrierten Tastern! Beide Module sind extrem leicht zu verkabeln und eignen sich hervorragend für schnelle Zahlenausgaben.</p>
+      7-Segment-Anzeigen. TM1637 für 4 Ziffern, TM1638 für 8 Ziffern inklusive LEDs und Tasterauswertung.</p>
       <ul>
-        <li><strong>Praxis-Beispiel:</strong> Bau einer eigenen Stoppuhr, eines Weckers oder eines Spielstand-Zählers für Tischkicker.</li>
-        <li><strong>Wichtige Hinweise:</strong> Auch hier gibt es einen Setup-Block, der die Pins festlegt. Danach kannst du einfach Zahlen oder Variablen andocken.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
+        <li><strong>Praxis-Beispiel:</strong> Digitale Stoppuhr oder Tastenpult.</li>
+        <li><strong>Wichtige Hinweise:</strong> Setup-Block muss ins Setup.</li>
+        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA</li>
       </ul>
-      <hr>
-
-      <h2>7. BLÖCKE & FUNKTIONEN: KATEGORIE "LOGIK"</h2>
-      <p>Die Logik-Kategorie ist das eigentliche Gehirn deines Codes. Hier trifft der Arduino Entscheidungen, rechnet Werte um und vergleich Zustände miteinander.</p>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Vergleiche & Logik</h3>
-
-      <h3>➔ Block: Vergleichen (=, >, <, ≠)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/logic_compare.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Dieser Block vergleicht zwei Werte miteinander und gibt als Antwort immer nur WAHR oder FALSCH zurück. Du kannst prüfen, ob eine Zahl größer, kleiner oder exakt gleich einer anderen Zahl (oder Variable) ist.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Gehört in jede WENN-DANN-Abfrage! Zum Beispiel: "WENN Temperatur > 25, DANN schalte Lüfter an".</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Logische Verknüpfung (UND / ODER)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/logic_operation.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Verbindet zwei Bedingungen miteinander. Bei "UND" müssen BEIDE Bedingungen erfüllt sein, damit das Ergebnis WAHR ist. Bei "ODER" reicht es, wenn nur eine von beiden zutrifft.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> "WENN Taster1 gedrückt UND Taster2 gedrückt, DANN starte die Rakete".</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: NICHT (Invertieren)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/logic_negate.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Dreht die Logik komplett um. Aus WAHR wird FALSCH und aus FALSCH wird WAHR.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Sehr praktisch, wenn du mit internen Pullup-Tastern arbeitest. Da diese gedrückt ein "LOW" (Falsch) liefern, kannst du es mit diesem Block zu einem "WENN NICHT Pin 4, DANN..." umbauen.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Logik-Test (Ternärer Operator)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/logic_ternary.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Dieser Block ist eine extrem kompakte Form einer Wenn-Dann-Bedingung. Er prüft eine Bedingung (den Test). Ist die Bedingung wahr, gibt der Block den ersten Wert zurück. Ist sie falsch, gibt er den zweiten Wert zurück.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Dem Text-Block für ein Display je nach Zustand das Wort "AN" oder "AUS" übergeben, ohne eine riesige Wenn-Dann-Schleife bauen zu müssen.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Mathematik</h3>
-
-      <h3>➔ Block: Grundrechenarten (+, -, *, /)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/math_arithmetic.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Der klassische Taschenrechner. Nimmt zwei Zahlen oder Variablen und addiert, subtrahiert, multipliziert oder dividiert sie.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Ausrechnen von Distanzen oder Umrechnen von Sensorwerten (z. B. Sensorwert minus 10).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Modulo (Rest der Division)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/math_modulo.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Dieser mathematische Block teilt eine Zahl durch eine andere und gibt nur den Rest der Division aus (z.B. 10 geteilt durch 3 ergibt einen Rest von 1).</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Überprüfen, ob eine Zahl gerade oder ungerade ist (Rest bei Teilung durch 2 ist 0 oder 1), oder um Aktionen nur bei jedem zehnten Durchlauf auszuführen.</li>
-        <li><strong>Wichtige Hinweise:</strong> Dieser Block rechnet in C++ ausschließlich mit ganzen Zahlen (Ganzzahl-Division).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Wertebereich umschreiben (Map-Funktion)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/math_map.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Einer der wichtigsten Befehle in der Arduino-Welt! Er nimmt einen Zahlenwert aus einem bestimmten Bereich und quetscht oder dehnt ihn proportional in einen völlig neuen Bereich.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Ein analoger Regler liefert Werte von 0 bis 1023. Ein Servomotor braucht aber Werte von 0 bis 180. Der Map-Block rechnet das automatisch und völlig fehlerfrei für dich um!</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Wert begrenzen (Constrain)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/math_constrain.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Dieser Block fungiert als "Sicherheits-Türsteher" für deine Zahlen. Du gibst einen Mindest- und einen Maximalwert an. Ist deine Zahl zu klein, wird sie auf das Minimum angehoben. Ist sie zu groß, wird sie auf das Maximum gekappt.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Verhindert, dass ein Motor kaputtgeht, weil der Code aus Versehen versucht, eine Geschwindigkeit von 300 statt maximal 255 zu senden.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Zufallszahl (Random)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/math_random.js</code></li>
-        <li><strong>Menü:</strong> Logik</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Wirft einen unsichtbaren Würfel und liefert dir eine zufällige Zahl zwischen einem Minimum und einem Maximum.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Bau eines digitalen Würfels (1 bis 6) oder zufällige Farbwechsel bei einem NeoPixel-Streifen.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Steuerung & Zustände</h3>
-
-      <h3>➔ Block-System: Zustandsautomat (Switch-Case)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/state_machine.js</code></li>
-        <li><strong>Menü:</strong> Steuerung</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Der Zustandsautomat ist ein extrem mächtiges Werkzeug, um Ablaufsteuerungen (wie eine Ampel oder ein Menü) zu programmieren, ohne sich in hunderten "Wenn-Dann"-Schleifen zu verheddern. Er prüft den Wert einer Variablen und springt sofort zu dem passenden "Zustand".</p>
-      
-      <p><strong>So steckst du die Blöcke richtig zusammen (Häufiger Fehler!):</strong><br>
-      In der Programmierung muss erst gezählt oder gerechnet werden, und <em>danach</em> wertet der Automat die fertige Zahl aus.</p>
-      <ol>
-        <li>Ziehe den Zähler-Block (oder Sensor-Block) <strong>über</strong> den Zustandsautomaten in den Loop-Bereich. Stecke ihn NICHT in die Lücke des Automaten!</li>
-        <li>Staple alle violetten "Bei Zustand"-Blöcke <strong>in die Lücke (den Bauch)</strong> des Zustandsautomaten. Der Automat ist der Container, in den diese Zustände zwingend hineingehören.</li>
-      </ol>
-      <img src="./app/media/state_machine.jpg" alt="Korrekter Aufbau des Zustandsautomaten" style="max-width: 100%; border-radius: 8px; margin: 15px 0; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine Ampelsteuerung programmieren, bei der die Zustände 1 (Rot), 2 (Rot-Gelb), 3 (Grün) und 4 (Gelb) nacheinander durchgeschaltet werden.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-        <li><strong>Video-Anleitung:</strong> <a href="https://youtu.be/BK362ktQeKY" target="_blank" rel="noopener">Zustandsautomat (State Machine) grafisch programmieren</a></li>
-      </ul>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Schleifen & Wiederholungen</h3>
-
-      <h3>➔ Block: Zählschleife (FOR)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/loop_for.js</code></li>
-        <li><strong>Menü:</strong> Steuerung</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Führt den angedockten Code eine exakt festgelegte Anzahl von Malen aus. Dabei wird eine Zählervariable (z.B. "i") bei jedem Durchlauf automatisch hoch- oder runtergezählt.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Alle LEDs eines NeoPixel-Streifens nacheinander einschalten, indem die Zählervariable direkt als LED-Nummer verwendet wird.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-      <hr>
-
-      <h2>8. BLÖCKE & FUNKTIONEN: KATEGORIE "VARIABLEN"</h2>
-      <p>Variablen sind wie beschriftete Schubladen in deinem Arduino. Du kannst dort Zahlen oder Texte hineinlegen, sie dir später wieder herausholen, sie verändern oder löschen. Sie sind unverzichtbar, um sich Dinge im Programmablauf zu merken.</p>
-
-      <h3>➔ Button: Neue Variable erstellen...</h3>
-      <ul>
-        <li><strong>Menü:</strong> Variablen</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Über diesen Button in der Werkzeugleiste kannst du eine neue Variable für Dropdown-Menüs registrieren, ohne dass sich bestehende Blöcke auf der Arbeitsfläche automatisch mit umbenennen.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine saubere Trennung von verschiedenen Sensor-Werten sicherstellen.</li>
-      </ul>
-
-      <h3>➔ Die verschiedenen Datentypen</h3>
-      <p><strong>Beschreibung:</strong><br>
-      Beim Erstellen einer Variable musst du dem Arduino mitteilen, welche Art von Daten in diese "Schublade" passen soll. Folgende Typen stehen zur Auswahl:</p>
-      <ul>
-        <li><strong>const int:</strong> Eine unveränderliche Ganzzahl. Ideal für Pin-Nummern, da dies Speicherplatz spart und für mehr Performance sorgt.</li>
-        <li><strong>int:</strong> Eine normale Ganzzahl (z.B. 10, -5, 1024).</li>
-        <li><strong>float:</strong> Eine Kommazahl (z.B. 3.14). Nützlich für genaue Sensorwerte oder Berechnungen.</li>
-        <li><strong>String:</strong> Ein Text oder eine Zeichenkette (z.B. "Hallo Welt").</li>
-        <li><strong>bool:</strong> Ein Wahrheitswert, der nur exakt zwei Zustände annehmen kann: WAHR (true) oder FALSCH (false).</li>
-        <li><strong>long:</strong> Eine besonders große Ganzzahl. Wird oft für Zeitberechnungen mit <code>millis()</code> verwendet.</li>
-      </ul>
-
-      <h3>➔ Block: Variable deklarieren (Erstellen)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/board/variables_basic.js</code></li>
-        <li><strong>Menü:</strong> Variablen</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Bevor du eine Schublade nutzen kannst, musst du sie bauen und beschriften. Mit diesem Block erstellst du eine neue Variable und legst fest, ob sie Text (String), ganze Zahlen (int) oder Kommazahlen (float) speichern soll.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Eine Variable namens "Punktestand" als Zahl (int) erstellen und ihr am Start den Wert 0 geben.</li>
-        <li><strong>Wichtige Hinweise:</strong> Variablen sollten am besten ganz oben in den GLOBAL-Bereich deines "Programm Start"-Blocks gepackt werden, damit das gesamte Programm jederzeit darauf zugreifen kann.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Setze Variable / Lese Variable</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/board/variables_basic.js</code></li>
-        <li><strong>Menü:</strong> Variablen</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Der "Setze"-Block legt einen neuen Wert in deine Schublade (überschreibt den alten). Der "Lese"-Block holt den aktuellen Wert aus der Schublade heraus, um ihn zum Beispiel auf einem Display anzeigen oder in einer Rechnung zu verwenden.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> "Setze [Punktestand] auf [Punktestand + 1]".</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block: Text / Zahl (Eingabefelder)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/board/var_literals.js</code></li>
-        <li><strong>Menü:</strong> Variablen</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Das sind deine rohen Bausteine. Ein einfacher Block, in den du eine Zahl oder ein Wort eintippst, um diesen an andere Blöcke (wie Displays, Laufschriften oder Variablen) anzudocken.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Den Text "Hallo Welt" in einen Laufschrift-Block stecken.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3 style="color: #2c3e50;">➔ UNTERKATEGORIE: Tabellen (Arrays)</h3>
-
-      <h3>➔ Block-System: Tabellen (Arrays)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/array_tables.js</code></li>
-        <li><strong>Menü:</strong> Variablen ➔ Tabellen (Arrays)</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Mit Tabellen (Arrays) kannst du viele Werte des gleichen Datentyps übersichtlich unter einem einzigen Namen abspeichern (wie in einem Karteikasten). Das System besteht aus drei Blöcken:</p>
-      <ol>
-        <li><strong>Erstelle Tabelle:</strong> Legt den Namen, den Datentyp und die Anzahl der Fächer fest. Dieser Block muss in den GLOBAL-Bereich.</li>
-        <li><strong>Schreibe in Fach:</strong> Legt einen bestimmten Wert in ein exaktes Fach der Tabelle.</li>
-        <li><strong>Lese Tabelle:</strong> Holt den Wert aus einem bestimmten Fach heraus.</li>
-      </ol>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Messwerte der letzten 10 Tage abspeichern oder eine Liste von PIN-Nummern für 8 LEDs verwalten.</li>
-        <li><strong>Wichtige Hinweise:</strong> In der Programmierung beginnt die Zählung der Fächer (der Index) immer bei 0! Eine Tabelle mit 10 Fächern hat also die Fächer 0 bis 9.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-      <hr>
-
-      <h2>9. BLÖCKE & FUNKTIONEN: KATEGORIE "UNTERPROGRAMME"</h2>
-      <p>Wenn dein Programm riesig wird, verliert man schnell den Überblick. Unterprogramme (Funktionen) helfen dir, deinen Code aufzuräumen, indem du wiederkehrende Aufgaben auslagerst.</p>
-
-      <h3>➔ Block: Unterprogramm definieren & aufrufen</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/functions/functions_custom.js</code></li>
-        <li><strong>Menü:</strong> Unterprogramme</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Mit dem "Definiere"-Block baust du eine eigene Mini-Maschine. Du gibst ihr einen Namen (z.B. "AlarmAusloesen") und packst dort Blöcke rein (Rotes Licht an, Summer an, Text auf Display). Im normalen Loop-Programm ziehst du dann nur noch den kleinen "Aufrufen"-Block rein. Der Arduino springt dann zum Unterprogramm, arbeitet es ab und springt zurück.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Komplexe Lauflicht-Muster für die NeoPixel bauen und sie mit einem einzigen kleinen Block immer wieder aufrufen.</li>
-        <li><strong>Wichtige Hinweise:</strong> Definiere Unterprogramme immer außerhalb deiner Haupt-Schleife (Loop).</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-      <hr>
-
-      <h2>10. BLÖCKE & FUNKTIONEN: KATEGORIE "ERWEITERT"</h2>
-      <p>Hier liegen die Spezialwerkzeuge für fortgeschrittene Projekte. Speichere Daten dauerhaft ab, kommuniziere mit dem PC oder greife direkt in den C++ Code ein!</p>
-
-      <h3>➔ Block-System: Serial Communication (PC-Verbindung)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/advanced/serial_com.js</code> und <code>blocks/advanced/serial_number_com.js</code></li>
-        <li><strong>Menü:</strong> Erweitert ➔ Serial</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Ermöglicht dem Arduino, über das USB-Kabel mit dem PC (dem Seriellen Monitor in der Arduino IDE) zu sprechen. Du musst die Verbindung im Setup starten (meist mit 9600 Baud) und kannst dann Texte und Zahlen an den PC senden (Print) oder Befehle vom PC empfangen (Lese Serial Daten als Text oder Zahl).</p>
-      
-      <p><strong>Wichtig: Das Zeilenende im Serial Monitor</strong><br>
-      Wenn du Werte vom PC an den Arduino sendest und die Enter-Taste drückst, sendet der PC oft unsichtbare Steuerzeichen (wie einen Zeilenumbruch) mit. Das kann dazu führen, dass dein Arduino eine saubere Zahl liest und direkt danach eine ungewollte "0" empfängt, weil er versucht, das unsichtbare Enter-Zeichen als Zahl zu interpretieren. Unten rechts im Serial Monitor kannst du im Dropdown-Menü exakt steuern, was mitgesendet wird:</p>
-      <ul>
-        <li><strong>Kein Zeilenende:</strong> Ignoriert die Enter-Taste komplett und sendet zu 100% nur das, was du eingetippt hast. <strong>Das ist die empfohlene Einstellung für das Senden von reinen Zahlen!</strong></li>
-        <li><strong>Neue Zeile:</strong> Hängt ein unsichtbares Zeichen (Newline / NL oder <code>\n</code>) an. Nützlich, wenn der Arduino auf das genaue Ende eines langen Satzes warten soll.</li>
-        <li><strong>Zeilenumbruch (CR):</strong> Hängt ein unsichtbares "Carriage Return" (<code>\r</code>) an. (Ein Relikt aus der Zeit der mechanischen Schreibmaschinen).</li>
-        <li><strong>Beides CR/LF:</strong> Sendet beide Steuerzeichen mit. (Wird oft als Standard von externen WLAN- oder Bluetooth-Modulen verwendet).</li>
-      </ul>
-
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Sensorwerte live am Computerbildschirm überwachen oder PWM-Werte für LEDs per Tastatureingabe vom PC aus live an den Arduino senden.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block-System: Flash / EEPROM</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/advanced/eeprom_r4.js</code></li>
-        <li><strong>Menü:</strong> Erweitert ➔ Flash / EEPROM</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Normale Variablen werden gelöscht, sobald der Arduino vom Strom getrennt wird. Der EEPROM ist das Langzeitgedächtnis deines Boards. Speicherst du hier eine Zahl ab, ist sie auch nach einem Stromausfall oder Neustart noch da.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Den Highscore in einem Spiel speichern oder sich merken, wie oft eine Tür geöffnet wurde.</li>
-        <li><strong>Wichtige Hinweise:</strong> Der EEPROM hat nur eine begrenzte Lebensdauer an Schreibvorgängen (ca. 100.000 Mal). Speichere hier Daten also nur, wenn sie sich ändern, nicht bei jedem Schleifendurchlauf in der Loop!</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA. (Achtung: Der R4 hat intern eine etwas andere Speicherarchitektur als der R3, aber die Blöcke übernehmen diese Anpassung im Hintergrund für dich).</li>
-      </ul>
-
-      <h3>➔ Block-System: SD Karte</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/advanced/sd_card.js</code></li>
-        <li><strong>Menü:</strong> Erweitert ➔ SD Karte</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Erlaubt das Lesen und Schreiben von Textdateien (.txt) auf einer echten Micro-SD-Karte (über ein angeschlossenes SD-Modul).</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Einen Datenlogger bauen, der alle 10 Minuten Temperatur und Uhrzeit auf einer SD-Karte protokolliert, um sie später in Excel auszuwerten.</li>
-        <li><strong>Wichtige Hinweise:</strong> SD-Karten-Module benötigen den SPI-Bus. Achte auf die exakte Pin-Belegung für SCK, MISO, MOSI und CS.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA.</li>
-      </ul>
-
-      <h3>➔ Block-System: C++ Notausgang (Inline & Global)</h3>
-      <ul>
-        <li><strong>Ordner/Datei:</strong> <code>blocks/advanced/custom_cpp.js</code></li>
-        <li><strong>Menü:</strong> Erweitert ➔ C++ Notausgang</li>
-      </ul>
-      <p><strong>Beschreibung:</strong><br>
-      Wenn du einen Befehl oder eine spezielle Bibliothek verwenden möchtest, für die es in der LogicKiste (noch) keinen eigenen bunten Block gibt, ist das dein Retter in der Not. Du tippst einfach reinen C++ Code in das Textfeld des Blocks. Dieser Code wird dann 1:1 und ohne Prüfung direkt in den generierten Arduino-Code übernommen.</p>
-      <ul>
-        <li><strong>Praxis-Beispiel:</strong> Das Einbinden eines völlig neuen, unbekannten Sensors aus dem Internet.</li>
-        <li><strong>Wichtige Hinweise:</strong> Hier musst du auf Semikolons (;) am Zeilenende achten! Die LogicKiste kann Tippfehler in diesem Block nicht abfangen.</li>
-        <li><strong>UNO R3 Kompatibel:</strong> ✅ JA. (Abhängig davon, welchen Code du eintippst!)</li>
-      </ul>
-      <hr>
-
-      <h2>11. TROUBLESHOOTING & HÄUFIGE FEHLER (FAQ)</h2>
-      <p>Programmieren bedeutet manchmal auch Fehlersuche. Keine Sorge, das gehört dazu! Hier sind die häufigsten Stolperfallen und wie du sie in Sekunden lösen kannst.</p>
-
-      <h3>❌ FEHLER: Klick auf "Upload" zeigt "Keine Bridge / Fehler"</h3>
-      <p><strong>Ursache:</strong> Der Browser kann deinen Arduino nicht finden, weil das Hintergrundprogramm (die Bridge) nicht läuft oder der falsche USB-Port eingestellt ist.</p>
-      <p><strong>Lösung:</strong></p>
-      <ol>
-        <li>Läuft die Bridge? Stelle sicher, dass du die <code>start_bridge.bat</code> per Doppelklick gestartet hast und das schwarze Fenster im Hintergrund geöffnet ist.</li>
-        <li>Stimmt der Port? Prüfe in deiner Arduino IDE, an welchem COM-Port der "Arduino UNO R4 WiFi" angeschlossen ist. Öffne dann die Datei <code>last_port.txt</code> im Ordner deiner LogicKiste, trage genau diesen Port ein (z. B. COM5) und speichere die Datei. Starte die Bridge danach neu.</li>
-      </ol>
-
-      <h3>❌ FEHLER: "Kompilierungsfehler" beim Upload (Rote Fehlermeldung)</h3>
-      <p><strong>Ursache:</strong> Der C++ Code ist fehlerfrei generiert worden, aber dem Compiler auf deinem PC fehlt eine wichtige Bibliothek, um den Code zu übersetzen. Das passiert oft bei der R4 Matrix oder NeoPixeln.</p>
-      <p><strong>Lösung:</strong></p>
-      <ol>
-        <li>Öffne die normale Arduino IDE auf deinem PC.</li>
-        <li>Klicke links auf das "Bibliotheksverwalter"-Symbol (die Bücher).</li>
-        <li>Suche nach der fehlenden Bibliothek und klicke auf "Installieren".<br>
-        - Für die R4 Text-Laufschrift suche nach: "ArduinoGraphics"<br>
-        - Für bunte LED-Streifen suche nach: "Adafruit NeoPixel"<br>
-        - Für den Temperatursensor suche nach: "DHT sensor library" (von Adafruit)</li>
-        <li>Gehe zurück in die LogicKiste und drücke erneut auf Upload.</li>
-      </ol>
-
-      <h3>❌ FEHLER: Das Programm "hängt" (Taster reagieren nicht mehr)</h3>
-      <p><strong>Ursache:</strong> Du verwendest wahrscheinlich einen Block, der das Programm "blockiert", zum Beispiel den "Laufschrift"-Block für die Matrix oder zu viele lange "Warte (Delay)"-Blöcke.</p>
-      <p><strong>Lösung:</strong><br>
-      Während eine Laufschrift über das Display wandert oder ein Delay abläuft, ist der Arduino taub! Tausche für schnelle Messwerte (wie Drehencoder oder fließende Sensordaten) den Laufschrift-Block gegen den Block "Zeige statisch:" aus. Dieser zeigt Werte blitzschnell an, ohne den Code anzuhalten.</p>
-
-      <h3>❌ FEHLER: Ich habe neue Blöcke hinzugefügt, sehe sie aber nicht</h3>
-      <p><strong>Ursache:</strong> Dein Webbrowser hat sich eine alte Version der Seite gemerkt (Browser-Cache), um Ladezeiten zu sparen.</p>
-      <p><strong>Lösung:</strong><br>
-      Drücke auf deiner Tastatur gleichzeitig "Strg + F5" (Windows) oder "Cmd + Shift + R" (Mac). Das zwingt den Browser, den Speicher zu leeren und die allerneueste Version deiner LogicKiste zu laden.</p>
-
-      <h3>❌ FEHLER: Export sagt "Kein PROGRAMM START Block gefunden!"</h3>
-      <p><strong>Ursache:</strong> Du hast den blauen Hauptblock gelöscht oder er wurde beim Laden eines alten Projekts nicht richtig wiederhergestellt.</p>
-      <p><strong>Lösung:</strong><br>
-      Ohne den "Programm Start"-Block kann kein C++ Code gebaut werden. Lade die Seite neu (F5), um einen frischen Start-Block zu erhalten, und baue dein Programm direkt in diesen Block hinein.</p>
-      <hr>
-
-      <h2>DISCLAIMER / HAFTUNGSAUSSCHLUSS FÜR DIE R4_LOGICKISTE</h2>
-
-      <p><strong>WICHTIGER HINWEIS (Bitte vor der Nutzung lesen):</strong></p>
-      <p>Die "R4_LogicKiste" befindet sich aktuell in einer frühen Entwicklungsphase (PRE-BETA). Das Tool und der darin generierte C++ Code dienen ausschließlich zu Bildungszwecken und zum privaten Basteln.</p>
-      <p>Die Nutzung der Software sowie des generierten Codes erfolgt absolut auf eigene Gefahr. Ich übernehme keine Haftung für Schäden an Hardware (wie defekte Arduinos oder Sensoren), Datenverlust oder sonstige Folgeschäden, die durch die Nutzung dieses Tools entstehen.</p>
-
-      <h3 style="color: #2c3e50;">AUSFÜHRLICHER HAFTUNGSAUSSCHLUSS</h3>
-
-      <p><strong>1. Entwicklungsstatus (Pre-Beta)</strong><br>
-      Die R4_LogicKiste ist ein laufendes Hobby-Projekt und befindet sich derzeit in einer Pre-Beta-Phase. Das bedeutet, dass Funktionen möglicherweise fehlerhaft sind, Blöcke unerwartete Ergebnisse liefern können und das System noch nicht vollständig getestet wurde.</p>
-
-      <p><strong>2. Generierter C++ Code</strong><br>
-      Der durch das Google Blockly System generierte C++ Code wird automatisch erstellt. Obwohl die Generatoren sorgfältig programmiert wurden, kann es vorkommen, dass der Code Fehler enthält (Bugs), den Arduino blockiert oder bei falscher Beschaltung der Hardware Komponenten beschädigt (z. B. durch Kurzschlüsse oder falsche Pin-Zuweisungen). Der Anwender ist in jedem Fall verpflichtet, den generierten Code vor dem Upload zu prüfen und die elektronische Schaltung abzusichern. Der C++ Code wird kontinuierlich geprüft und optimiert, eine Garantie für fehlerfreie Funktion gibt es jedoch nicht.</p>
-
-      <p><strong>3. Haftung für Sach- und Folgeschäden</strong><br>
-      Ich stelle lediglich dieses Software-Werkzeug kostenfrei zur Verfügung. Ich hafte nicht für:</p>
-      <ul>
-        <li>Zerstörte oder beschädigte Mikrocontroller (Arduino), Sensoren, Motoren oder PC-Schnittstellen (USB).</li>
-        <li>Ausfallzeiten oder Datenverluste, die durch die lokale Bridge oder den Upload-Prozess entstehen.</li>
-        <li>Schäden jeglicher Art, die durch fehlerhaft generierten Code verursacht werden.</li>
-      </ul>
-
-      <p><strong>4. Gewerbliche und kritische Nutzung untersagt</strong><br>
-      Die mit der R4_LogicKiste erstellten Programme dürfen nicht für sicherheitskritische Anlagen (z. B. Maschinensteuerungen, Alarmanlagen für Wertgegenstände, medizinische Geräte oder Fahrzeugtechnik) eingesetzt werden. Die Nutzung ist rein für den Hobby-, Schul- und Maker-Bereich gedacht.</p>
-
-      <p>Mit der Nutzung der R4_LogicKiste erklärst du dich mit diesem Haftungsausschluss einverstanden.</p>
 
     </div>
   </main>
@@ -960,10 +460,10 @@
   <footer>
     <div class="footer-links">
       <a href="./impressum.html">Impressum</a>
-	  <a href="./kontakt.html">Kontakt</a>
+      <a href="./kontakt.html">Kontakt</a>
       <a href="./datenschutz.html">Datenschutz</a>
     </div>
-    <p>Ein Projekt von Ronnie Berzins. Copyright &copy; 2026</p>
+    <p>Ein Projekt von Ronnie Berzins. Copyright © 2026</p>
   </footer>
 
 </body>
