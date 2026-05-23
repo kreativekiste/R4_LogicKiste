@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Arduino R4_LogicKiste</title>
+    
+    <script src="./js/blockly_compressed.js"></script>
+    <script src="./js/javascript_compressed.js"></script>
+    <script src="./js/de.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="title">Arduino R4_LogicKiste</div>
+    
+    <a href="../index.html" class="btn btn-ui" style="text-decoration: none; margin-right: 20px;">
+    ⬅ Startseite
+    </a>
+    
+    <div class="header-controls">
+        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
+        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
+        <div style="width: 10px;"></div> 
+
+        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
+        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
+        <div style="width: 20px;"></div> 
+        
+        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
+        <label class="btn btn-load" for="fileInput">📂 Laden</label>
+        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
+        <div style="width: 20px;"></div>
+
+        <button class="btn btn-ui" id="copyBtn" onclick="copyGeneratedCode()">📋 Code kopieren</button>
+    </div>
+
+    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">C++ Export</div>
+</header>
+
+<div id="main">
+    <div id="blocklyDiv"></div>
+    <div id="codeExport">// Lade Blöcke...</div>
+</div>
+
+<script src="./js/generator_core.js"></script>
+
+<script src="./blocks/board/interrupts.js"></script>
+<script src="./blocks/board/variables_basic.js"></script>
+<script src="./blocks/board/var_literals.js"></script>
+
+<script src="./blocks/input/setup_pullup.js"></script>
+<script src="./blocks/input/read_digital.js"></script>
+<script src="./blocks/input/read_analog.js"></script>
+<script src="./blocks/input/analog_smooth.js"></script> 
+<script src="./blocks/input/input_counter.js"></script>
+<script src="./blocks/input/input_encoder.js"></script>
+
+<script src="./blocks/sensor/dht_sensor.js"></script>
+<script src="./blocks/sensor/ultrasonic_hc_sr04.js"></script>
+<script src="./blocks/sensor/gyro_mpu6050.js"></script> 
+
+<script src="./blocks/output/write_digital.js"></script>
+<script src="./blocks/output/write_analog.js"></script>
+<script src="./blocks/output/output_tone.js"></script> 
+
+<script src="./blocks/motor/motors.js"></script>
+<script src="./blocks/motor/stepper_advanced.js"></script>
+
+<script src="./blocks/visuals/max7219_matrix.js"></script>
+<script src="./blocks/visuals/lcd_i2c.js"></script>
+<script src="./blocks/visuals/tft_displays.js"></script>
+<script src="./blocks/visuals/neopixel_basic.js"></script>
+<script src="./blocks/visuals/visu_tm.js"></script>
+<script src="./blocks/visuals/oled_ssd1306.js"></script>
+<script src="./blocks/visuals/r4_matrix.js"></script> 
+
+<script src="./blocks/time/delay.js"></script>
+<script src="./blocks/time/time_micros.js"></script> 
+<script src="./blocks/time/timer_interval.js"></script>
+<script src="./blocks/time/time_system.js"></script>
+<script src="./blocks/time/stopwatch.js"></script>
+<script src="blocks/time/visu_rtc.js"></script>
+
+<script src="./blocks/functions/logic_if.js"></script>
+<script src="./blocks/functions/logic_compare.js"></script>
+<script src="./blocks/functions/loop_repeat.js"></script>
+<script src="./blocks/functions/loop_while.js"></script>
+<script src="./blocks/functions/loop_for.js"></script> 
+<script src="./blocks/functions/blinker.js"></script>
+<script src="./blocks/functions/state_machine.js"></script>
+<script src="./blocks/functions/logic_basic.js"></script>
+<script src="./blocks/functions/logic_ternary.js"></script> 
+<script src="./blocks/functions/math_basic.js"></script>
+<script src="./blocks/functions/math_modulo.js"></script> 
+<script src="./blocks/functions/math_advanced.js"></script>
+<script src="./blocks/functions/math_random.js"></script>
+<script src="./blocks/functions/functions_custom.js"></script>
+<script src="./blocks/functions/array_tables.js"></script> 
+
+<script src="./blocks/advanced/serial_com.js"></script>
+<script src="./blocks/advanced/serial_number_com.js"></script>
+<script src="./blocks/advanced/custom_cpp.js"></script>
+<script src="./blocks/advanced/eeprom_r4.js"></script>
+<script src="./blocks/advanced/sd_card.js"></script>
+<script src="./blocks/advanced/rfid_rc522.js"></script>
+
+<script src="./js/web.js"></script>
+
+<script src="./js/app.js"></script>
+
+</body>
+</html>
