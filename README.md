@@ -2,7 +2,7 @@
 
 **Aktuelle Version:** v1.1 (C++ Verifikationsphase)
 **Hardware-Fokus:** Arduino UNO R4 Minima & WiFi (optimiert für RA4M1 32-Bit)
-**Offizielle Webseite:** [https://logickiste.de](https://logickiste.de)
+**Offizielle Webseite:** [https://www.logickiste.de](https://www.logickiste.de)
 
 ---
 
