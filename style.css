@@ -1,0 +1,249 @@
+/* ==========================================================================
+   LogicKiste - Hauptdesign (style.css)
+   ========================================================================== */
+
+/* --- Globale Styles (Farben & Reset) --- */
+:root {
+  --color-mathe: #40a0ff; 
+  --color-logik: #ffab19; 
+  --color-zeit: #FF6680;  
+  --color-bg-light: #f4f7f6;
+  --color-text-dark: #333;
+  --color-text-light: #fff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- Header & Navigation (Nur noch Blöcke, perfekt mittig) --- */
+header {
+  background-color: var(--color-text-light);
+  padding: 15px 5%; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+}
+
+/* --- DAS BLOCK-MENÜ --- */
+nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center; 
+  gap: 12px;
+  flex-wrap: wrap; 
+  justify-content: center; 
+}
+
+.menu-block {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px 8px 15px;
+  border-radius: 4px;
+  color: white !important;
+  font-weight: bold;
+  font-size: 0.95rem;
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.15);
+  transition: transform 0.2s, filter 0.2s;
+  position: relative;
+}
+
+/* Die kleine Puzzle-Nase links */
+.menu-block::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid rgba(255,255,255,0.5);
+}
+
+.menu-block:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+
+/* Das "Eingabefeld" im Block */
+.menu-block span.value-field {
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: normal;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+/* Der bunte Verlauf für das Wort "Logic" im neuen Hauptblock */
+.brand-gradient {
+  background-image: linear-gradient(to right, var(--color-mathe), var(--color-logik));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+}
+
+/* Die Blockly-Farben für das Menü */
+.block-dark   { background-color: #2c3e50; } /* Haupt-Editor-Block (Dunkelblau/Grau) */
+.block-green  { background-color: #5ba58c; } /* Startseite */
+.block-purple { background-color: #a55b80; } /* Handbuch */
+.block-blue   { background-color: #5b80a5; } /* Kontakt */
+.block-orange { background-color: #d38133; } /* KreativeKiste */
+.block-oled   { background-color: #34495e; } /* NEU: OLED Pixel */
+
+
+/* --- Hero-Bereich --- */
+.hero {
+  padding: 80px 5%;
+  text-align: center;
+  background-image: linear-gradient(to bottom, #fff 0%, var(--color-bg-light) 100%);
+}
+
+.hero h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 2rem auto;
+  color: #666;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: var(--color-mathe);
+  color: var(--color-text-light);
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 30px;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 15px rgba(64, 160, 255, 0.3);
+}
+
+.cta-button:hover {
+  background-color: #3385ff;
+  transform: translateY(-2px);
+}
+
+/* --- Features-Bereich --- */
+.features {
+  padding: 80px 5%;
+  background-color: #fff;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background-color: var(--color-bg-light);
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Mobile-Warnung --- */
+.mobile-warning {
+  display: none; 
+  background-color: #ffcccc;
+  color: #990000;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid #990000;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+}
+
+/* --- Footer --- */
+footer {
+  background-color: #333;
+  color: #ccc;
+  padding: 40px 5% 20px 5%;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+/* --- Media Queries (Smartphones) --- */
+@media (max-width: 768px) {
+  .mobile-warning {
+    display: block; 
+  }
+  
+  .hero {
+    padding: 50px 5%;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  nav ul {
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+  }
+  
+  .menu-block {
+    width: 100%;
+    justify-content: space-between; 
+  }
+}

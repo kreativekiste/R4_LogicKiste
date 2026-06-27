@@ -1,0 +1,29 @@
+body { font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; }
+header { background: #2c3e50; color: #ecf0f1; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #1abc9c; }
+#main { display: flex; flex: 1; overflow: hidden; }
+#blocklyDiv { flex: 2; border-right: 2px solid #ccc; transition: all 0.3s ease; }
+#codeExport { flex: 1; background: #1e1e1e; color: #d4d4d4; padding: 20px; overflow-y: auto; white-space: pre-wrap; font-family: 'Consolas', monospace; font-size: 14px; display: block; transition: all 0.3s ease; }
+.title { font-weight: bold; font-size: 1.3em; }
+
+/* Styles für die Buttons */
+.header-controls { display: flex; gap: 10px; align-items: center; }
+.btn { 
+    background: #1abc9c; color: white; border: none; padding: 8px 15px; 
+    border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; transition: background 0.2s;
+}
+.btn:hover { background: #16a085; }
+.btn-load { background: #e67e22; display: inline-block; }
+.btn-load:hover { background: #d35400; }
+.btn-upload { background: #8e44ad; min-width: 110px; }
+.btn-upload:hover { background: #6c3483; }
+.btn-upload:disabled { background: #555; cursor: wait; }
+
+/* UI Toggles & Action Buttons */
+.btn-ui { background: #34495e; }
+.btn-ui:hover { background: #2c3e50; border: 1px solid #1abc9c; margin: -1px; }
+.btn-action { background: #3498db; }
+.btn-action:hover { background: #2980b9; }
+
+/* Unsichtbares Raster (Toggle-Klasse) */
+.hide-grid .blocklyMainBackground { fill: #ffffff !important; }
+.hide-grid .blocklyGrid { display: none !important; }

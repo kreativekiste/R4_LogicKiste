@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handbuch – LogicKiste</title>
+  
+  <link rel="stylesheet" href="./style.css">
+
+  <style>\r
+    .doc-container {\r
+      max-width: 1200px;\r
+      margin: 40px auto;\r
+      padding: 40px;\r
+      background-color: #fff;\r
+      border-radius: 10px;\r
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);\r
+      line-height: 1.6;\r
+      color: #333;\r
+    }\r
+\r
+    #content h1 {\r
+      color: var(--color-mathe);\r
+      font-size: 2.4rem;\r
+      border-bottom: 3px solid var(--color-mathe);\r
+      padding-bottom: 10px;\r
+      margin-bottom: 30px;\r
+    }\r
+\r
+    #content h2 {\r
+      color: white;\r
+      font-size: 1.6rem;\r
+      margin-top: 50px;\r
+      margin-bottom: 20px;\r
+      padding: 10px 15px;\r
+      border-radius: 5px;\r
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);\r
+    }\r
+\r
+    .grid-container {\r
+      display: grid;\r
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));\r
+      gap: 20px;\r
+      margin-bottom: 40px;\r
+    }\r
+\r
+    .block-card {\r
+      background: #fdfdfd;\r
+      border: 1px solid #eef0f2;\r
+      border-left: 5px solid #ccc;\r
+      border-radius: 6px;\r
+      padding: 20px;\r
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);\r
+      transition: transform 0.2s, box-shadow 0.2s;\r
+      display: flex;\r
+      flex-direction: column;\r
+      justify-content: space-between;\r
+    }\r
+\r
+    .block-card:hover {\r
+      transform: translateY(-2px);\r
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);\r
+    }\r
+\r
+    .block-card h3 {\r
+      margin-top: 0;\r
+      margin-bottom: 12px;\r
+      font-size: 1.2rem;\r
+      color: #222;\r
+      border-bottom: 1px solid #f1f3f5;\r
+      padding-bottom: 6px;\r
+    }\r
+\r
+    .block-card h3 code {\r
+      background: #f1f3f5;\r
+      padding: 2px 6px;\r
+      border-radius: 4px;\r
+      font-size: 0.9rem;\r
+      color: #d63384;\r
+      float: right;\r
+      font-family: Consolas, Monaco, monospace;\r
+    }\r
+\r
+    .prop-row {\r
+      margin-bottom: 8px;\r
+      font-size: 0.95rem;\r
+    }\r
+\r
+    .prop-row strong {\r
+      color: #555;\r
+    }\r
+\r
+    .badge {\r
+      display: inline-block;\r
+      padding: 4px 8px;\r
+      border-radius: 4px;\r
+      font-size: 0.75rem;\r
+      font-weight: bold;\r
+      margin-top: 12px;\r
+      align-self: flex-start;\r
+    }\r
+\r
+    .badge-yes { background-color: #d4edda; color: #155724; }\r
+    .badge-no { background-color: #f8d7da; color: #721c24; }\r
+\r
+    /* Themenfarben für die Kategorien */\r
+    .bg-board { background-color: #337ab7; }       /* Blau */\r
+    .bd-board { border-left-color: #337ab7; }\r
+    \r
+    .bg-steuerung { background-color: #5cb85c; }   /* Grün */\r
+    .bd-steuerung { border-left-color: #5cb85c; }\r
+    \r
+    .bg-sensoren { background-color: #f0ad4e; }    /* Orange */\r
+    .bd-sensoren { border-left-color: #f0ad4e; }\r
+    \r
+    .bg-aktoren { background-color: #d9534f; }     /* Rot */\r
+    .bd-aktoren { border-left-color: #d9534f; }\r
+\r
+    .bg-wlan { background-color: #9b59b6; }        /* Lila */\r
+    .bd-wlan { border-left-color: #9b59b6; }\r
+\r
+    .bg-oled { background-color: #16a085; }        /* Türkis */\r
+    .bd-oled { border-left-color: #16a085; }\r
+\r
+    .table-coords {\r
+      width: 100%;\r
+      border-collapse: collapse;\r
+      margin-top: 10px;\r
+      font-size: 0.85rem;\r
+    }\r
+    .table-coords th, .table-coords td {\r
+      border: 1px solid #dee2e6;\r
+      padding: 6px;\r
+      text-align: left;\r
+    }\r
+    .table-coords th {\r
+      background-color: #f8f9fa;\r
+    }\r
+  </style>
+</head>
+<body>
+
+  <main class="doc-container">
+    <div id="content">
+      <h1>Bedienungsanleitung &amp; Block-Referenz</h1>
+      <p>Willkommen im Handbuch der Arduino R4_LogicKiste. Hier findest du eine Übersicht aller verfügbaren Blöcke, deren Parameter und die Information, ob sie mit älteren Arduino R3 Boards kompatibel sind.</p>
+
+      <h2 class="bg-board">📁 Kategorie: Board</h2>
+      <div class="grid-container">
+        <div class="block-card bd-board">
+          <h3>Hauptrahmen <code>arduino_main</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Der unzerstörbare Grundrahmen für jedes Programm. Enthält die Bereiche Global, Setup und Loop.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-board">
+          <h3>Pin-Interrupt <code>board_pc_interrupt</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Überwacht einen digitalen Pin im Hintergrund. Löst sofort eine Aktion aus, wenn sich der Zustand ändert (RISING, FALLING, CHANGE).</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-board">
+          <h3>Kommentar <code>kommentar</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Erzeugt ein Kommentar-Textfeld im Blockly-Workspace, das als reiner Infotext direkt in den C++ Code exportiert wird.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+      </div>
+
+
+      <h2 class="bg-steuerung">⚙️ Kategorie: Steuerung &amp; Logik</h2>
+      <div class="grid-container">
+        <div class="block-card bd-steuerung">
+          <h3>Wenn / Falls <code>logic_if</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Führt den inneren Code nur aus, wenn die verknüpfte Bedingung wahr (true) ist.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-steuerung">
+          <h3>Wenn / Sonst <code>logic_if_else</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Erweitert die Bedingung um einen "Sonst"-Zweig, falls die Prüfung falsch (false) ergibt.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-steuerung">
+          <h3>Zählschleife <code>loop_for</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Wiederholt Codeblöcke eine exakte Anzahl von Malen unter Verwendung einer Zählvariable.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-steuerung">
+          <h3>Dauernd Solange <code>ard_loop_while</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Wiederholt den Code im inneren Bereich ununterbrochen, solange die Bedingung erfüllt bleibt.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-steuerung">
+          <h3>Weiche (Switch) <code>ard_switch</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Prüft eine Variable auf verschiedene feste Werte (Cases), um lange verschachtelte Wenn-Abfragen zu umgehen.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+      </div>
+
+
+      <h2 class="bg-sensoren">🌡️ Kategorie: Sensoren</h2>
+      <div class="grid-container">
+        <div class="block-card bd-sensoren">
+          <h3>Digitaler Eingang <code>ard_digital_unpack</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Liest den Zustand (An/Aus) eines digitalen Pins ein. Unterstützt die internen Pull-Up Widerstände.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-sensoren">
+          <h3>Analoger Eingang <code>ard_analog_in</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Liest eine analoge Spannung an den Pins A0-A5 und wandelt sie in einen Zahlenwert von 0 bis 1023 um.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-sensoren">
+          <h3>Temperatur DS18B20 <code>ds18b20_temp</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Fragt die präzise Temperatur eines wasserdichten DS18B20 One-Wire Sensors in °C ab.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-sensoren">
+          <h3>Ultraschall HC-SR04 <code>hc_sr04_distanz</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Misst berührungslos Entfernungen im Bereich von 2cm bis 400cm mittels Schalllaufzeit.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+      </div>
+
+
+      <h2 class="bg-aktoren">🚨 Kategorie: Aktoren &amp; Ausgänge</h2>
+      <div class="grid-container">
+        <div class="block-card bd-aktoren">
+          <h3>Digital Schalten <code>ard_digital_write</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Schaltet einen digitalen Ausgangskanal hart EIN (5V/3.3V) oder AUS (0V).</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-aktoren">
+          <h3>PWM / Dimmen <code>ard_analog_write</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Gibt ein Pulsweitensignal (0 bis 255) aus, um LEDs zu dimmen oder Motorgeschwindigkeiten zu regeln.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-aktoren">
+          <h3>Servo Motor <code>ard_servo_move</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Dreht einen Standard-Servomotor auf einen exakten Winkel zwischen 0° und 180°.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-aktoren">
+          <h3>Ton Erzeugen <code>ard_tone_pitch</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Erzeugt auf einem Piezo-Summer eine frei definierbare Tonfrequenz in Hz für eine bestimmte Dauer.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+      </div>
+
+
+      <h2 class="bg-oled">🖥️ Kategorie: OLED Display (SSD1306)</h2>
+      <div class="grid-container">
+        <div class="block-card bd-oled">
+          <h3>OLED Setup <code>ard_oled_setup</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Initialisiert das OLED-Display via I2C. Erlaubt die Auswahl zwischen 0.96 Zoll (128x64) und 0.91 Zoll (128x32) sowie der I2C-Taktgeschwindigkeit.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-oled">
+          <h3>Schriftart setzen <code>ard_oled_set_font</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Ändert die Textskalierung (Größe) für alle nachfolgenden Textausgaben auf dem Display.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-oled">
+          <h3>Display löschen <code>ard_oled_clear</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Leert den kompletten Bildschirminhalt (löscht den Puffer und aktualisiert das Display).</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-oled">
+          <h3>Text schreiben <code>ard_oled_print</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Schreibt Text oder Zahlen an der aktuellen Cursorposition auf das Display (optional mit automatischem Zeilenumbruch).</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-oled">
+          <h3>Text an X/Y <code>ard_oled_print_xy</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Setzt den Cursor pixelgenau auf die Koordinaten X und Y und schreibt dort den Text oder den Inhalt einer Variable hin.</div>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+
+        <div class="block-card bd-oled">
+          <h3>Formen zeichnen <code>ard_oled_draw_shape</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Zeichnet geometrische Formen pixelgenau auf das Display. Die Parameter passen sich der gewählten Form an:</div>
+          
+          <table class="table-coords">
+            <thead>
+              <tr>
+                <th>Gewählte Form</th>
+                <th>X / Y</th>
+                <th>B / X2 / Rad</th>
+                <th>H / Y2</th>
+                <th>X3 / Y3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Linie</strong></td>
+                <td>Startpunkt (X/Y)</td>
+                <td>Endpunkt X2</td>
+                <td>Endpunkt Y2</td>
+                <td>- (wird ignoriert)</td>
+              </tr>
+              <tr>
+                <td><strong>Rechteck (Rand / Voll)</strong></td>
+                <td>Obere linke Ecke</td>
+                <td>Breite (B)</td>
+                <td>Höhe (H)</td>
+                <td>- (wird ignoriert)</td>
+              </tr>
+              <tr>
+                <td><strong>Kreis (Rand / Voll)</strong></td>
+                <td>Mittelpunkt (X/Y)</td>
+                <td>Radius (Rad)</td>
+                <td>- (wird ignoriert)</td>
+                <td>- (wird ignoriert)</td>
+              </tr>
+              <tr>
+                <td><strong>Dreieck (Rand / Voll)</strong></td>
+                <td>Punkt 1 (X/Y)</td>
+                <td>Punkt 2 X2</td>
+                <td>Punkt 2 Y2</td>
+                <td>Punkt 3 (X3/Y3)</td>
+              </tr>
+            </tbody>
+          </table>
+          <span class="badge badge-yes">R3 kompatibel: JA</span>
+        </div>
+      </div>
+
+
+      <h2 class="bg-wlan">🌐 Kategorie: Netzwerk &amp; WebServer</h2>
+      <div class="grid-container">
+        <div class="block-card bd-wlan">
+          <h3>WiFi Verbinden <code>web_wlan_setup</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Initialisiert das integrierte WLAN-Modul und verbindet das Board mit dem lokalen Router (SSID + Passwort).</div>
+          <span class="badge badge-no">R3 kompatibel: NEIN</span>
+        </div>
+
+        <div class="block-card bd-wlan">
+          <h3>Status / Verbindung <code>web_status_read</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Gibt zurück, ob das Board erfolgreich mit dem Router verbunden ist.</div>
+          <span class="badge badge-no">R3 kompatibel: NEIN</span>
+        </div>
+
+        <div class="block-card bd-wlan">
+          <h3>Daten zum Web <code>web_digital_write</code> / <code>web_analog_write</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Sendet Sensorwerte oder Schalter-Zustände aktiv an die Webseite, die vom Board gehostet wird.</div>
+          <span class="badge badge-no">R3 kompatibel: NEIN</span>
+        </div>
+
+        <div class="block-card bd-wlan">
+          <h3>Daten vom Web <code>web_digital_read</code> / <code>web_analog_read</code></h3>
+          <div class="prop-row"><strong>Beschreibung:</strong> Empfängt Befehle von der Webseite (z.B. Button auf dem Smartphone gedrückt), um Hardware am Arduino zu schalten.</div>
+          <span class="badge badge-no">R3 kompatibel: NEIN</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="./impressum.html">Impressum</a>
+      <a href="./kontakt.html">Kontakt</a>
+      <a href="./support.html">Support</a>
+      <a href="./datenschutz.html">Datenschutz</a>
+    </div>
+  </footer>
+
+</body>
+</html>

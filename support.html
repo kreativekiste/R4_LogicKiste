@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support – LogicKiste</title>
+  
+  <link rel="stylesheet" href="./style.css">
+
+  <style>
+    .support-container {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    .support-intro {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .support-intro h1 {
+      color: var(--color-mathe);
+      margin-bottom: 10px;
+    }
+
+    .workspace {
+      background-color: #ffffff;
+      background-image: radial-gradient(#d1d1d1 2px, transparent 2px);
+      background-size: 30px 30px;
+      border: 3px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 60px 40px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    .block-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-family: sans-serif;
+      font-size: 1.1rem;
+    }
+
+    .block {
+      color: white;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 4px;
+      margin-bottom: 2px;
+      box-shadow: 2px 3px 5px rgba(0,0,0,0.2);
+      width: fit-content;
+      position: relative;
+    }
+
+    .block-hat {
+      background-color: var(--color-logik);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    .block-logic {
+      background-color: var(--color-mathe);
+      border-top-left-radius: 0;
+    }
+
+    .block-c-body {
+      border-left: 20px solid var(--color-mathe);
+      padding-left: 10px;
+      margin-top: -2px;
+      margin-bottom: -2px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .block-action {
+      background-color: #4CAF50;
+      text-decoration: none;
+      transition: transform 0.2s, filter 0.2s;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .block-action:hover {
+      transform: scale(1.02) translateX(5px);
+      filter: brightness(1.1);
+      box-shadow: 3px 5px 10px rgba(0,0,0,0.3);
+    }
+
+    .block-value {
+      background-color: var(--color-zeit);
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 15px;
+      margin-left: 8px;
+      font-size: 0.95rem;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul class="block-menu">
+        <li>
+          <a href="./app/index.html" class="menu-block block-dark">
+            Code <span class="value-field">"Arduino"</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="./processing/index.html" class="menu-block" style="background-color: #2980b9; color: white; font-weight: bold;">
+            Code <span class="value-field">"Processing"</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="./index.html" class="menu-block block-green">
+            Gehe zu <span class="value-field">"Startseite"</span>
+          </a>
+        </li>
+        <li>
+        <a href="./support.html" class="menu-block block-purple">
+          Lese <span class="value-field">"Support"</span>
+        </a>
+        </li>
+        <li>
+          <a href="./pixel/index.html" class="menu-block block-dark">
+            Designe <span class="value-field">"Pixel"</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://kreativekiste.de" target="_blank" class="menu-block block-orange">
+            Lade <span class="value-field">"KreativeKiste"</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <main class="support-container">
+    
+    <div class="support-intro">
+      <h1>Hilfe und Support</h1>
+      <p>Hier findest du schnelle Hilfe. Klicke einfach auf den entsprechenden grünen Block, um direkt zum Handbuch oder zu den Tutorials zu springen.</p>
+    </div>
+
+    <div class="workspace">
+      <div class="block-stack">
+        
+        <div class="block block-hat">
+          🌐 PROGRAMM START: Support aufrufen
+        </div>
+        
+        <div class="block block-logic">
+          WENN <span class="block-value">Thema = Handbuch Arduino</span> machen:
+        </div>
+        <div class="block-c-body">
+          <a href="https://www.kreativekiste.de/handbuch-blockly" target="_blank" class="block block-action">
+            ➔ Öffne Handbuch Arduino
+          </a>
+        </div>
+        
+        <div class="block block-logic">
+          SONST WENN <span class="block-value">Thema = Handbuch Processing</span> machen:
+        </div>
+        <div class="block-c-body">
+          <a href="https://www.kreativekiste.de/processingkiste-handbuch-blockly-fuer-processing-app" target="_blank" class="block block-action">
+            ➔ Öffne Handbuch Processing
+          </a>
+        </div>
+        
+        <div class="block block-logic">
+          SONST <span class="block-value">Suche = Tutorials</span> machen:
+        </div>
+        <div class="block-c-body">
+          <a href="https://www.kreativekiste.de/tutorials-blockly" target="_blank" class="block block-action">
+            ➔ Öffne die Tutorials
+          </a>
+        </div>
+        
+        <div class="block block-logic" style="border-bottom-left-radius: 4px;">
+          ENDE
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="./impressum.html">Impressum</a>
+      <a href="./kontakt.html">Kontakt</a>
+      <a href="./datenschutz.html">Datenschutz</a>
+    </div>
+    <p>Ein Projekt von Ronnie Berzins. Copyright &copy; 2026</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>LogicKiste - Processing</title>
+    
+    <script src="./js/blockly_compressed.js"></script>
+    <script src="./js/javascript_compressed.js"></script>
+    <script src="./js/de.js"></script>
+    
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="title">Processing</div>
+    
+    <a href="../index.html" class="btn btn-ui" style="text-decoration: none; margin-right: 20px;">
+    ⬅ Startseite
+    </a>
+    
+    <div class="header-controls">
+        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
+        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
+        <div style="width: 10px;"></div> 
+
+        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
+        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
+        <div style="width: 20px;"></div> 
+        
+        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
+        <label class="btn btn-load" for="fileInput">📂 Laden</label>
+        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
+        <div style="width: 20px;"></div>
+
+        <button class="btn btn-ui" id="copyBtn" onclick="copyGeneratedCode()">📋 Code kopieren</button>
+    </div>
+
+    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">Java / Processing Export</div>
+</header>
+
+<div id="main">
+    <div id="blocklyDiv"></div>
+    <div id="codeExport">// Lade Blöcke...</div>
+</div>
+
+
+
+<script src="./js/blockly_compressed.js"></script>
+<script src="./js/blocks_compressed.js"></script> 
+<script src="./js/javascript_compressed.js"></script>
+<script src="./js/de.js"></script>
+<script src="./js/processing_core.js"></script>
+<script src="./js/processing_blocks.js"></script>
+<script src="./js/processing_input.js"></script>
+<script src="./js/processing_output.js"></script>
+<script src="./js/processing_logic_math.js"></script>
+<script src="./js/serial_com.js"></script>
+<script src="./js/processing_app.js"></script>
+<script src="./js/processing_container.js"></script>
+<script src="./js/processing_pictures.js"></script>
+<script src="./js/processing_sound.js"></script>
+<script src="./js/processing_synth.js"></script>
+<script src="./js/processing_timer.js"></script>
+</body>
+</html>
