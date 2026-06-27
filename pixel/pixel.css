@@ -1,0 +1,174 @@
+/* Spezifische Styles für den Pixel-Designer */
+
+.main-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.controls {
+    width: 280px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.control-group {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.btn-add {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: var(--color-mathe);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-add:hover { background: #2b8ce6; }
+
+/* Deaktivierte Buttons (wenn Wartebereich voll ist) */
+.btn-add:disabled {
+    background: #cccccc !important;
+    color: #888888;
+    cursor: not-allowed;
+}
+
+.btn-clear {
+    width: 100%;
+    padding: 8px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* NEU: Der Wartebereich (Spawn Area) */
+.spawn-container {
+    min-height: 120px;
+    border: 2px dashed #d9534f;
+    border-radius: 8px;
+    background: #ffebeb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+}
+
+.pixel-canvas {
+    width: 800px;
+    height: 600px;
+    background: #ddd;
+    background-image: radial-gradient(#bbb 1px, transparent 1px);
+    background-size: 20px 20px; /* Snap-Grid Größe */
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden; /* Verhindert, dass Blöcke über den Rand geschoben werden */
+}
+
+/* Wrapper hält 1 oder 4 Matrizen zusammen */
+.module-wrapper {
+    position: absolute;
+    display: flex;
+    gap: 2px;
+    cursor: grab;
+    background: #444;
+    padding: 2px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.module-wrapper:active {
+    cursor: grabbing;
+}
+
+/* Ein einzelnes 8x8 Modul innerhalb des Wrappers */
+.matrix-block {
+    position: relative;
+    background: #222;
+    display: grid;
+    grid-template-columns: repeat(8, 12px);
+    grid-template-rows: repeat(8, 12px);
+    gap: 2px;
+    padding: 4px;
+    user-select: none;
+}
+
+.matrix-block::after {
+    content: "DIN";
+    position: absolute;
+    top: -15px;
+    left: 2px;
+    font-size: 10px;
+    color: #ffab19;
+    font-weight: bold;
+}
+
+/* NEU: Die großen Hintergrund-Zahlen */
+.bg-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.15);
+    z-index: 0;
+    pointer-events: none; /* Klicks gehen durch die Zahl hindurch auf die Pixel */
+}
+
+.pixel-dot {
+    width: 12px;
+    height: 12px;
+    background: #444;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1; /* Über der Hintergrund-Zahl */
+    position: relative;
+}
+
+.pixel-dot:hover {
+    background: #666;
+}
+
+.pixel-dot.active {
+    background: #ff0000;
+    box-shadow: 0 0 5px #ff0000;
+}
+
+.output-area {
+    margin-top: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.copy-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+#output-string {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 1.1em;
+}

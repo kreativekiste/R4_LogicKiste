@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoPixel Designer | LogicKiste</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./neo.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul class="block-menu">
+            <li>
+                <a href="../index.html" class="menu-block block-green">
+                    Gehe zu <span class="value-field">"Startseite"</span>
+                </a>
+            </li>
+            <li>
+                <a href="../pixel/index.html" class="menu-block block-blue">
+                    Designe <span class="value-field">"DOT Matrix"</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="menu-block block-orange">
+                    Designe <span class="value-field">"NeoPixel"</span>
+                </a>
+            </li>
+            <li>
+                <a href="../oled/oled.html" class="menu-block block-oled">
+                    Designe <span class="value-field">"OLED Pixel"</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main-container">
+    <aside class="controls">
+        <div class="control-group">
+            <h3>1. Hardware Setup</h3>
+            <div class="input-row">
+                <label>Größe:</label>
+                <input type="number" id="gridW" value="8" min="1" max="32"> x 
+                <input type="number" id="gridH" value="8" min="1" max="32">
+            </div>
+            
+            <label>Start-Ecke:</label>
+            <select id="startCorner">
+                <option value="TL">Oben Links</option>
+                <option value="TR">Oben Rechts</option>
+                <option value="BL">Unten Links</option>
+                <option value="BR">Unten Rechts</option>
+            </select>
+
+            <label>Anordnung:</label>
+            <select id="wiring">
+                <option value="parallel">Fortlaufend (Parallel)</option>
+                <option value="zigzag">Zick-Zack (Snake)</option>
+            </select>
+
+            <label>Ausrichtung:</label>
+            <select id="orientation">
+                <option value="horizontal">Horizontal (Zeilen)</option>
+                <option value="vertical">Vertikal (Spalten)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <h3>2. Werkzeuge</h3>
+            <div class="color-tools">
+                <input type="color" id="colorPicker" value="#ff0000">
+                <button id="btnEraser" class="btn-tool" onclick="toggleEraser()">✏️ Zeichnen</button>
+            </div>
+            <button class="btn-clear" onclick="clearGrid()" style="margin-top: 10px;">Alles löschen</button>
+        </div>
+    </aside>
+
+    <main class="editor-area">
+        <div class="grid-scroll-container">
+            <div id="pixel-grid" class="pixel-grid">
+                </div>
+        </div>
+
+        <div class="output-area">
+            <label>C++ Code für LogicKiste "Einfüge-Block":</label>
+            <div class="copy-wrapper">
+                <textarea id="output-string" readonly rows="8" placeholder="// Zeichne etwas, um Code zu generieren..."></textarea>
+                <button class="btn" onclick="copyToClipboard()">Code kopieren</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="../impressum.html">Impressum</a>
+        <a href="../kontakt.html">Sende Nachricht</a>
+        <a href="../datenschutz.html">Datenschutz</a>
+    </div>
+    <p>Ein Projekt von Ronnie Berzins. Copyright &copy; 2026</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+/* ==========================================================================
+   LogicKiste - OLED Pixel Designer (oled.css)
+   ========================================================================== */
+
+/* --- Spezielle Menü-Farbe für das OLED (Schwarz/Weiß Thema) --- */
+.block-oled { 
+    background-color: #34495e; 
+}
+
+.main-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+/* --- Linke Seitenleiste (Werkzeuge) --- */
+.controls {
+    width: 280px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+
+.control-group {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.control-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.control-group h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.description-text {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.full-width-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* --- Buttons --- */
+.color-tools {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-tool {
+    flex-grow: 1;
+    padding: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #f8f9fa;
+    border: 2px solid #ccc;
+    color: #333;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-tool:hover {
+    background: #e9ecef;
+}
+
+/* Der aktuell ausgewählte Button (Zeichnen oder Radieren) */
+.btn-tool.active {
+    background: #34495e;
+    color: white;
+    border-color: #2c3e50;
+}
+
+.btn-clear {
+    width: 100%;
+    padding: 8px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-upload {
+    width: 100%;
+    padding: 10px;
+    background: #5b80a5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* --- Editor Bereich Rechts --- */
+.editor-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- Zeichenfläche (Canvas) --- */
+.canvas-wrapper {
+    background: #111; /* Dunkler Hintergrund für echtes OLED Feeling */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: auto;
+    border: 4px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+/* Das Gitter, das die Pixel hält */
+.pixel-canvas {
+    width: 100%;
+    max-width: 600px; /* Verhindert, dass das Raster riesig wird */
+    display: grid;
+    gap: 1px; /* Minimaler Abstand wie bei einem echten Display */
+    background-color: #333; /* Gitterlinien-Farbe */
+    border: 1px solid #333;
+    margin: 0 auto;
+}
+
+/* Ein einzelner OLED Pixel (Ausgeschaltet) */
+.pixel-dot {
+    background: #000; /* Schwarz = Aus */
+    cursor: crosshair;
+    transition: background-color 0.1s;
+    aspect-ratio: 1 / 1; /* WICHTIG: Macht perfekte Quadrate! */
+}
+
+.pixel-dot:hover {
+    background: #222; /* Leichter grauer Hover-Effekt zur Orientierung */
+}
+
+/* Ein einzelner OLED Pixel (Eingeschaltet) */
+.pixel-dot.active {
+    background: #e0f7fa; /* Leicht bläuliches Weiß für den klassischen OLED-Look */
+    box-shadow: 0 0 5px rgba(224, 247, 250, 0.6); /* Leichter Glow-Effekt */
+}
+
+/* --- Code Ausgabe --- */
+.output-area {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.output-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.copy-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#output-string {
+    width: 100%;
+    height: 180px;
+    padding: 10px;
+    background: #1e1e1e;
+    color: #4ec9b0; /* Ein schönes Coding-Grün */
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    border: 2px inset #333;
+    resize: vertical;
+}
+
+.btn-copy {
+    align-self: flex-start;
+    padding: 10px 20px;
+    background: var(--color-mathe);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}

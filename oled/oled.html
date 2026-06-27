@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLED Pixel Designer | LogicKiste</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./oled.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul class="block-menu">
+            <li>
+                <a href="../index.html" class="menu-block block-green">
+                    Gehe zu <span class="value-field">"Startseite"</span>
+                </a>
+            </li>
+            <li>
+                <a href="../pixel/index.html" class="menu-block block-blue">
+                    Designe <span class="value-field">"DOT Matrix"</span>
+                </a>
+            </li>
+            <li>
+                <a href="../neo/index.html" class="menu-block block-orange">
+                    Designe <span class="value-field">"NeoPixel"</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="menu-block block-oled">
+                    Designe <span class="value-field">"OLED Pixel"</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main-container">
+    <aside class="controls">
+        <div class="control-group">
+            <h3>Bildgröße (Raster)</h3>
+            <p class="description-text">Wähle die Größe deines Icons.</p>
+            <select id="grid-size" class="full-width-select">
+                <option value="8">8 x 8 Pixel (Mini Icon)</option>
+                <option value="16" selected>16 x 16 Pixel (Standard)</option>
+                <option value="32">32 x 32 Pixel (Großes Logo)</option>
+                <option value="128x64">128 x 64 Pixel (Vollbild)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <h3>Position auf Display</h3>
+            <p class="description-text">Wo soll das Icon erscheinen?</p>
+            <select id="image-position" class="full-width-select">
+                <option value="top-left" selected>Links oben</option>
+                <option value="top-right">Rechts oben</option>
+                <option value="bottom-left">Links unten</option>
+                <option value="bottom-right">Rechts unten</option>
+                <option value="center">Mitte zentriert</option>
+                <option value="top-center">Oben Mitte</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <h3>Werkzeuge</h3>
+            <div class="color-tools">
+                <button id="btn-draw" class="btn-tool">✏️ Zeichnen</button>
+                <button id="btn-erase" class="btn-tool">🧽 Radieren</button>
+            </div>
+            <button class="btn-clear" onclick="clearCanvas()">🗑️ Alles löschen</button>
+        </div>
+
+        <div class="control-group">
+            <h3>Bild konvertieren</h3>
+            <p class="description-text">Lade ein Bild hoch (PNG/JPG). Es wird automatisch in Schwarz-Weiß umgewandelt.</p>
+            <input type="file" id="image-upload" accept="image/png, image/jpeg" style="display: none;">
+            <button class="btn-upload" onclick="document.getElementById('image-upload').click()">🖼️ Füge Pixel-Bild ein</button>
+        </div>
+    </aside>
+
+    <main class="editor-area">
+        <div class="canvas-wrapper">
+            <div id="canvas" class="pixel-canvas">
+                </div>
+        </div>
+
+        <div class="output-area">
+            <label class="output-label">C++ Hex-Array (Für die LogicKiste):</label>
+            <div class="copy-wrapper">
+                <textarea id="output-string" readonly placeholder="// Dein Code erscheint hier..."></textarea>
+                <button class="btn-copy" onclick="copyToClipboard()">📋 Code Kopieren</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="../impressum.html">Impressum</a>
+        <a href="../kontakt.html">Sende Nachricht</a>
+        <a href="../datenschutz.html">Datenschutz</a>
+    </div>
+    <p>Ein Projekt von Ronnie Berzins. Copyright &copy; 2026</p>
+</footer>
+
+<script src="oled.js?v=2"></script>
+</body>
+</html>
