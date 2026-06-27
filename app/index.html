@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Arduino R4_LogicKiste</title>
+    
+    <script src="./js/blockly_compressed.js"></script>
+    <script src="./js/javascript_compressed.js"></script>
+    <script src="./js/de.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="title">Arduino</div>
+    
+    <a href="../index.html" class="btn btn-ui" style="text-decoration: none; margin-right: 20px;">
+    ⬅ Startseite
+    </a>
+    
+    <div class="header-controls">
+        <button class="btn btn-action" onclick="workspace.undo(false)" title="Rückgängig">↩ Zurück</button>
+        <button class="btn btn-action" onclick="workspace.undo(true)" title="Wiederherstellen">↪ Vor</button>
+        <div style="width: 10px;"></div> 
+
+        <button class="btn btn-ui" onclick="toggleGrid()">🕸️ Raster Ein/Aus</button>
+        <button class="btn btn-ui" onclick="toggleCode()">💻 Code Ein/Aus</button>
+        <div style="width: 20px;"></div> 
+        
+        <button class="btn" onclick="saveWorkspace()">💾 Speichern</button>
+        <label class="btn btn-load" for="fileInput">📂 Laden</label>
+        <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="loadWorkspace(event)">
+        <div style="width: 20px;"></div>
+
+        <button class="btn btn-ui" id="copyBtn" onclick="copyGeneratedCode()">📋 Code kopieren</button>
+		
+		<div style="width: 20px;"></div>
+        
+        <select id="boardSelect" class="btn btn-ui" style="background: #ecf0f1; color: #2c3e50; font-family: inherit; cursor: pointer;">
+            <option value="arduino:renesas_uno:minima">UNO R4 Minima</option>
+            <option value="arduino:renesas_uno:unor4wifi">UNO R4 WiFi</option>
+            <option value="arduino:avr:uno">UNO R3 (Classic)</option>
+            <option value="arduino:avr:nano">Nano</option>
+            <option value="arduino:avr:mega">Mega 2560</option>
+            <option value="arduino:avr:leonardo">Leonardo</option>
+        </select>
+        
+        <select id="portSelect" class="btn btn-ui" style="background: #ecf0f1; color: #2c3e50; font-family: inherit; cursor: pointer;" onmousedown="fetchPorts()">
+            <option value="">🔌 Klicke zum Suchen...</option>
+        </select>
+        
+        <button class="btn btn-upload" id="uploadBtn" onclick="uploadToArduino()">🚀 Upload</button>
+    </div>
+
+    <div style="font-size: 0.9em; color: #bdc3c7;" id="codeHeader">C++ Export</div>
+</header>
+
+<div id="main">
+    <div id="blocklyDiv"></div>
+    <div id="codeExport">// Lade Blöcke...</div>
+</div>
+
+<script src="./js/generator_core.js"></script>
+
+<script src="./blocks/board/interrupts.js"></script>
+<script src="./blocks/board/container.js"></script>
+<script src="./blocks/board/variables_basic.js"></script>
+<script src="./blocks/board/var_literals.js"></script>
+
+<script src="./blocks/input/setup_pullup.js"></script>
+<script src="./blocks/input/read_digital.js"></script>
+<script src="./blocks/input/read_analog.js"></script>
+<script src="./blocks/input/analog_smooth.js"></script> 
+<script src="./blocks/input/input_counter.js"></script>
+<script src="./blocks/input/input_encoder.js"></script>
+<script src="./blocks/input/button_event.js"></script>
+
+<script src="./blocks/sensor/dht_sensor.js"></script>
+<script src="./blocks/sensor/ultrasonic_hc_sr04.js"></script>
+<script src="./blocks/sensor/gyro_mpu6050.js"></script> 
+
+<script src="./blocks/output/write_digital.js"></script>
+<script src="./blocks/output/write_analog.js"></script>
+<script src="./blocks/output/output_tone.js"></script> 
+<script src="./blocks/output/mp3_yx5300.js"></script>
+<script src="./blocks/output/tca9555.js"></script> 
+<script src="./blocks/output/virtual_ports.js"></script>
+
+<script src="./blocks/motor/motors.js"></script>
+<script src="./blocks/motor/stepper_advanced.js"></script>
+<script src="./blocks/motor/stepper_nema.js"></script>
+
+<script src="./blocks/visuals/max7219_matrix.js"></script>
+<script src="./blocks/visuals/lcd_i2c.js"></script>
+<script src="./blocks/visuals/tft_displays.js"></script>
+<script src="./blocks/visuals/neopixel_basic.js"></script>
+<script src="./blocks/visuals/visu_tm.js"></script>
+<script src="./blocks/visuals/oled_ssd1306.js"></script>
+<script src="./blocks/visuals/r4_matrix.js"></script> 
+<script src="./blocks/dmx/dmx.js"></script>
+
+<script src="./blocks/time/delay.js"></script>
+<script src="./blocks/time/time_micros.js"></script> 
+<script src="./blocks/time/timer_interval.js"></script>
+<script src="./blocks/time/time_system.js"></script>
+<script src="./blocks/time/stopwatch.js"></script>
+<script src="./blocks/time/visu_rtc.js"></script>
+
+<script src="./blocks/time/do_them_all.js"></script>
+
+<script src="./blocks/functions/logic_if.js"></script>
+<script src="./blocks/functions/logic_compare.js"></script>
+<script src="./blocks/functions/loop_repeat.js"></script>
+<script src="./blocks/functions/loop_while.js"></script>
+<script src="./blocks/functions/loop_for.js"></script> 
+<script src="./blocks/functions/blinker.js"></script>
+<script src="./blocks/functions/state_machine.js"></script>
+<script src="./blocks/functions/logic_basic.js"></script>
+<script src="./blocks/functions/logic_ternary.js"></script> 
+<script src="./blocks/functions/math_basic.js"></script>
+<script src="./blocks/functions/math_modulo.js"></script> 
+<script src="./blocks/functions/math_advanced.js"></script>
+<script src="./blocks/functions/math_random.js"></script>
+<script src="./blocks/functions/functions_custom.js"></script>
+<script src="./blocks/functions/array_tables.js"></script> 
+
+<script src="./blocks/advanced/serial_com.js"></script>
+<script src="./blocks/advanced/serial_number_com.js"></script>
+<script src="./blocks/advanced/custom_cpp.js"></script>
+<script src="./blocks/advanced/eeprom_r4.js"></script>
+<script src="./blocks/advanced/sd_card.js"></script>
+<script src="./blocks/advanced/rfid_rc522.js"></script>
+
+<script src="./blocks/hmi/ard_hmi_com.js"></script>
+
+<script src="./blocks/visuals/g_engine.js"></script> 
+<script src="./blocks/visuals/g_engine_input.js"></script>
+<script src="./blocks/visuals/g_engine_sprites.js"></script>
+<script src="./blocks/visuals/g_engine_logic.js"></script>
+<script src="./blocks/visuals/g_engine_utils.js"></script>
+
+
+
+
+<script src="./js/web.js"></script>
+
+<script src="./js/app.js"></script>
+
+<script>
+    const BRIDGE_URL = "http://localhost:5000";
+
+    async function fetchPorts() {
+        const portSelect = document.getElementById('portSelect');
+        try {
+            let response = await fetch(BRIDGE_URL + '/ports');
+            if (!response.ok) throw new Error('Bridge meldet Fehler');
+            
+            let ports = await response.json();
+            let currentVal = portSelect.value;
+            
+            portSelect.innerHTML = ''; // Leeren
+            
+            if (ports.length === 0) {
+                portSelect.innerHTML = '<option value="">Kein Port gefunden</option>';
+            } else {
+                ports.forEach(port => {
+                    let opt = document.createElement('option');
+                    opt.value = port;
+                    opt.text = port;
+                    if (port === currentVal) opt.selected = true; // Vorherige Auswahl behalten
+                    portSelect.appendChild(opt);
+                });
+            }
+        } catch (error) {
+            console.warn("Lokale Bridge nicht erreichbar.");
+            portSelect.innerHTML = '<option value="">Bridge offline</option>';
+        }
+    }
+
+   
+    async function uploadToArduino() {
+        const port = document.getElementById('portSelect').value;
+        const board = document.getElementById('boardSelect').value;
+        const btn = document.getElementById('uploadBtn');
+        
+    
+        let code = document.getElementById('codeExport').innerText;
+        
+        if (!code || code.trim() === "" || code.includes("// Lade Blöcke...")) {
+            alert("Es gibt keinen generierten Code zum Hochladen!");
+            return;
+        }
+
+        
+        if (!port || port === "Bridge offline") {
+            let userWantsHelp = confirm("Keine Verbindung zur LogikKiste-Bridge!\n\nDamit du den Code direkt aus dem Browser hochladen kannst, muss die Arduino IDE im Hintergrund laufen. \n\nMöchtest du dir die Anleitung dazu auf meiner Hompage anschauen?");           
+            if (userWantsHelp) {
+                window.open("https://www.kreativekiste.de/handbuch-blockly", "_blank");
+            }
+            return;
+        }
+
+       
+        btn.disabled = true;
+        btn.innerText = "⏳ Lade hoch...";
+
+        try {
+            let response = await fetch(BRIDGE_URL + '/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code, port: port, board: board })
+            });
+            
+            let resultText = await response.text();
+            
+            if (response.ok) {
+                alert("Upload erfolgreich!\n\n" + resultText);
+            } else {
+                alert("Fehler beim Upload:\n\n" + resultText);
+            }
+        } catch (error) {
+            let userWantsHelp = confirm("Die Verbindung zur lokalen Bridge ist abgerissen!\nLäuft die 'start_bridge.bat' noch?\n\nMöchtest du zur Anleitung wechseln?");
+            if (userWantsHelp) {
+                window.open("https://www.kreativekiste.de/handbuch-blockly", "_blank");
+            }
+        } finally {
+     
+            btn.disabled = false;
+            btn.innerText = "🚀 Upload";
+        }
+    }
+</script>
+
+</body>
+</html>
